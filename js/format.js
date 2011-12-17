@@ -2,14 +2,14 @@
 OpenLinkMap Copyright (C) 2010 Alexander Matheisen
 This program comes with ABSOLUTELY NO WARRANTY.
 This is free software, and you are welcome to redistribute it under certain conditions.
-See olm.openstreetmap.de/info for details.
+See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
 */
 
 /*
 * based on OpenLayers.Format.Text
 * @requires OpenLayers/Feature/Vector.js
 * @requires OpenLayers/Geometry/Point.js
-* 
+*
 * Class: OpenLayers.Format.OSMPOI
 * Read OSMPOI text format. Create a new instance with the <OpenLayers.Format.OSMPOI>
 *     constructor. This reads text which is formatted like CSV text, using
@@ -51,14 +51,14 @@ OpenLayers.Format.OLM = OpenLayers.Class(OpenLayers.Format,
 			};
 		}
 		OpenLayers.Format.prototype.initialize.apply(this, [options]);
-	}, 
+	},
 
 	/*
 	* APIMethod: read
 	* Return a list of features from a Space Seperated Values text string.
-	* 
+	*
 	* Parameters:
-	* data - {String} 
+	* data - {String}
 	*
 	* Returns:
 	* An Array of <OpenLayers.Feature.Vector>s
@@ -90,6 +90,6 @@ OpenLayers.Format.OLM = OpenLayers.Class(OpenLayers.Format,
 				}
 			}
 		return features;
-	},   
-	CLASS_NAME: "OpenLayers.Format.OSMPOI" 
+	},
+	CLASS_NAME: "OpenLayers.Format.OSMPOI"
 });

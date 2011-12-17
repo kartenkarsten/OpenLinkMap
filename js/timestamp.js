@@ -2,7 +2,7 @@
 OpenLinkMap Copyright (C) 2010 Alexander Matheisen
 This program comes with ABSOLUTELY NO WARRANTY.
 This is free software, and you are welcome to redistribute it under certain conditions.
-See olm.openstreetmap.de/info for details.
+See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
 */
 
 
@@ -10,7 +10,7 @@ function Timestamp(box)
 {
 	// requests the timestamp
 	this.get = function()
-	{        
+	{
 		var self = this;
 
 		// make request of timestamp of last db update
@@ -33,7 +33,7 @@ function Timestamp(box)
 
 	// update timestamp of last database update
 	this.get();
-	
+
 	var self = this;
 	var command = function()
 		{
