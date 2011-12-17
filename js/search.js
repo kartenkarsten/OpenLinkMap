@@ -119,8 +119,8 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 				var osmType = place.getAttribute('osm_type');
 				var id = place.getAttribute('osm_id');
 				var searchId = place.getAttribute('place_id');
-				var lat = place.getAttribute('lat');
-				var lon = place.getAttribute('lon');
+				var lat = parseFloat(place.getAttribute('lat'));
+				var lon = parseFloat(place.getAttribute('lon'));
 				var details = place.childNodes;
 				// display name
 				if (details.length > 1)
@@ -325,12 +325,15 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 			// switch coordinates
 			if (this.extent[2] < this.extent[0])
 			{
-				tmp = this.extent[3];
-				this.extent[3] = this.extent[1];
-				this.extent[1] = tmp;
 				tmp = this.extent[2];
 				this.extent[2] = this.extent[0];
 				this.extent[0] = tmp;
+			}
+			if (this.extent[3] < this.extent[1])
+			{
+				tmp = this.extent[3];
+				this.extent[3] = this.extent[1];
+				this.extent[1] = tmp;
 			}
 			var bounds = new OpenLayers.Bounds(this.extent[1], this.extent[0], this.extent[3], this.extent[2]).transform(wgs84, this.map.getProjectionObject());
 			this.map.zoomToExtent(bounds, true);

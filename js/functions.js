@@ -583,12 +583,15 @@ function showPoint(lon, lat, poilat, poilon)
 	// switch coordinates
 	if (lat < poilat)
 	{
-		tmp = lon;
-		lon = poilon;
-		poilon = tmp;
 		tmp = lat;
 		lat = poilat;
 		poilat = tmp;
+	}
+	if (lon < poilon)
+	{
+		tmp = lon;
+		lon = poilon;
+		poilon = tmp;
 	}
 	// show map with these positions
 	var bounds = new OpenLayers.Bounds(poilat, poilon, lat, lon).transform(wgs84, map.getProjectionObject());
