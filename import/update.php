@@ -13,7 +13,15 @@
 	$appname = "OpenLinkMap";
 	// id offset between nodes and centroids
 	$offset = 1000000000000000;
-	$offsetfactorrels = 2;
+	$offsetfactorrels = 2000000000000000;
+	$action = 0;
+	$tags = "";
+	$id = 0;
+	$lat = "";
+	$lon = "";
+	$type = "";
+	$connection = null;
+
 
 	// connects do database
 	function connectToDatabase($dbname)
@@ -38,8 +46,7 @@
 	// send error report to own mail account
 	function reportError($error = "")
 	{
-		global $mail;
-		global $appname;
+		global $mail, $appname;
 
 		// get ip and user agent string
 		$header = $_SERVER['HTTP_USER_AGENT'];
@@ -64,94 +71,97 @@
 	// copies a file to a database
 	function updateOsmFile($filename, $db)
 	{
-		global $offset;
-		global $offsetfactorrels;
+		global $offset, $offsetfactorrels, $connection;
 
 		$connection = connectToDatabase($db);
 		// if there is no connection
 		if (!$connection)
 		{
-			reportError("Could not connect to database.");
+			reportError("Cannot connect to database.");
 			return false;
 		}
 
-		$file = fopen($filename, "r");
-		if ($file)
+		$xml_parser = xml_parser_create();
+		xml_set_element_handler($xml_parser, "startElement", "endElement");
+		if (!($fp = fopen($filename, "r")))
 		{
-			$tags = '';
-			while (!feof($file))
+			reportError("Cannot open file.");
+			return false;
+		}
+		while ($data = fread($fp, 4096))
+		{
+			if (!xml_parse($xml_parser, $data, feof($fp)))
 			{
-				$line = fgets($file);
-				if (substr(trim($line), 0, 5) == "<node")
-				{
-					$id = substr($line, 11);
-					$id = intval(substr($id, 0, strpos($id, "\"")));
-
-					$lat = explode("\" lon=", $line);
-					$lat = explode("lat=\"", $lat[0]);
-					$lat = $lat[1];
-
-					$lon = explode("\" lon=\"", $line);
-					$lon = str_replace("\"/>", "", $lon[1]);
-					$lon = str_replace("\">", "", $lon);
-
-					if ($id > $offset*$offsetfactorrels)
-						$type = "relations";
-					else if ($id > $offset)
-						$type = "ways";
-					else
-						$type = "nodes";
-
-					if ($type == "relations")
-						$id = $id-($offset*$offsetfactorrels);
-					else if ($type == "ways")
-						$id = $id-$offset;
-					if (((substr(trim($line), -2, 1) == "/") && ($action == 2)))
-						$result = pg_query($connection, "DELETE FROM ".$type." WHERE (id = '".$id."')");
-				}
-				else if (substr(trim($line), 0, 4) == "<tag")
-				{
-					$tag = explode("\" v=\"", $line);
-					if ($tags == "")
-						$tags = '"'.substr($tag[0], 10).'"=>"'.substr($tag[1], 0, -4).'"';
-					else
-						$tags .= ',"'.substr($tag[0], 10).'"=>"'.substr($tag[1], 0, -4).'"';
-				}
-				else if ((trim($line) == "</node>"))
-				{
-					if ($action == 0)
-						$result = pg_query($connection, "INSERT INTO ".$type." (id, tags, geom) VALUES ('".$id."', '".$tags."', GeometryFromText('POINT ( ".$lon." ".$lat." )', 4326 ))");
-					else if ($action == 2)
-						$result = pg_query($connection, "DELETE FROM ".$type." WHERE (id = '".$id."')");
-					else if ($action == 1)
-					{
-						$result = pg_query($connection, "DELETE FROM ".$type." WHERE (id = '".$id."')");
-						$result = pg_query($connection, "INSERT INTO ".$type." (id, tags, geom) VALUES ('".$id."', '".$tags."', GeometryFromText('POINT ( ".$lon." ".$lat." )', 4326 ))");
-					}
-					$tags = '';
-				}
-				else if (substr(trim($line), 0, 7) == "<create")
-				{
-					$action = 0;
-				}
-				else if (substr(trim($line), 0, 7) == "<modify")
-				{
-					$action = 1;
-				}
-				else if (substr(trim($line), 0, 7) == "<delete")
-				{
-					$action = 2;
-				}
+				reportError("XML-Error.");
+				return false;
 			}
 		}
-		else
-		{
-			reportError("Could not connect to database.");
-		}
-		fclose($file);
+		xml_parser_free($xml_parser);
+
+		fclose($fp);
 		pg_close($connection);
 		echo "Finished ".$db."...\n";
-		return false;
+		return true;
+	}
+
+	function startElement($parser, $name, $attr)
+	{
+		global $action, $tags, $id, $lat, $lon, $type, $offset, $offsetfactorrels;
+
+		if ($name == "create")
+			$action = 0;
+		else if ($name == "modify")
+			$action = 1;
+		else if ($name == "delete")
+			$action = 2;
+
+		if ($name == "TAG")
+		{
+			if ($tags == "")
+				$tags = '"'.addslashes($attr['K']).'"=>"'.addslashes($attr['V']).'"';
+			else
+				$tags .= ',"'.addslashes($attr['K']).'"=>"'.addslashes($attr['V']).'"';
+		}
+
+		if ($name == "NODE")
+		{
+			$id = (int)$attr['ID'];
+			$lat = $attr['LAT'];
+			$lon = $attr['LON'];
+
+			if ($id > $offsetfactorrels)
+				$type = "relations";
+			else if ($id > $offset)
+				$type = "ways";
+			else
+				$type = "nodes";
+
+			if ($type == "relations")
+				$id = $id-$offsetfactorrels;
+			else if ($type == "ways")
+				$id = $id-$offset;
+		}
+	}
+
+	function endElement($parser, $name)
+	{
+		global $action, $tags, $id, $type, $lat, $lon, $connection;
+
+		if ($name == "NODE")
+		{
+			if ($action == 0)
+				$result = pg_query($connection, "INSERT INTO ".$type." (id, tags, geom) VALUES ('".$id."', '".str_replace("\"", "\\\"", $tags)."', GeometryFromText('POINT ( ".$lon." ".$lat." )', 4326 ))");
+			else if ($action == 2)
+				$result = pg_query($connection, "DELETE FROM ".$type." WHERE (id = '".$id."')");
+			else if ($action == 1)
+			{
+				$result = pg_query($connection, "DELETE FROM ".$type." WHERE (id = '".$id."')");
+				$result = pg_query($connection, "INSERT INTO ".$type." (id, tags, geom) VALUES ('".$id."', '".str_replace("\"", "\\\"", $tags)."', GeometryFromText('POINT ( ".$lon." ".$lat." )', 4326 ))");
+			}
+			if (!$result)
+				reportError("Failed to insert element: ".$type." with osm-id ".$id);
+			$tags = '';
+		}
 	}
 
 	updateOsmFile("olm.osc", "olm");
