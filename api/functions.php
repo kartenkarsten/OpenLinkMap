@@ -229,9 +229,9 @@
 		if (!$offset)
 			return 0;
 
-		if (!ctype_digit(substr($offset, 1)) && strlen($offset) > 2)
+		if (strlen($offset) > 3)
 		{
-			reportError("Given offset contains not-numeric characters: ".$offset);
+			reportError("Given offset is too long: ".$offset);
 			return 0;
 		}
 
