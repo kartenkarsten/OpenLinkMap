@@ -55,8 +55,6 @@
 		// generating message
 		$message = "An error happened in ".$appname.".at ".date("d.m.Y-H:i", time());
 		$message .= "\n\n".$error;
-		$message .= "\n\nUser: http://www.utrace.de/?query=".$ip;
-		$message .= "\nWith header: ".$header;
 
 		// sending error report by mail to given mail address
 		$sended = mail($mail, "Error Report ".$appname, $message);
@@ -158,8 +156,6 @@
 				$result = pg_query($connection, "DELETE FROM ".$type." WHERE (id = '".$id."')");
 				$result = pg_query($connection, "INSERT INTO ".$type." (id, tags, geom) VALUES ('".$id."', '".str_replace("\"", "\\\"", $tags)."', GeometryFromText('POINT ( ".$lon." ".$lat." )', 4326 ))");
 			}
-			if (!$result)
-				reportError("Failed to insert element: ".$type." with osm-id ".$id);
 			$tags = '';
 		}
 	}
