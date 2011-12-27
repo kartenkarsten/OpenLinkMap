@@ -598,9 +598,11 @@
 			$email = getMailDetail(array($response['email1'], $response['email2'], $response['email3']));
 
 			// get wikipedia link and make translation
-			$wikipedia = getWikipediaDetail($langs, $wikipediaresponse);
+			if ($wikipediaresponse)
+				$wikipedia = getWikipediaDetail($langs, $wikipediaresponse);
 
 			$openinghours = getOpeninghoursDetail($response['openinghours']);
+			$servicetimes = getOpeninghoursDetail($response['servicetimes']);
 
 			// printing popup details
 			if ($name)
@@ -675,7 +677,7 @@
 			}
 
 			// service times
-			if ($openinghours)
+			if ($servicetimes)
 			{
 				$output .= "<servicetimes state=\"";
 
