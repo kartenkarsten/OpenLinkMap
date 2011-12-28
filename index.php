@@ -79,6 +79,25 @@
 		<script type="text/javascript" src="js/fullscreen.js"></script>
 		<script type="text/javascript" src="js/panorama.js"></script>
 		<script type="text/javascript" src="js/functions.js"></script>
+		<!-- Piwik -->
+		<script type="text/javascript">
+			var pkBaseURL = (("https:" == document.location.protocol) ? "https://www.openlinkmap.org/piwik/" : "http://www.openlinkmap.org/piwik/");
+			document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+			try
+			{
+				var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
+				piwikTracker.trackPageView();
+				piwikTracker.enableLinkTracking();
+			}
+			catch( err )
+			{}
+		</script>
+		<noscript>
+			<p><img src="http://www.openlinkmap.org/piwik/piwik.php?idsite=1" style="border:0" alt="" /></p>
+		</noscript>
+		<!-- End Piwik Tracking Code -->
 	</head>
 	<body onload="createMap();">
 		<div id="fullscreen" class="fullscreenOut"></div>
