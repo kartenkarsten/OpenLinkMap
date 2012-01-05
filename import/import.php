@@ -145,7 +145,7 @@
 		{
 			$result = pg_query($connection, "INSERT INTO ".$type." (id, tags, geom) VALUES ('".$id."', '".str_replace("\"", "\\\"", $tags)."', GeometryFromText('POINT ( ".$lon." ".$lat." )', 4326 ))");
 			if (!$result)
-				reportError("Failed to insert element: http://www.openstreetmap.org/edit?editor=remote&".substr($type, 0, -1)."=".$id);
+				reportError("Failed to insert element: http://www.openstreetmap.org/edit?editor=remote&".substr($type, 0, -1).$id);
 			$tags = '';
 		}
 	}
