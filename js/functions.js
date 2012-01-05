@@ -14,7 +14,6 @@ function createMap()
 	// counter of clusterpopup's ids
 	cluster = 0;
 
-
 	// get time offset to utc
 	var now = new Date();
 	offset = -(now.getTimezoneOffset() / 60);
@@ -633,4 +632,47 @@ function getWikipediaImageUrl(url)
 	var url = url.replace("wikipedia/commons/thumb", "wikipedia/commons");
 
 	return url.substr(0, url.lastIndexOf("/"));
+}
+
+
+// reloads the page in a different language
+function changeLanguage(lang)
+{
+	var url = root+'?lang='+lang;
+	var position = map.getCenter().transform(map.getProjectionObject(), wgs84);
+
+	if (params['id'] != null)
+		url += '&id='+params['id'];
+
+	if (params['type'] != null)
+		url += '&type='+params['type'];
+
+	if (params['ext'] == true)
+		url += '&ext=1';
+
+	if (params['lat'] != null)
+		url += '&lat='+params['lat'];
+	else
+		url += '&lat='+position.lat;
+
+	if (params['lon'] != null)
+		url += '&lon='+params['lon'];
+	else
+		url += '&lon='+position.lon;
+
+	if (params['zoom'] != null)
+		url += '&zoom='+params['zoom'];
+	else
+		url += '&zoom='+map.getZoom();
+
+	if (params['offset'] != null)
+		url += '&offset='+params['offset'];
+
+	if (params['searchquery'] != "")
+		url += '&q='+params['searchquery'];
+
+	if (params['bounded'] == 1)
+		url += '&bounded='+params['bounded'];
+
+	window.location = url;
 }

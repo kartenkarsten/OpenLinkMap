@@ -1076,3 +1076,16 @@ noscript p
 {
 	cursor: pointer;
 }
+
+/* language selection box */
+#langSelector
+{
+	position: absolute;
+	left: 215px;
+	top: 2px;
+}
+
+#langSelection
+{
+	margin-bottom: -20px;
+}
