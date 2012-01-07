@@ -904,7 +904,7 @@
 			// remove spaces
 			$set = trim($set);
 
-			// only time interval, e.g. 10:00-20:00
+			// if the string contains only a time interval, e.g. 10:00-20:00
 			if (ctype_digit(str_replace("-", "", str_replace(":", "", str_replace(",", "", $set)))))
 			{
 				$timepart = $set;
