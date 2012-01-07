@@ -14,9 +14,14 @@ function createMap()
 	// counter of clusterpopup's ids
 	cluster = 0;
 
-	// get time offset to utc
-	var now = new Date();
-	offset = -(now.getTimezoneOffset() / 60);
+	if (params['offset'] != null)
+		offset = params['offset'];
+	else
+	{
+		// get time offset to utc
+		var now = new Date();
+		offset = -(now.getTimezoneOffset() / 60);
+	}
 
 	// translate strings
 	translateStrings();

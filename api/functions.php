@@ -878,12 +878,12 @@
 			return true;
 
 		// get actual timestamp of user's timezone
-		$actual = time()+$offset*3600;
-		$actday = (int)gmdate("w", $actual)-1;
+		$timestamp = time()+$offset*3600;
+		$actday = (int)gmdate("w", $timestamp)-1;
 		if ($actday == -1)
 			$actday = 6;
-		$actmonth = (int)"7".gmdate("n", $actual);
-		$acttime = (int)gmdate("Hi", $actual);
+		$actmonth = (int)"7".gmdate("n", $timestamp);
+		$acttime = (int)gmdate("Hi", $timestamp);
 
 		// serialising
 		$openinghours = strtolower($openinghours);
@@ -903,55 +903,88 @@
 		{
 			// remove spaces
 			$set = trim($set);
-			// split to get weekdays: Mo-Fr
-			$days = explode(" ", $set);
-			// time interval part: 10:00-12:00,16:00-18:00
-			$timepart = $days[1];
-			$dayvalues = explode(",", $days[0]);
 
-			foreach ($dayvalues as $dayvalue)
+			// only time interval, e.g. 10:00-20:00
+			if (ctype_digit(str_replace("-", "", str_replace(":", "", str_replace(",", "", $set)))))
 			{
-				// split to get day bounds: Mo  Fr
-				$daybounds = explode("-", $dayvalue);
+				$timepart = $set;
+				// check if any time bound matches now
+				if (inTimes($acttime, $timepart))
+					return true;
+			}
+			else
+			{
+				// split to get each part
+				$parts = explode(" ", $set);
 
-				// if only one time bound is given
-				if (!$daybounds[1] && (($daybounds[1] != 0) || ($daybounds[1] == "")))
-					$daybounds[1] = $daybounds[0];
-
-				// if today is in this time interval or every day is given (e.g. fr-th)
-				if
-				(
-					// e.g. Mo-Fr
-					( ((int)$daybounds[0] == 0) && ($actday >= (int)$daybounds[0]) && ($actday <= (int)$daybounds[1]) ) ||
-					// e.g. Tu-Fr
-					( ($actday >= (int)$daybounds[0]) && ($actday <= (int)$daybounds[1]) && ((int)$daybounds[0] < (int)$daybounds[1]) && ((int)$daybounds[0] != 0) && ((int)$daybounds[1] != 0) ) ||
-					// e.g. Th-Tu
-					( ((int)$daybounds[0] != 0) && ((int)$daybounds[1] != 0) && ((int)$daybounds[1] < (int)$daybounds[0]) && ($actday >= (int)$daybounds[0]) && ($actday <= 6) && ($actday >= 0) && ($actday <= (int)$daybounds[1]) ) ||
-					// e.g. Th-Mo
-					( ((int)$daybounds[1] == 0) && ($actday >= (int)$daybounds[0]) && ($actday <= 6) && ((int)$daybounds[0] != (int)$daybounds[1]) ) ||
-					// e.g. Su-Th
-					( ((int)$daybounds[0] != 0) && ((int)$daybounds[1] != 0) && ((int)$daybounds[1] < (int)$daybounds[0]) && ($actday <= (int)$daybounds[0]) && ($actday <= (int)$daybounds[1]) && ((int)$daybounds[0] == 6)) ||
-					// e.g. We
-					( ((int)$daybounds[0] == (int)$daybounds[1]) && ($actday == (int)$daybounds[0]) )
-				)
-				{
-					// then read hours and minutes
-					// split at commas for single time intervals: 10:00-12:00  16:00-18:00
-					$timeintervals = explode(",", $timepart);
-
-					foreach ($timeintervals as $timeinterval)
-					{
-						// split to get hour bounds: 10:00  12:00
-						$time = explode("-", $timeinterval);
-						//echo $time[0]."<br />";
-						if ($time[0] == "off")
-							return false;
-						if ((($acttime >= (int)str_replace(":", "", $time[0])) && ($acttime <= (int)str_replace(":", "", $time[1]))) || (($acttime >= (int)str_replace(":", "", $time[0])) && ((int)str_replace(":", "", $time[1]) <= (int)str_replace(":", "", $time[0]))))
-							return true;
-					}
-				}
+				// check if any day bound matches today
+				if (inDays($actday, $parts[0]))
+					// then check if any time bound matches now
+					if (inTimes($acttime, $parts[1]))
+						return true;
 			}
 		}
+		return false;
+	}
+
+
+	// returns true when timeinterval matches now
+	function inTimes($now, $timepart)
+	{
+		// split at commas for single time intervals: 10:00-12:00  16:00-18:00
+		$timeintervals = explode(",", $timepart);
+
+		foreach ($timeintervals as $timeinterval)
+		{
+			// split to get hour bounds: 10:00  12:00
+			$time = explode("-", $timeinterval);
+
+			if ($time[0] == "off")
+				return false;
+
+			if ((($now >= (int)str_replace(":", "", $time[0])) && ($now <= (int)str_replace(":", "", $time[1]))) || (($now >= (int)str_replace(":", "", $time[0])) && ((int)str_replace(":", "", $time[1]) <= (int)str_replace(":", "", $time[0]))))
+				return true;
+		}
+
+		return false;
+	}
+
+
+	// returns true when dayinterval matches today
+	function inDays($now, $daypart)
+	{
+		$dayvalues = explode(",", $daypart);
+
+		foreach ($dayvalues as $dayvalue)
+		{
+			// split to get day bounds: Mo  Fr
+			$daybounds = explode("-", $dayvalue);
+
+			// if only one time bound is given
+			if (!$onlyTime && !$daybounds[1] && (($daybounds[1] != 0) || ($daybounds[1] == "")))
+				$daybounds[1] = $daybounds[0];
+
+			// if today is in this time interval or every day is given (e.g. fr-th)
+			if
+			(
+				// e.g. Mo-Fr
+				( ((int)$daybounds[0] == 0) && ($now >= (int)$daybounds[0]) && ($now <= (int)$daybounds[1]) ) ||
+				// e.g. Tu-Fr
+				( ($now >= (int)$daybounds[0]) && ($now <= (int)$daybounds[1]) && ((int)$daybounds[0] < (int)$daybounds[1]) && ((int)$daybounds[0] != 0) && ((int)$daybounds[1] != 0) ) ||
+				// e.g. Th-Tu
+				( ((int)$daybounds[0] != 0) && ((int)$daybounds[1] != 0) && ((int)$daybounds[1] < (int)$daybounds[0]) && ($actday >= (int)$daybounds[0]) && ($now <= 6) && ($actday >= 0) && ($now <= (int)$daybounds[1]) ) ||
+				// e.g. Th-Mo
+				( ((int)$daybounds[1] == 0) && ($now >= (int)$daybounds[0]) && ($now <= 6) && ((int)$daybounds[0] != (int)$daybounds[1]) ) ||
+				// e.g. Su-Th
+				( ((int)$daybounds[0] != 0) && ((int)$daybounds[1] != 0) && ((int)$daybounds[1] < (int)$daybounds[0]) && ($now <= (int)$daybounds[0]) && ($now <= (int)$daybounds[1]) && ((int)$daybounds[0] == 6)) ||
+				// e.g. We
+				( ((int)$daybounds[0] == (int)$daybounds[1]) && ($now == (int)$daybounds[0]) ) ||
+				// only time interval, e.g. 10:00-20:00
+				( $onlyTime )
+			)
+				return true;
+		}
+
 		return false;
 	}
 
