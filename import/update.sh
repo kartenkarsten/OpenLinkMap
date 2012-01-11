@@ -57,11 +57,11 @@ echo ""
 # generate diffs, ~ 2 min
 echo "Generate diffs"
 echo ""
-osmconvert old-olm.osm olm.osm --diff-contents >olm.osc
+osmconvert old-olm.osm olm.osm --diff >olm.osc
 rm old-olm.osm
 mv olm.osm old-olm.osm
 
-osmconvert old-nextobjects.osm nextobjects.osm --diff-contents >nextobjects.osc
+osmconvert old-nextobjects.osm nextobjects.osm --diff >nextobjects.osc
 rm old-nextobjects.osm
 mv nextobjects.osm old-nextobjects.osm
 echo ""
@@ -71,7 +71,7 @@ echo ""
 echo "Updating of database"
 echo ""
 php update.php
-#rm olm.osc
+rm olm.osc
 rm nextobjects.osc
 rm timestamp
 mv timestamp_tmp timestamp

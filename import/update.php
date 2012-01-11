@@ -106,11 +106,11 @@
 	{
 		global $action, $tags, $id, $lat, $lon, $type, $offset, $offsetfactorrels;
 
-		if ($name == "create")
+		if ($name == "CREATE")
 			$action = 0;
-		else if ($name == "modify")
+		else if ($name == "MODIFY")
 			$action = 1;
-		else if ($name == "delete")
+		else if ($name == "DELETE")
 			$action = 2;
 
 		if ($name == "TAG")
