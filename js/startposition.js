@@ -124,4 +124,7 @@ function Startposition(map, locateButton)
 	map.setCenter(map.getCenter());
 	// show zoom status without zooming in first
 	mapZoomed(null);
+
+	// start geolocating when loading the page
+	this.geolocate();
 }
