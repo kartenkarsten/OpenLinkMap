@@ -99,7 +99,7 @@ function Startposition(map, locateButton)
 			this.map.setCenter(getMapLatLon(params['lat'], params['lon']), params['zoom']);
 		}
 		else
-			this.setPosition();
+			this.geolocate();
 	}
 
 	// if position already set, create popup
@@ -124,7 +124,4 @@ function Startposition(map, locateButton)
 	map.setCenter(map.getCenter());
 	// show zoom status without zooming in first
 	mapZoomed(null);
-
-	// start geolocating when loading the page
-	this.geolocate();
 }
