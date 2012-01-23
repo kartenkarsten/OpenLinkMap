@@ -40,7 +40,13 @@ function createMap()
 	map.addControl(new OpenLayers.Control.Attribution());
 	map.addControl(new OpenLayers.Control.PanZoomBar());
 	map.addControl(new OpenLayers.Control.ScaleLine({geodesic:true, maxWidth:200, bottomOutUnits:"", bottomInUnits:""}));
-	map.addControl(new OpenLayers.Control.Navigation({dragPanOptions: {enableKinetic: true}}));
+	map.addControl(new OpenLayers.Control.Navigation(
+	{
+		dragPanOptions:
+		{
+			enableKinetic: true
+		}
+	}));
 
 	// adding map layers
 	var mapnikMap = new OpenLayers.Layer.OSM.Mapnik("Mapnik",

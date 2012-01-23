@@ -11,9 +11,8 @@
 
 	$format = $_GET['format'];
 
-
 	// request location for api
-	$position = getPositionByIp($_SERVER['REMOTE_ADDR']);
+	$position = geoip_record_by_name($_SERVER['REMOTE_ADDR']);
 
 	if ($position)
 	{
@@ -33,11 +32,10 @@
 		if ($position)
 		{
 			$output = xmlStart("geolocation");
-			$output .= "<position source=\"http://www.hostip.info/\">";
+			$output .= "<position source=\"GeoIP-Database\">";
 
-			$latlon = explode(",", $position);
-			$output .= "<lat>".$latlon[0]."</lat>";
-			$output .= "<lon>".$latlon[1]."</lon>";
+			$output .= "<lat>".$position['latitude']."</lat>";
+			$output .= "<lon>".$position['longitude']."</lon>";
 
 			$output .= "</position>";
 			$output .= "</geolocation>";
@@ -56,11 +54,8 @@
 		if ($position)
 		{
 			header("Content-Type: text/plain; charset=UTF-8");
-			$output =  $position;
-
-			return $output;
+			return $position['latitude'].",".$position['longitude'];
 		}
-
 		else
 			return false;
 	}

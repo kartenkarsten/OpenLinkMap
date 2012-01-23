@@ -38,12 +38,15 @@ function Startposition(map, locateButton)
 				if ((response.length > 0) && (response != "NULL"))
 				{
 					response = response.split(",");
-					self.map.setCenter(getMapLatLon(response[1], response[0]), 10);
+					self.map.setCenter(getMapLatLon(response[0], response[1]), 10);
 					self.geolocate();
 					return true;
 				}
 				else
+				{
+					self.geolocate();
 					return false;
+				}
 			}
 
 		requestApi("ippos", "", handler);
@@ -99,7 +102,7 @@ function Startposition(map, locateButton)
 			this.map.setCenter(getMapLatLon(params['lat'], params['lon']), params['zoom']);
 		}
 		else
-			this.geolocate();
+			this.setPosition();
 	}
 
 	// if position already set, create popup
@@ -117,7 +120,7 @@ function Startposition(map, locateButton)
 	var self = this;
 	this.locateButton.onclick = function()
 		{
-			self.geolocate();
+			self.setPosition();
 		};
 
 	// load markers without moving the map first
