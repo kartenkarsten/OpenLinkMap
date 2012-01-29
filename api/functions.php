@@ -383,10 +383,14 @@
 		if (!$url)
 			return false;
 
-		$url = str_replace("wikipedia/commons", "wikipedia/commons/thumb", $url);
-		$filename = explode("/", $url);
-
-		return $url."/280px-".$filename[count($filename)-1];
+		if (substr($url, 0, 29) == "http://commons.wikimedia.org/")
+			return $url."?width=280px";
+		else
+		{
+			$url = str_replace("wikipedia/commons", "wikipedia/commons/thumb", $url);
+			$filename = explode("/", $url);
+			return $url."/280px-".$filename[count($filename)-1];
+		}
 	}
 
 
@@ -804,7 +808,7 @@
 				{
 					if ($caption['keys'] == "name")
 					{
-						$namelang = false;
+						$namelang = "name";
 						$name = $caption['values'];
 						break;
 					}
@@ -1094,5 +1098,15 @@
 			return true;
 
 		return false;
+	}
+
+
+	// returns image url if only url to image website is given
+	function getImageUrl($url)
+	{
+		if (substr($url, 0, 39) == "http://commons.wikimedia.org/wiki/File:")
+			return "http://commons.wikimedia.org/wiki/special:filepath/".substr($url, 39);
+		else
+			return $url;
 	}
 ?>
