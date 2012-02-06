@@ -62,7 +62,8 @@
 				tags->'contact:email' AS \"email2\",
 				tags->'addr:email' AS \"email3\",
 				tags->'opening_hours' AS \"openinghours\",
-				tags->'service_times' AS \"servicetimes\"
+				tags->'service_times' AS \"servicetimes\",
+				tags->'image' AS \"image\"
 			FROM ".$type."s WHERE (id = ".$id.");";
 
 		$wikipediarequest = "SELECT
@@ -151,6 +152,9 @@
 			$servicetimes = getOpeninghoursDetail($response['servicetimes']);
 
 			// printing popup details
+
+			$output .= "<table><tr><td>\n";
+
 			if ($name)
 			{
 				$output .= "<div class=\"container hcard vcard\"><div class=\"header\">\n";
@@ -237,6 +241,23 @@
 				$output .= "</div>\n";
 			}
 
+			$output .= "</td><td>\n";
+
+			// image, only images from wikimedia are supported
+			if (substr($response['image'], 15, 14) == "wikimedia.org/")
+			{
+				$url = getImageUrl($response['image']);
+				$attribution = explode("/", $url);
+				$output .= "<img id=\"mage\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></a><br />\n";
+			}
+			elseif (getWikipediaImage($wikipedia[1]))
+			{
+				$image = getWikipediaImage($wikipedia[1]);
+
+				$output .= "<img id=\"image\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($image)."\" /></a><br />\n";
+			}
+
+			$output .= "</td></tr></table>\n";
 			$output .= "</div>\n";
 
 			return $output;
@@ -360,6 +381,23 @@
 					$output .= "closed";
 
 				$output .= "\">".$response['servicetimes']."</servicetimes>\n";
+			}
+
+			// image, only images from wikimedia are supported
+			if (substr($response['image'], 15, 14) == "wikimedia.org/")
+			{
+				$url = getImageUrl($response['image']);
+				$output .= "<image>";
+ 					$output .= $url;
+				$output .= "</image>\n";
+			}
+			elseif (getWikipediaImage($wikipedia[1]))
+			{
+				$image = getWikipediaImage($wikipedia[1]);
+
+				$output .= "<image>";
+					$output .= $image;
+				$output .= "</image>\n";
 			}
 
 			$output .= "</details>";

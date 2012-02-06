@@ -189,6 +189,7 @@ function createMap()
 
 	// adding fullscreen feature
 	fullscreen = new Fullscreen("fullscreen", "moreImage");
+	popupFullscreen = new Fullscreen("fullscreen", "image");
 
 	// adding panorama feature
 	//panorama = new Panorama("fullscreen", "morePanorama");
@@ -390,6 +391,7 @@ function showPopup(feature)
 					item.popup.setContentHTML(editPopupContent(content, item.popup.position.lat, item.popup.position.lon, item.attributes['type'], item.attributes['id']));
 					map.removePopup(item.popup);
 					map.addPopup(item.popup);
+					popupFullscreen.init();
 				}
 				else
 					map.removePopup(item.popup);

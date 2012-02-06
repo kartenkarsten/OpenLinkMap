@@ -40,7 +40,8 @@ function Fullscreen(frame, image)
 	{
 		if (this.image)
 		{
-			this.url = getWikipediaImageUrl(gEBI(this.image).src);
+			if (!url)
+				this.url = getWikipediaImageUrl(gEBI(this.image).src);
 
 			var self = this;
 			gEBI(this.image).onclick = function()
