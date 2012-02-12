@@ -244,11 +244,11 @@
 			$output .= "</td><td>\n";
 
 			// image, only images from wikimedia are supported
-			if (substr($response['image'], 15, 14) == "wikimedia.org/")
+			if (substr($response['image'], 14, 14) == "wikimedia.org/")
 			{
 				$url = getImageUrl($response['image']);
 				$attribution = explode("/", $url);
-				$output .= "<img id=\"mage\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></a><br />\n";
+				$output .= "<img id=\"image\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></a><br />\n";
 			}
 			elseif (getWikipediaImage($wikipedia[1]))
 			{
@@ -384,7 +384,7 @@
 			}
 
 			// image, only images from wikimedia are supported
-			if (substr($response['image'], 15, 14) == "wikimedia.org/")
+			if (substr($response['image'], 14, 14) == "wikimedia.org/")
 			{
 				$url = getImageUrl($response['image']);
 				$output .= "<image>";

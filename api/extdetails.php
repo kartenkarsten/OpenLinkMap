@@ -527,7 +527,7 @@
 			}
 
 			// image box, only images from wikimedia are supported
-			if (substr($response['image'], 15, 14) == "wikimedia.org/")
+			if (substr($response['image'], 14, 14) == "wikimedia.org/")
 			{
 				$url = getImageUrl($response['image']);
 				$attribution = explode("/", $url);
@@ -847,7 +847,7 @@
 			}
 
 			// image, only images from wikimedia are supported
-			if (substr($response['image'], 15, 14) == "wikimedia.org/")
+			if (substr($response['image'], 14, 14) == "wikimedia.org/")
 			{
 				$url = getImageUrl($response['image']);
 				$output .= "<image>";
