@@ -241,7 +241,7 @@
 				$output .= "</div>\n";
 			}
 
-			$output .= "</td><td>\n";
+			$output .= "</td><td style=\"min-width:50px\">\n";
 
 			// image, only images from wikimedia are supported
 			if (substr($response['image'], 14, 14) == "wikimedia.org/")
