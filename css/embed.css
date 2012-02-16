@@ -57,12 +57,6 @@ noscript p
 }
 
 /* style of texts in popups */
-.container
-{
-	position: relative;
-	top: -20px;
-}
-
 .header
 {
 	font-size: 16px;

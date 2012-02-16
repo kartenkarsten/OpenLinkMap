@@ -158,13 +158,13 @@
 			{
 				$url = getImageUrl($response['image']);
 				$attribution = explode("/", $url);
-				$output .= "<img id=\"image\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></a><br />\n";
+				$output .= "<img id=\"image\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></a>\n";
 			}
 			elseif (getWikipediaImage($wikipedia[1]))
 			{
 				$image = getWikipediaImage($wikipedia[1]);
 
-				$output .= "<img id=\"image\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($image)."\" /></a><br />\n";
+				$output .= "<img id=\"image\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($image)."\" /></a>\n";
 			}
 
 			if ($name)
