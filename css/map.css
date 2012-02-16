@@ -113,6 +113,12 @@ noscript p
 }
 
 /* style of texts in popups */
+.container
+{
+	position: relative;
+	top: -20px;
+}
+
 .header
 {
 	font-size: 16px;
@@ -199,9 +205,9 @@ noscript p
 	background-image: url(../img/loading.gif);
 	background-repeat: no-repeat;
 	background-position: center;
-	position: absolute;
-	top: 8px;
-	right: 5px;
+	float: right;
+	margin-left: 10px;
+	margin-bottom: 10px;
 }
 
 #image:hover

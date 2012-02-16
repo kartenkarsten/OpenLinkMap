@@ -153,7 +153,19 @@
 
 			// printing popup details
 
-			$output .= "<table><tr><td>\n";
+			// image, only images from wikimedia are supported
+			if (substr($response['image'], 14, 14) == "wikimedia.org/")
+			{
+				$url = getImageUrl($response['image']);
+				$attribution = explode("/", $url);
+				$output .= "<img id=\"image\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></a><br />\n";
+			}
+			elseif (getWikipediaImage($wikipedia[1]))
+			{
+				$image = getWikipediaImage($wikipedia[1]);
+
+				$output .= "<img id=\"image\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($image)."\" /></a><br />\n";
+			}
 
 			if ($name)
 			{
@@ -241,23 +253,6 @@
 				$output .= "</div>\n";
 			}
 
-			$output .= "</td><td style=\"min-width:50px\">\n";
-
-			// image, only images from wikimedia are supported
-			if (substr($response['image'], 14, 14) == "wikimedia.org/")
-			{
-				$url = getImageUrl($response['image']);
-				$attribution = explode("/", $url);
-				$output .= "<img id=\"image\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></a><br />\n";
-			}
-			elseif (getWikipediaImage($wikipedia[1]))
-			{
-				$image = getWikipediaImage($wikipedia[1]);
-
-				$output .= "<img id=\"image\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($image)."\" /></a><br />\n";
-			}
-
-			$output .= "</td></tr></table>\n";
 			$output .= "</div>\n";
 
 			return $output;
