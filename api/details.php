@@ -154,7 +154,7 @@
 			// printing popup details
 
 			// image, only images from wikimedia are supported
-			if (substr($response['image'], 14, 14) == "wikimedia.org/")
+			if (substr($response['image'], 0, 29) == "http://commons.wikimedia.org/" || substr($response['image'], 0, 28) == "http://upload.wikimedia.org/")
 			{
 				$url = getImageUrl($response['image']);
 				$attribution = explode("/", $url);

@@ -546,8 +546,9 @@ function editPopupContent(content, lat, lon, type, id)
 	var lon = position.lon;
 
 	// add some links to the bottom of a popup
+	content = '<table><tr><td>'+content+'</td></tr><tr><td>';
 	content +=
-		'</div><br /><small id="popupLinks">'+
+		'<br /><small id="popupLinks">'+
 		'<b><a id="moreInfoLink" href="javascript:showMoreInfo('+id+',\''+type+'\', '+lat+', '+lon+')">'+translations['more']+' >></a></b>'+
 		'&nbsp;&nbsp;<a id="permalink" href="'+root+'?'+queryLatLonZoom(lat, lon, map.getZoom())+'&id='+id+'&type='+type;
 	// save language in permalink
@@ -557,7 +558,7 @@ function editPopupContent(content, lat, lon, type, id)
 		'&nbsp;&nbsp;<a href="http://www.openstreetmap.org/edit?'+queryLatLonZoom(lat, lon, map.getZoom())+'&'+type+'='+id+'&editor=potlatch2" target="_blank">Potlatch</a>'+
 		'&nbsp;&nbsp;<a href="http://localhost:8111/load_and_zoom?left='+l+'&right='+r+'&top='+t+'&bottom='+b+'&select='+type+id+'" target="josm" onclick="return josm(this.href)">JOSM</a>'+
 		'&nbsp;&nbsp;<a href="http://www.openstreetmap.org/browse/'+type+'/'+id+'" target="_blank">'+translations['details']+'</a>'+
-		'&nbsp;&nbsp;<a href="javascript:getEmbedLink('+id+',\''+type+'\')">'+translations['embed']+'</a></small>';
+		'&nbsp;&nbsp;<a href="javascript:getEmbedLink('+id+',\''+type+'\')">'+translations['embed']+'</a></small></td></tr></table>';
 	return content;
 }
 
