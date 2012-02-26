@@ -522,6 +522,7 @@ function createPopup(id, type, lat, lon)
 				popup.setContentHTML(editPopupContent(content, popup.lonlat.lat, popup.lonlat.lon, type, id));
 				map.removePopup(popup);
 				map.addPopup(popup);
+				popupFullscreen.init();
 			}
 			else
 				map.removePopup(popup);
@@ -641,9 +642,15 @@ function getWikipediaImageUrl(url)
 	if (!url)
 		return false;
 
-	var url = url.replace("wikipedia/commons/thumb", "wikipedia/commons");
-
-	return url.substr(0, url.lastIndexOf("/"));
+	if (url.substr(0, 29) == "http://commons.wikimedia.org/")
+		return url.substr(0, url.lastIndexOf("?"));
+	else if ((url.substr(0, 38) == "http://upload.wikimedia.org/wikipedia/") && (url.substr(38, 7) != "commons"))
+		return url;
+	else
+	{
+		var url = url.replace("wikipedia/commons/thumb", "wikipedia/commons");
+		return url.substr(0, url.lastIndexOf("/"));
+	}
 }
 
 

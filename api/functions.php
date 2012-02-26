@@ -385,6 +385,8 @@
 
 		if (substr($url, 0, 29) == "http://commons.wikimedia.org/")
 			return $url."?width=280px";
+		else if ((substr($url, 0, 38) == "http://upload.wikimedia.org/wikipedia/") && (substr($url, 38, 7) != "commons"))
+			return $url;
 		else
 		{
 			$url = str_replace("wikipedia/commons", "wikipedia/commons/thumb", $url);
@@ -1106,6 +1108,8 @@
 	{
 		if (substr($url, 0, 39) == "http://commons.wikimedia.org/wiki/File:")
 			return "http://commons.wikimedia.org/wiki/special:filepath/".substr($url, 39);
+		else if (substr($url, 0, 40) == "http://commons.wikimedia.org/wiki/Image:")
+			return "http://commons.wikimedia.org/wiki/special:filepath/".substr($url, 40);
 		else
 			return $url;
 	}
