@@ -57,11 +57,6 @@ function createMap()
 		transitionEffect: 'resize',
 		attribution: translations['embedattribution']
 	});
-	var osmarenderMap = new OpenLayers.Layer.OSM.Osmarender("Osmarender",
-	{
-		transitionEffect: 'resize',
-		attribution: translations['embedattribution']
-	});
 
 	// adding hillshading map
 	var hillMap = new OpenLayers.Layer.XYZ(translations['hillshading'], "http://toolserver.org/~cmarqu/hill/${z}/${x}/${y}.png",
@@ -137,7 +132,7 @@ function createMap()
 	});
 
 	// adding layers to map
-	map.addLayers([mapnikMap, osmarenderMap, hillMap, objectsLayer]);
+	map.addLayers([mapnikMap, hillMap, objectsLayer]);
 
 	// adding control features (clicking on markers) to overlays
 	eventHandlerClick = new OpenLayers.Control.SelectFeature(objectsLayer,
