@@ -428,7 +428,7 @@
 			{
 				foreach ($response as $element)
 				{
-					$list .= $element['st_x']."|".$element['st_y']."|".$element['id']."|".$type."<br/>";
+					$list .= $element['st_x']."|".$element['st_y']."|".$element['id']."|".$type."\n";
 				}
 			}
 
