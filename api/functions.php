@@ -422,18 +422,14 @@
 			$response = requestDetails("SELECT ST_X(geom), ST_Y(geom), id
 											FROM ".$type."s
 											WHERE geom && ST_SetSRID(ST_MakeBox2D(ST_Point(".$bbox[0].",".$bbox[1]."), ST_Point(".$bbox[2].",".$bbox[3].")), 4326);", $connection);
-
 			// putting out the results
 			if ($response)
 			{
+				$list = array();
 				foreach ($response as $element)
-				{
-					$list .= $element['st_x']."|".$element['st_y']."|".$element['id']."|".$type."\n";
-				}
+					array_push($list, array($element['st_x'], $element['st_y'], $element['id'], $type));
 			}
-
 		}
-
 		return $list;
 	}
 

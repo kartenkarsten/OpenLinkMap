@@ -16,6 +16,7 @@
 	$type = $_GET['type'];
 	// offset of user's timezone to UTC
 	$offset = offset($_GET['offset']);
+	$callback = $_GET['callback'];
 
 	date_default_timezone_set('UTC');
 
@@ -39,6 +40,7 @@
 	function getDetails($db, $id, $type, $langs, $offset)
 	{
 		global $format;
+		global $callback;
 
 		// request
 		$request = "SELECT
@@ -158,6 +160,8 @@
 		{
 			if ($format == "text")
 				echo textMoredetailsOut($response[0], $nameresponse, $wikipediaresponse, $langs, $offset);
+			else if ($format == "json")
+				echo jsonMoredetailsOut($response[0], $nameresponse, $wikipediaresponse, $langs, $offset, $id, $type, $callback);
 			else
 				echo xmlMoredetailsOut($response[0], $nameresponse, $wikipediaresponse, $langs, $offset, $id, $type);
 
@@ -796,7 +800,7 @@
 			// wheelchair
 			if ($response['wheelchair'] || $response['wheelchair:toilets'] || $response['wheelchair:rooms'] || $response['wheelchair:access'] || $response['wheelchair:places'])
 			{
-				$output .= "</table>\n";
+				$output .= "<accessibility>\n";
 
 				if ($response['wheelchair'])
 					$output .= "<wheelchair>".$response['wheelchair']."</wheelchair>\n";
@@ -854,7 +858,7 @@
  					$output .= $url;
 				$output .= "</image>\n";
 			}
-			elseif (getWikipediaImage($wikipedia[1]))
+			else if (getWikipediaImage($wikipedia[1]))
 			{
 				$image = getWikipediaImage($wikipedia[1]);
 
@@ -866,6 +870,264 @@
 			$output .= "</moredetails>";
 
 			return $output;
+		}
+
+		else
+			return false;
+	}
+
+
+	// output of details data in json format
+	function jsonMoreDetailsOut($response, $nameresponse, $wikipediaresponse, $langs = "en", $offset = 0, $id, $type, $callback)
+	{
+		if ($response)
+		{
+			$name = getNameDetail($langs, $nameresponse);
+
+			$phone = getPhoneFaxDetail(array($response['phone1'], $response['phone2'], $response['phone3']));
+			$phone = $phone[1];
+
+			$fax = getPhoneFaxDetail(array($response['fax1'], $response['fax2'], $response['fax3']));
+			$fax = $fax[1];
+
+			$mobilephone = getPhoneFaxDetail(array($response['mobilephone1'], $response['mobilephone2']));
+			$mobilephone = $mobilephone[1];
+
+			$website = getWebsiteDetail(array($response['website1'], $response['website2'], $response['website3'], $response['website4']));
+
+			$email = getMailDetail(array($response['email1'], $response['email2'], $response['email3']));
+
+			// get wikipedia link and make translation
+			if ($wikipediaresponse)
+				$wikipedia = getWikipediaDetail($langs, $wikipediaresponse);
+
+			$openinghours = getOpeninghoursDetail($response['openinghours']);
+			$servicetimes = getOpeninghoursDetail($response['servicetimes']);
+
+			$data = array(
+				'id' => (int)$id,
+				'type' => $type,
+			);
+
+			// name
+			if ($name)
+			{
+				if ($name[0])
+					$data['name'] = array('lang' => $name[1], 'name' => $name[0]);
+				else
+					$data['name'] = $name[0];
+			}
+
+			 if ($response['description'])
+				$data['description'] = $response['description'];
+
+			// address information
+			if ($response['street'])
+				$data['street'] = $response['street'];
+			if ($response['housenumber'])
+				$data['housenumber'] = $response['housenumber'];
+			if ($response['country'])
+				$data['country'] = strtoupper($response['country']);
+			if ($response['postcode'])
+				$data['postcode'] = $response['postcode'];
+			if ($response['city'])
+				$data['city'] = $response['city'];
+
+			// contact information
+			if ($phone)
+				$data['phone'] = $phone;
+			if ($fax)
+				$data['fax'] = $fax;
+			if ($mobilephone)
+				$data['mobilephone'] = $mobilephone;
+			if ($email)
+				$data['email'] = $email;
+
+			// website link
+			if ($website[0])
+				$data['website'] = $website[0];
+
+			// operator
+			if ($response['operator'])
+				$data['operator'] = $response['operator'];
+
+			// opening hours
+			if ($openinghours)
+			{
+				if (isPoiOpen($response['openinghours'], $offset))
+					$state .= "open";
+				else if (isInHoliday($response['openinghours'], $offset))
+					$state .= "maybeopen";
+				else
+					$state .= "closed";
+
+				$data['openinghours'] = array('state' => $state, 'openinghours' => $response['openinghours']);
+			}
+
+			// service times
+			if ($servicetimes)
+			{
+				if (isPoiOpen($response['servicetimes'], $offset))
+					$state .= "open";
+				else if (isInHoliday($response['servicetimes'], $offset))
+					$state .= "maybeopen";
+				else
+					$state .= "closed";
+
+				$data['servicetimes'] = array('state' => $state, 'servicetimes' => $response['servicetimes']);
+			}
+
+			// fuel details
+			if ($response['carwash'] || $response['carrepair'] || $response['kiosk'] || ($response['diesel'] == "yes") || ($response['gtldiesel'] == "yes") || ($response['hgvdiesel'] == "yes") || ($response['biodiesel'] == "yes") || ($response['octane91'] == "yes") || ($response['octane95'] == "yes") || ($response['octane98'] == "yes") || ($response['octane100'] == "yes") || ($response['octane98l'] == "yes") || ($response['fuel25'] == "yes") || ($response['fuel50'] == "yes") || ($response['alcohol'] == "yes") || ($response['ethanol'] == "yes") || ($response['methanol'] == "yes") || ($response['svo'] == "yes") || ($response['e85'] == "yes") || ($response['biogas'] == "yes") || ($response['lpg'] == "yes") || ($response['cng'] == "yes") || ($response['lh2'] == "yes") || ($response['electro'] == "yes") || ($response['adblue'] == "yes"))
+			{
+				$data['fuel'] = array();
+				// fuel sorts
+				if ($response['diesel'] == "yes")
+					array_push($data['fuel'], "diesel");
+				if ($response['gtldiesel'] == "yes")
+					array_push($data['fuel'], "gtldiesel");
+				if ($response['hgvdiesel'] == "yes")
+					array_push($data['fuel'], "hgvdiesel");
+				if ($response['biodiesel'] == "yes")
+					array_push($data['fuel'], "biodiesel");
+				if ($response['octane91'] == "yes")
+					array_push($data['fuel'], "octane91");
+				if ($response['octane95'] == "yes")
+					array_push($data['fuel'], "octane95");
+				if ($response['octane98'] == "yes")
+					array_push($data['fuel'], "octane98");
+				if ($response['octane100'] == "yes")
+					array_push($data['fuel'], "octane100");
+				if ($response['octane98l'] == "yes")
+					array_push($data['fuel'], "octane98l");
+				if ($response['fuel25'] == "yes")
+					array_push($data['fuel'], "1:25");
+				if ($response['fuel50'] == "yes")
+					array_push($data['fuel'], "1:50");
+				if ($response['alcohol'] == "yes")
+					array_push($data['fuel'], "alcohol");
+				if ($response['ethanol'] == "yes")
+					array_push($data['fuel'], "ethanol");
+				if ($response['methanol'] == "yes")
+					array_push($data['fuel'], "methanol");
+				if ($response['svo'] == "yes")
+					array_push($data['fuel'], "svo");
+				if ($response['e10'] == "yes")
+					array_push($data['fuel'], "e10");
+				if ($response['e85'] == "yes")
+					array_push($data['fuel'], "e85");
+				if ($response['biogas'] == "yes")
+					array_push($data['fuel'], "biogas");
+				if ($response['lpg'] == "yes")
+					array_push($data['fuel'], "lpg");
+				if ($response['cng'] == "yes")
+					array_push($data['fuel'], "cng");
+				if ($response['lh2'] == "yes")
+					array_push($data['fuel'], "lh2");
+				if ($response['electro'] == "yes")
+					array_push($data['fuel'], "electricity");
+				if ($response['adblue'] == "yes")
+					array_push($data['fuel'], "adblue");
+				// other properties of fuel station
+				if ($response['carwash'] == "yes")
+					array_push($data['fuel'], "carwash");
+				if ($response['carrepair'] == "yes")
+					array_push($data['fuel'], "carrepair");
+				if ($response['shop'] == "kiosk" || $response['kiosk'] == "yes")
+					array_push($data['fuel'], "kiosk");
+			}
+
+			// gastro
+			if ($response['cuisine'] || $response['stars'] || $response['smoking'] || $response['microbrewery'] || $response['beer'])
+			{
+				// cuisine
+				if ($response['cuisine'])
+					$data['cuisine'] = str_replace(";", ",", $response['cuisine']);
+				// stars
+				if ($response['stars'])
+					$data['stars'] = $response['stars'];
+				// smoking
+				if ($response['smoking'])
+					$data['smoking'] = $response['smoking'];
+				// beer sorts
+				if ($response['beer'])
+					$data['beer'] = str_replace(";", ",", $response['beer']);
+				// microbrewery
+				if ($response['microbrewery'] == "yes")
+					$data['microbrewery'] = "yes";
+				// biergarten
+				if (($response['biergarten'] == "yes") || ($response['beer_garden'] == "yes"))
+					$data['biergarten'] = "yes";
+			}
+
+			// geographic
+			if ($response['ele'] || $response['population'] || $response['iata'] || $response['icao'])
+			{
+				if ($response['ele'])
+					$data['ele'] = $response['ele'];
+				if ($response['population'])
+					$data['population'] = $response['population'];
+				if ($response['iata'])
+					$data['iata'] = $response['iata'];
+				if ($response['icao'])
+					$data['icao'] = $response['icao'];
+			}
+
+			// wheelchair
+			if ($response['wheelchair'] || $response['wheelchair:toilets'] || $response['wheelchair:rooms'] || $response['wheelchair:access'] || $response['wheelchair:places'])
+			{
+				if ($response['wheelchair'])
+					$data['wheelchair'] = $response['wheelchair'];
+				if ($response['wheelchair:toilets'])
+					$data['wheelchair:toilets'] = $response['wheelchair:toilets'];
+				if ($response['wheelchair:rooms'])
+					$data['wheelchair:rooms'] = $response['wheelchair:rooms'];
+				if ($response['wheelchair:access'])
+					$data['wheelchair:access'] = $response['wheelchair:access'];
+				if ($response['wheelchair:places'])
+					$data['wheelchair:places'] = $response['wheelchair:places'];
+			}
+
+			// fee
+			if ($response['fee'])
+				$data['fee'] = $response['fee'];
+
+			// capacity
+			if ($response['capacity'])
+				$data['capacity'] = $response['capacity'];
+
+			// ref
+			if ($response['ref'])
+				$data['ref'] = $response['ref'];
+
+			// internet access
+			if ($response['internet_access'])
+				$data['internet_access'] = $response['internet_access'];
+
+			// toll
+			if ($response['toll'] == "yes")
+				$data['toll'] = "yes";
+
+			// disused
+			if ($response['disused'] == "yes")
+				$data['disused'] = "yes";
+
+			// wikipedia
+			if ($wikipedia)
+				$data['wikipedia'] = array('url' => $wikipedia[1], 'text' => getWikipediaBeginning($wikipedia[1]));
+
+			// image, only images from wikimedia are supported
+			if (substr($response['image'], 14, 14) == "wikimedia.org/")
+				$data['image'] = getImageUrl($response['image']);
+			else if (getWikipediaImage($wikipedia[1]))
+				$data['image'] = getWikipediaImage($wikipedia[1]);
+
+			$jsonData = json_encode($data);
+			// JSONP request?
+			if (isset($callback))
+				return $callback.'('.$jsonData.')';
+			else
+				return $jsonData;
 		}
 
 		else

@@ -10,6 +10,8 @@
 	require_once("functions.php");
 
 	$bbox = $_GET['bbox'];
+	$callback = $_GET['callback'];
+	$format = $_GET['format'];
 
 
 	// correct bbox
@@ -25,8 +27,22 @@
 
 	if ($list)
 	{
-		header("Content-Type: text/html; charset=UTF-8");
-		echo $list;
+		header("Content-Type: text/plain; charset=UTF-8");
+		if ($format == "json")
+		{
+			$data = array();
+			foreach ($list as $line)
+				array_push($data, $line);
+			$jsonData = json_encode($data);
+			// JSONP request?
+			if (isset($callback))
+				echo $callback.'('.$jsonData.')';
+			else
+				echo $jsonData;
+		}
+		else
+			foreach ($list as $line)
+				echo $line[0]."|".$line[1]."|".$line[2]."|".$line[3]."\n";
 	}
 	else
 		echo "NULL";

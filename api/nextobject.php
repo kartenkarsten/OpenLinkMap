@@ -16,6 +16,7 @@
 	$type = $_GET['type'];
 	$lat = $_GET['lat'];
 	$lon = $_GET['lon'];
+	$callback = $_GET['callback'];
 
 	date_default_timezone_set('UTC');
 
@@ -72,9 +73,23 @@
 				echo xmlNextobjectOut($data, $type, $lat, $lon);
 			echo "</nextobjects>\n";
 		}
+		else if ($format == "json")
+		{
+			header("Content-Type: text/plain; charset=UTF-8");
+
+			$list = array();
+			foreach ($next as $type => $data)
+				$list[$type] = jsonNextobjectOut($data, $type, $lat, $lon);
+			$jsonData = json_encode($list);
+
+			// JSONP request?
+			if (isset($callback))
+				echo $callback.'('.$jsonData.')';
+			else
+				echo $jsonData;
+		}
 		else
 		{
-			// setting header
 			header("Content-Type: text/html; charset=UTF-8");
 			echo "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">";
 
@@ -93,6 +108,7 @@
 		echo "NULL";
 
 
+	// returns the nextobjects as HTML
 	function textNextobjectOut($near, $caption, $lat, $lon)
 	{
 		global $translations;
@@ -114,6 +130,7 @@
 	}
 
 
+	// returns the nextobjects as XML
 	function xmlNextobjectOut($near, $caption, $lat, $lon)
 	{
 		if ($near)
@@ -139,5 +156,31 @@
 		}
 
 		return $output;
+	}
+
+
+	// returns the nextobjects as JSON
+	function jsonNextobjectOut($near, $caption, $lat, $lon)
+	{
+		if ($near)
+		{
+			$list = array();
+
+			foreach ($near as $entry)
+			{
+				if (!$entry[2])
+					$entry[2] = "null";
+				array_push($list, array(
+						'id' => (int)$entry[4],
+						'lat' => floatval($entry[1]),
+						'lon' => floatval($entry[0]),
+						'name' => $entry[2],
+						'distance' => floatval($entry[3])
+					)
+				);
+			}
+			return $list;
+		}
+		return false;
 	}
 ?>
