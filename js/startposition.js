@@ -1,15 +1,15 @@
 /*
-OpenLinkMap Copyright (C) 2010 Alexander Matheisen
-This program comes with ABSOLUTELY NO WARRANTY.
-This is free software, and you are welcome to redistribute it under certain conditions.
-See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
-*/
+ O *penLinkMap Copyright (C) 2010 Alexander Matheisen
+ This program comes with ABSOLUTELY NO WARRANTY.
+ This is free software, and you are welcome to redistribute it under certain conditions.
+ See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
+ */
 
 
 // set start position by given coordinate or, if possible, by geolocation api
 function Startposition(map, locateButton)
 {
-    // called when geolocation api caused an errors
+	// called when geolocation api caused an errors
 	this.geolocationError = function(error)
 	{
 		return true;
@@ -32,22 +32,22 @@ function Startposition(map, locateButton)
 	{
 		var self = this;
 		var handler = function(request)
+		{
+			var response = request.responseText;
+			// extract coordinates and show position
+			if ((response.length > 0) && (response != "NULL"))
 			{
-				var response = request.responseText;
-				// extract coordinates and show position
-				if ((response.length > 0) && (response != "NULL"))
-				{
-					response = response.split(",");
-					self.map.setCenter(getMapLatLon(response[0], response[1]), 10);
-					self.geolocate();
-					return true;
-				}
-				else
-				{
-					self.geolocate();
-					return false;
-				}
+				response = response.split(",");
+				self.map.setCenter(getMapLatLon(response[0], response[1]), 10);
+				self.geolocate();
+				return true;
 			}
+			else
+			{
+				self.geolocate();
+				return false;
+			}
+		}
 
 		requestApi("ippos", "", handler);
 	}
@@ -69,6 +69,9 @@ function Startposition(map, locateButton)
 				function(error)
 				{
 					self.geolocationError(error);
+				},
+				{
+					enableHighAccuracy: true
 				}
 			);
 		}
@@ -119,9 +122,9 @@ function Startposition(map, locateButton)
 	// onclick event of locate button
 	var self = this;
 	this.locateButton.onclick = function()
-		{
-			self.setPosition();
-		};
+	{
+		self.setPosition();
+	};
 
 	// load markers without moving the map first
 	map.setCenter(map.getCenter());
