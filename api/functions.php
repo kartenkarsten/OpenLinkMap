@@ -417,6 +417,7 @@
 		$types = array("node", "way", "relation");
 
 		// executing requests
+		$list = array();
 		foreach ($types as $type)
 		{
 			$response = requestDetails("SELECT ST_X(geom), ST_Y(geom), id
@@ -425,7 +426,6 @@
 			// putting out the results
 			if ($response)
 			{
-				$list = array();
 				foreach ($response as $element)
 					array_push($list, array($element['st_x'], $element['st_y'], $element['id'], $type));
 			}
