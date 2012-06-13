@@ -25,7 +25,7 @@ function Timestamp(box)
 	this.show = function(response)
 	{
 		if ((response.length > 0) && (response != "NULL"))
-			this.box.innerHTML = translations['update']+"<br />"+response;
+			this.box.innerHTML = translations['update']+"<br />"+response+"<br /><b style=\"font-size: 14px; color: red;\">Due to OpenStreetMap's license change, OpenLinkMap is currently not updated. Please be patient!</b>";
 	}
 
 
