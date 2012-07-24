@@ -229,7 +229,7 @@
 		if (!$offset)
 			return 0;
 
-		if (strlen($offset) > 3)
+		if (strlen($offset) > 4)
 		{
 			reportError("Given offset is too long: ".$offset);
 			return 0;
