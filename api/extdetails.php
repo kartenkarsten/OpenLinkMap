@@ -534,12 +534,19 @@
 			if (substr($response['image'], 0, 29) == "http://commons.wikimedia.org/" || substr($response['image'], 0, 28) == "http://upload.wikimedia.org/")
 			{
 				$url = getImageUrl($response['image']);
+
+				// creating url to Wikimedia Commons page of this image
 				$attribution = explode("/", $url);
+				if (substr($url, 34, 16) == "special:filepath")
+					$attribution = $attribution[5];
+				else
+					$attribution = $attribution[7];
+
 				$output .= "<div class=\"moreInfoBox\">\n";
 				$output .= "<table>\n";
 					$output .= "<tr><td><strong>".$translations['captions']['image']."</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i id=\"moreWikipediaFull\"><a target=\"_blank\" href=\"http://commons.wikimedia.org/w/index.php?title=Special%3ASearch&search=".$name[0]."\">".$translations['captions']['moreimages']."</a></i></td></tr>\n";
 					$output .= "<tr><td><img id=\"moreImage\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></a></td></tr>\n";
-					$output .= "<tr><td><a target=\"_blank\" href=\"http://commons.wikimedia.org/wiki/File:".$attribution[7]."\">".$translations['captions']['copyrightandbig']."</a></td></tr>\n";
+					$output .= "<tr><td><a target=\"_blank\" href=\"http://commons.wikimedia.org/wiki/File:".$attribution."\">".$translations['captions']['copyrightandbig']."</a></td></tr>\n";
 				$output .= "</table>\n";
 				$output .= "</div>\n";
 			}
