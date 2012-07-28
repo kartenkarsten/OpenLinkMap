@@ -352,10 +352,10 @@
 		if ($content)
 		{
 			// delete everything before main article
-			$content = explode("<!-- bodycontent -->", $content);
+			$content = explode("<h1 id=\"firstHeading\">", $content);
 
 			// delete everything after first paragraph
-			$content = explode("<span class=\"mw-headline\"", $content[1]);
+			$content = explode("<h2> <span class=\"mw-headline\"", $content[1]);
 
 			// remove wikipedia images
 			$content = str_replace("<img alt=\"\" src=\"//upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/25px-Disambig-dark.svg.png\" width=\"25\" height=\"19\" />", "", $content[0]);
