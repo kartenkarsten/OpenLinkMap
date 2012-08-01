@@ -178,15 +178,12 @@
 		global $mail;
 		global $appname;
 
-		// get ip and user agent string
-		$header = $_SERVER['HTTP_USER_AGENT'];
-		$ip = $_SERVER['REMOTE_ADDR'];
-
 		// generating message
-		$message = "An error happened in ".$appname.".at ".date("d.m.Y-H:i", time());
-		$message .= "\n\n".$error;
-		$message .= "\n\nUser: http://www.utrace.de/?query=".$ip;
-		$message .= "\nWith header: ".$header;
+		$message = "An error happened in ".$appname.":";
+		$message .= "\n\nTime..... ".date("d.m.Y-H:i", time())
+		$message .= "\nIP....... http://www.utrace.de/?query=".$_SERVER['REMOTE_ADDR'];
+		$message .= "\nHeader... ".$_SERVER['HTTP_USER_AGENT'];
+		$message .= "\nError.... ".$error;
 
 		// sending error report by mail to given mail address
 		$sended = mail($mail, "Error Report ".$appname, $message);
