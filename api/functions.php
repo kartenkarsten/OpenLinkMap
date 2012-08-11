@@ -180,7 +180,7 @@
 
 		// generating message
 		$message = "An error happened in ".$appname.":";
-		$message .= "\n\nTime..... ".date("d.m.Y-H:i", time())
+		$message .= "\n\nTime..... ".date("d.m.Y-H:i", time());
 		$message .= "\nIP....... http://www.utrace.de/?query=".$_SERVER['REMOTE_ADDR'];
 		$message .= "\nHeader... ".$_SERVER['HTTP_USER_AGENT'];
 		$message .= "\nError.... ".$error;
@@ -355,7 +355,7 @@
 			$content = explode("<h2> <span class=\"mw-headline\"", $content[1]);
 
 			// remove wikipedia images
-			$content = str_replace("<img alt=\"\" src=\"//upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/25px-Disambig-dark.svg.png\" width=\"25\" height=\"19\" />", "", $content[0]);
+			$content = str_replace("<img alt=\"\" src=\"//upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/25px-Disambig-dark.svg.png\" width=\"25\" height=\"19\">", "", $content[0]);
 
 			// get image url
 			$pattern = "/<img.+src=\"(\S+)\"\s\w+=.+>/i";
@@ -368,11 +368,10 @@
 				$pos = strripos($matches[1], "/");
 				$image = substr($matches[1], 0, $pos);
 			}
-
 			$image = str_replace("thumb/", "", $image);
+
 			return str_replace("//", "http://", $image);
 		}
-
 		return false;
 	}
 
@@ -391,7 +390,13 @@
 		{
 			$url = str_replace("wikipedia/commons", "wikipedia/commons/thumb", $url);
 			$filename = explode("/", $url);
-			return $url."/280px-".$filename[count($filename)-1];
+			$url = $url."/280px-".$filename[count($filename)-1];
+
+			// svg thumbs need a .png at the end
+			if (substr($filename[count($filename)-1], -3, 3 ) == "svg")
+				$url = $url.".png";
+
+			return $url;
 		}
 	}
 
