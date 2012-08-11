@@ -16,7 +16,7 @@ PATH="$PATH:/home/www/sites/194.245.35.149/site/import/bin"
 echo "Updating planet file"
 echo ""
 date -u +%s > timestamp_tmp
-osmupdate old.pbf new.pbf --max-merge=2 --hourly --drop-author -v
+osmupdate old.pbf new.pbf --max-merge=2 --planet-url=http://planet.openstreetmap.org/redaction-period/ --hourly --drop-author -v
 rm old.pbf
 mv new.pbf old.pbf
 echo ""

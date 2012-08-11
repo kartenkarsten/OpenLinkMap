@@ -14,7 +14,7 @@ PATH="$PATH:/home/www/sites/194.245.35.149/site/import/bin"
 # download planet file, ~ 8 hours
 echo "Downloading planet file"
 echo ""
-wget http://planet.openstreetmap.org/pbf-experimental/planet-latest.osm.pbf
+wget http://planet.openstreetmap.org/pbf/planet-latest.osm.pbf
 mv planet-latest.osm.pbf old.pbf
 echo ""
 
@@ -23,7 +23,7 @@ echo ""
 echo "Updating planet file"
 echo ""
 date -u +%s > timestamp
-osmupdate old.pbf new.pbf --max-merge=2 --hourly --drop-author -v
+osmupdate old.pbf new.pbf --planet-url=http://planet.openstreetmap.org/redaction-period/ --max-merge=2 --hourly --drop-author -v
 rm old.pbf
 mv new.pbf old.pbf
 echo ""

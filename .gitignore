@@ -1,0 +1,11 @@
+# ignore backup files
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+
+donate
+
+#except this file
+!.gitignore
