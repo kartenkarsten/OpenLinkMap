@@ -52,19 +52,23 @@ echo "Creating centroids, removing elements"
 echo ""
 osmconvert temp-olm.o5m --all-to-nodes --max-objects=90000000 --out-o5m >temp.o5m
 rm temp-olm.o5m
-osmfilter temp.o5m --drop-relations --drop-ways --keep-nodes="wikipedia= wikipedia:*= contact:phone= website= url= phone= fax= email= addr:email= image= url:official= contact:website= addr:phone= phone:mobile= contact:mobile= addr:fax= contact:email= contact:fax= image:panorama= opening_hours=" --fake-lonlat --fake-author --out-pbf >temp.pbf
+osmfilter temp.o5m --drop-relations --drop-ways --keep-nodes="wikipedia= wikipedia:*= contact:phone= website= url= phone= fax= email= addr:email= image= url:official= contact:website= addr:phone= phone:mobile= contact:mobile= addr:fax= contact:email= contact:fax= image:panorama= opening_hours=" --out-o5m >temp-olm.o5m
 rm temp.o5m
+osmconvert temp-olm.o5m --fake-lonlat --fake-author --out-pbf >temp.pbf
+rm temp-olm.o5m
 osmosis-0.40.1/bin/osmosis --rb file="temp.pbf" --s --wb file="old-olm.pbf" omitmetadata="true"
-rm temp.pbf
-
-osmconvert temp-nextobjects.o5m --all-to-nodes --max-objects=90000000 --out-o5m >temp.o5m
-rm temp-nextobjects.o5m
-osmfilter temp.o5m --drop-relations --drop-ways --keep-nodes="amenity=bus_station highway=bus_stop railway=station railway=halt railway=tram_stop amenity=parking" --fake-lonlat --fake-author --out-pbf >temp.pbf
-rm temp.o5m
-osmosis-0.40.1/bin/osmosis --rb file="temp.pbf" --s --wb file="old-nextobjects.pbf" omitmetadata="true"
 rm temp.pbf
 osmconvert old-olm.pbf --drop-author --out-osm >old-olm.osm
 rm old-olm.pbf
+
+osmconvert temp-nextobjects.o5m --all-to-nodes --max-objects=90000000 --out-o5m >temp.o5m
+rm temp-nextobjects.o5m
+osmfilter temp.o5m --drop-relations --drop-ways --keep-nodes="amenity=bus_station highway=bus_stop railway=station railway=halt railway=tram_stop amenity=parking" --out-o5m >temp-nextobjects.o5m
+rm temp.o5m
+osmconvert temp-nextobjects.o5m --fake-lonlat --fake-author --out-pbf >temp.pbf
+rm temp-nextobjects.o5m
+osmosis-0.40.1/bin/osmosis --rb file="temp.pbf" --s --wb file="old-nextobjects.pbf" omitmetadata="true"
+rm temp.pbf
 osmconvert old-nextobjects.pbf --drop-author --out-osm >old-nextobjects.osm
 rm old-nextobjects.pbf
 echo ""

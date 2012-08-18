@@ -110,6 +110,8 @@
 			$action = 0;
 		else if ($name == "DELETE")
 			$action = 1;
+		else if ($name == "MODIFY")
+			$action = 2;
 
 		if ($name == "TAG")
 		{
@@ -157,6 +159,17 @@
 			}
 			else if ($action == 1)
 				$result = pg_query($connection, "DELETE FROM ".$type." WHERE (id = '".$id."')");
+			else if ($action == 2)
+			{
+				$exists = pg_query($connection, "SELECT id FROM ".$type." WHERE id = ".$id);
+				if (!$exists)
+					$result = pg_query($connection, "INSERT INTO ".$type." (id, tags, geom) VALUES ('".$id."', '".str_replace("\"", "\\\"", $tags)."', GeometryFromText('POINT ( ".$lon." ".$lat." )', 4326 ))");
+				else
+				{
+					$result = pg_query($connection, "DELETE FROM ".$type." WHERE (id = '".$id."')");
+					$result = pg_query($connection, "INSERT INTO ".$type." (id, tags, geom) VALUES ('".$id."', '".str_replace("\"", "\\\"", $tags)."', GeometryFromText('POINT ( ".$lon." ".$lat." )', 4326 ))");
+				}
+			}
 			$tags = '';
 		}
 	}
