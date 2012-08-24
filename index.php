@@ -211,5 +211,9 @@
 		</div>
 		<b class="errorBarFalse" id="errorBar"></b>
 		<b class="messageBarFalse" id="messageBar"></b>
+		<?php
+			if(date("d.m.y")=="26.10.12")
+				echo '<!--[if lt IE 9]><div style="position:fixed;top:0;left:0;right:0;bottom:0;background:black;z-index:999999999;text-align:center;"><a href="http://www.browserchoice.eu/"><img src="gonedark.png" alt="You are using an old version of Internet Explorer! Please update or switch to another browser."/></a></div><![endif]-->';
+		?>
 	</body>
 </html>
