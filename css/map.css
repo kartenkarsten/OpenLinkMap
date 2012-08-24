@@ -23,6 +23,8 @@ html,body
 	font-size: 19px;
 	color: black;
 	padding-left: 5px;
+	position: relative;
+	top: 2px;
 }
 
 #header a
