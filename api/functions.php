@@ -379,25 +379,32 @@
 	// gets the url of an image's thumbnail
 	function getWikipediaThumbnailUrl($url)
 	{
+		// size of thumbnails
+		$thumbsize = 280;
+
 		if (!$url)
 			return false;
 
-		if (substr($url, 0, 29) == "http://commons.wikimedia.org/")
-			return $url."?width=280px";
-		else if ((substr($url, 0, 38) == "http://upload.wikimedia.org/wikipedia/") && (substr($url, 38, 7) != "commons"))
-			return $url;
-		else
+		// check if thumbnail size is bigger than original size
+		$imagesize = getimagesize($url);
+		if ($response && ($imagesize[0] > $thumbsize))
 		{
-			$url = str_replace("wikipedia/commons", "wikipedia/commons/thumb", $url);
-			$filename = explode("/", $url);
-			$url = $url."/280px-".$filename[count($filename)-1];
+			if (substr($url, 0, 29) == "http://commons.wikimedia.org/")
+				return $url."?width=".$thumbsize."px";
+			else if ((substr($url, 0, 38) == "http://upload.wikimedia.org/wikipedia/") && (substr($url, 38, 7) != "commons"))
+				return $url;
+			else
+			{
+				$url = str_replace("wikipedia/commons", "wikipedia/commons/thumb", $url);
+				$filename = explode("/", $url);
+				$url = $url."/".$thumbsize."px-".$filename[count($filename)-1];
 
-			// svg thumbs need a .png at the end
-			if (substr($filename[count($filename)-1], -3, 3 ) == "svg")
-				$url = $url.".png";
-
-			return $url;
+				// svg thumbs need a .png at the end
+				if (substr($filename[count($filename)-1], -3, 3 ) == "svg")
+					$url = $url.".png";
+			}
 		}
+		return $url;
 	}
 
 
