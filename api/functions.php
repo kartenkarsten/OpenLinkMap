@@ -386,25 +386,14 @@
 			return false;
 
 		// check if thumbnail size is bigger than original size
-		if (strpos($url, "special:filepath") !== false)
-		{
-			/*
-			$c = curl_init();
-			curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($c, CURLOPT_BINARYTRANSFER, 1);
-			curl_setopt($c, CURLOPT_FOLLOWLOCATION, true);
-			curl_setopt($c, CURLOPT_URL, $url);
-			curl_setopt($c, CURLOPT_USERAGENT, "openlinkmap.org");
-			$image = imagecreatefromstring(curl_exec($c));
-			curl_close($c);
-			$imagesize = getimagesize($image);
-			*/
-			echo "";
-		}
-		else
+		if (strpos($url, "special:filepath") === false)
 			$imagesize = getimagesize($url);
-		if ($response && ($imagesize[0] > $thumbsize))
+		if ($response && ($imagesize[0] > $thumbsize) || substr($url, -3, 3))
 		{
+			// don't use archive images
+			$url = str_replace("archive/", "", $url);
+			$url = preg_replace("/20.+%21/", "", $url);
+			// get thumbnail
 			if (substr($url, 0, 29) == "http://commons.wikimedia.org/")
 				return $url."?width=".$thumbsize."px";
 			else if ((substr($url, 0, 38) == "http://upload.wikimedia.org/wikipedia/") && (substr($url, 38, 7) != "commons"))
