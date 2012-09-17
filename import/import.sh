@@ -24,7 +24,7 @@ echo ""
 echo "Updating planet file"
 echo ""
 date -u +%s > timestamp
-osmupdate old.pbf new.pbf --planet-url=http://planet.openstreetmap.org/redaction-period/ --max-merge=2 --hourly --drop-author -v
+osmupdate old.pbf new.pbf --max-merge=2 --hourly --drop-author -v
 rm old.pbf
 mv new.pbf old.pbf
 echo ""
