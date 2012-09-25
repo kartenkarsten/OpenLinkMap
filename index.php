@@ -166,7 +166,7 @@
 				</select>
 			</form>
 			<br />
-			<p id="osm">Maps and data from <a href="http://www.openstreetmap.org/">OpenStreetMap</a>, released under the terms of <a href="http://creativecommons.org/licenses/by-sa/2.0/" title="CC-BY-SA 2.0">CC-BY-SA 2.0 License</a>.</p>
+			<p id="osm">Maps and data <a href="http://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>.<br />Hillshading: <a href="http://nasa.gov/">NASA SRTM</a>.</p>
 			<a href="http://joker.com/" id="poweredby"><img src="img/ad.png" /></a>
 			<p id="ad" onclick="clickAd();">Improve the data! Correct wrong website links with the new website checker from Keepright!</p>
 			<form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post" id="PaypalButton">
