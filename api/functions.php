@@ -685,7 +685,7 @@
 
 
 	// get objects near a given object which have are of a given type
-	function getNearObjectsForId($connection, $lat, $lon, $tags)
+	function getNearObjectsForId($connection, $lat, $lon, $tags, $maxdistance)
 	{
 		// combine tags to one request
 		$command = array();
@@ -712,16 +712,17 @@
 					FROM (
 						(SELECT tags->'name' AS name, geom AS next, id AS osmid,  ST_Distance_Sphere(GeometryFromText('POINT ( ".$lat." ".$lon." )', 4326 ), geom) AS distance
 						FROM nodes
-						WHERE (".$tagquery.") AND (NOT (tags ? 'access') OR NOT (tags->'access' = 'private')) AND geom && ST_Buffer(GeometryFromText('POINT ( ".$lat." ".$lon." )', 4326 ), 2000)
+						WHERE (".$tagquery.") AND ((NOT (tags ? 'access')) OR (tags->'access' = 'customers') OR (tags->'access' = 'permissive') OR (tags->'access' = 'yes') OR (tags->'access' = 'public') OR (tags->'access' = 'destination')) AND geom && ST_Buffer(GeometryFromText('POINT ( ".$lat." ".$lon." )', 4326 ), 2000)
 						ORDER BY distance
 						LIMIT 10)
 						UNION
 						(SELECT tags->'name' AS name, geom AS next, id AS osmid,  ST_Distance_Sphere(GeometryFromText('POINT ( ".$lat." ".$lon." )', 4326 ), geom) AS distance
 						FROM ways
-						WHERE (".$tagquery.") AND (NOT (tags ? 'access') OR NOT (tags->'access' = 'private')) AND geom && ST_Buffer(GeometryFromText('POINT ( ".$lat." ".$lon." )', 4326 ), 2000)
+						WHERE (".$tagquery.") AND ((NOT (tags ? 'access')) OR (tags->'access' = 'customers') OR (tags->'access' = 'permissive') OR (tags->'access' = 'yes') OR (tags->'access' = 'public') OR (tags->'access' = 'destination')) AND geom && ST_Buffer(GeometryFromText('POINT ( ".$lat." ".$lon." )', 4326 ), 2000)
 						ORDER BY distance
 						LIMIT 10)
 					) AS foo
+					WHERE foo.distance < ".$maxdistance."
 					ORDER BY foo.distance
 					LIMIT 10
 				) AS uniques

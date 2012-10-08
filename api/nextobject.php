@@ -43,23 +43,27 @@
 							array(
 								array("highway", "bus_stop"),
 								array("highway", "bus_station")
-							)
+							),
+							2000
 						);
 	$next['stations'] = getNearObjectsForId($connection, $lat, $lon,
 							array(
 								array("railway", "station"),
 								array("railway", "halt")
-							)
+							),
+							20000
 						);
 	$next['tramhalts'] = getNearObjectsForId($connection, $lat, $lon,
 							array(
 								array("railway", "tram_stop")
-							)
+							),
+							5000
 						);
 	$next['parkings'] = getNearObjectsForId($connection, $lat, $lon,
 							array(
 								array("amenity", "parking")
-							)
+							),
+							5000
 						);
 
 	pg_close($connection);
@@ -170,7 +174,7 @@
 			{
 				if (!$entry[2])
 					$entry[2] = "null";
-				array_push($list, array(
+					array_push($list, array(
 						'id' => (int)$entry[4],
 						'lat' => floatval($entry[1]),
 						'lon' => floatval($entry[0]),

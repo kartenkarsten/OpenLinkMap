@@ -85,6 +85,9 @@ echo ""
 php update.php
 rm olm.o5c
 rm nextobjects.o5c
+# ADDED FOR OPENRAILWAYMAP
+../orm/import/update.sh
+# END
 rm timestamp
 mv timestamp_tmp timestamp
 echo ""
