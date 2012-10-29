@@ -42,7 +42,7 @@ var translations =
 	"inolm" : "Показать в OpenLinkMap...",
 	"embed" : "HTML-код",
 	"embeddescription" : "Copia questo codice HTML sul tuo sito web per mostrare una piccola mappa con un pennarello.",
-	"embedattricution" : 'Данные карты &copy; <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> и участников <a href="http://creativecommons.org/licenses/by-sa/2.0/deed.en" target="_blank">CC-BY-SA</a>'
+	"embedattribution" : "Карта и данные <a href=\"http://www.openstreetmap.org/copyright\">© OpenStreetMap contributors</a>.<br />Карта высот: <a href=\"http://nasa.gov/\">NASA SRTM</a>."
 };
 
 // descriptions for search results

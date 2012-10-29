@@ -40,7 +40,7 @@ var translations =
 	"inolm" : "Afficher dans le OpenLinkMap...",
 	"embed" : "HTML-Code",
 	"embeddescription" : "Copiez ce code HTML pour votre site web pour montrer une petite carte avec un marqueur.",
-	"embedattribution" : 'Données sont tirées &copy; <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> et contributif <a href="http://creativecommons.org/licenses/by-sa/2.0/deed.fr" target="_blank">CC-BY-SA</a>'
+	"embedattribution" : "Données sont tirées <a href=\"http://www.openstreetmap.org/copyright\">© OpenStreetMap contributors</a>.<br />Terrain: <a href=\"http://nasa.gov/\">NASA SRTM</a>"
 };
 
 // descriptions for search results

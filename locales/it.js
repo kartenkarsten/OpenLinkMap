@@ -42,7 +42,7 @@ var translations =
 	"inolm" : "Visualizza in OpenLinkMap...",
 	"embed" : "HTML-Code",
 	"embeddescription" : "Copia questo codice HTML sul tuo sito web per mostrare una piccola mappa con un pennarello.",
-	"embedattribution" : 'Mappa e dati &copy; <a href="http://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> e contributivo <a href="http://creativecommons.org/licenses/by-sa/2.0/deed.it" target="_blank">CC-BY-SA</a>'
+	"embedattribution" : "Mappa e dati da <a href=\"http://www.openstreetmap.org/copyright\">© OpenStreetMap contributors</a>.<br />Ombreggiatura rilievi: <a href=\"http://nasa.gov/\">NASA SRTM</a>."
 };
 
 // descriptions for search results
