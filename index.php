@@ -153,7 +153,8 @@
 							"en" => "English",
 							"fr" => "Français",
 							"it" => "Italiano",
-							"ru" => "Русский"
+							"ru" => "Русский",
+							"ja" => "日本語"
 						);
 						foreach ($languages as $short => $name)
 						{

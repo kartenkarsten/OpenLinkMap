@@ -10,7 +10,7 @@
 	// email address to send error reports to
 	$mail = "AlexanderMatheisen@ish.de";
 	// available translations
-	$langs = array("de", "en", "fr", "it", "ru");
+	$langs = array("de", "en", "fr", "it", "ru", "ja");
 	// name of database
 	$db = "olm";
 	// name of application
