@@ -21,7 +21,7 @@
 	date_default_timezone_set('UTC');
 
 
-	// prohibition of sql injections
+	// protection of sql injections
 	if (!isValidType($type) || !isValidId($id))
 	{
 		echo "NULL";
@@ -175,7 +175,7 @@
 	// text/html output of extdetails
 	function textMoredetailsOut($response, $nameresponse, $wikipediaresponse, $langs, $offset = 0)
 	{
-		global $translations;
+		global $translations, $db, $id, $type;
 
 		if ($response)
 		{
@@ -186,6 +186,15 @@
 			// translation of name
 			if ($nameresponse)
 				$name = getNameDetail($langs, $nameresponse);
+
+			// if no name is set, use the poi type as name instead
+			if ($name[0] == "")
+			{
+				$tags = getTags($db, $id, $type);
+				foreach ($tags as $tag)
+					if ($translations['tags'][$tag[0]][$tag[1]] != "")
+						$name[0] = $translations['tags'][$tag[0]][$tag[1]];
+			}
 
 			$phone = getPhoneFaxDetail(array($response['phone1'], $response['phone2'], $response['phone3']));
 			$phonenumber = $phone[0];

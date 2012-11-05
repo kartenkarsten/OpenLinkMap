@@ -598,6 +598,36 @@
 	}
 
 
+	// returns all tags of an osm object
+	function getTags($db, $id, $type)
+	{
+		// request
+		$request = "SELECT tags FROM ".$type."s WHERE (id = ".$id.");";
+
+		// connnecting to database
+		$connection = connectToDatabase($db);
+		// if there is no connection
+		if (!$connection)
+			exit;
+
+		$response = requestDetails($request, $connection);
+
+		pg_close($connection);
+
+		if ($response)
+		{
+			$temp = explode("\", \"", $response[0]['tags']);
+			for ($i=1; $i<count($temp); $i++)
+			{
+				$tag = explode("\"=>\"", $temp[$i]);
+				$tags[$i-1] = array($tag[0], $tag[1]);
+			}
+			return $tags;
+		}
+		else
+			return false;
+	}
+
 	// beginning of xml output: header, first root element
 	function xmlStart($root)
 	{
