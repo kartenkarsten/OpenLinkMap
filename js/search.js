@@ -73,7 +73,7 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 					}
 
 			requestApi("proxy", "url=http://nominatim.openstreetmap.org/search/&format=xml&polygon=0&addressdetails=1&q="+input+"&accept-language="+params['lang']+"&exclude_place_ids="+this.excludeList+"&viewbox="+bounds[0]+","+bounds[3]+","+bounds[2]+","+bounds[1]+"&bounded="+this.bounded, handler);
-			// alert("http://nominatim.openstreetmap.org/search/&format=xml&polygon=0&addressdetails=1&q="+input+"&accept-language="+params['lang']+"&exclude_place_ids="+this.excludeList+"&viewbox="+bounds[0]+","+bounds[3]+","+bounds[2]+","+bounds[1]+"&bounded="+this.bounded);
+			//alert("http://nominatim.openstreetmap.org/search/&format=xml&polygon=0&addressdetails=1&q="+input+"&accept-language="+params['lang']+"&exclude_place_ids="+this.excludeList+"&viewbox="+bounds[0]+","+bounds[3]+","+bounds[2]+","+bounds[1]+"&bounded="+this.bounded);
 		}
 	}
 
@@ -282,7 +282,7 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 			var value = details[i].firstChild.nodeValue;
 			properties[key] = value;
 		}
-alert(details[1].localName);
+
 		var caption = details[1].firstChild.nodeValue;
 
 		if (details[1].localName == "house_number")
