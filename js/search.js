@@ -20,12 +20,19 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 	// resets all parameters for a new search
     this.reset = function()
     {
+		var bounded = this.option.checked == true ? 1 : 0;
+
     	this.bar.innerHTML = "";
 		this.layer.removeAllFeatures();
 		this.resultCount = 1;
 		this.excludeList = "";
 		this.extent = {};
 		this.panned = false;
+		if (this.limit <= this.oldlimit)
+		{
+			this.limit = 10;
+			this.oldlimit = 10;
+		}
     }
 
 	// sends a search request
@@ -65,6 +72,7 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 			this.bar.innerHTML += "<div class=\"loadingMoreInfo\">"+loading+"</div>";
 			this.request = input;
 			this.bounded = bounded;
+			this.oldlimit = this.limit;
 			input = input.replace(/ /g, "+");
 
 			var handler = function(response)
@@ -72,8 +80,7 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 						self.showResults(response);
 					}
 
-			requestApi("proxy", "url=http://nominatim.openstreetmap.org/search/&format=xml&polygon=0&addressdetails=1&q="+input+"&accept-language="+params['lang']+"&exclude_place_ids="+this.excludeList+"&viewbox="+bounds[0]+","+bounds[3]+","+bounds[2]+","+bounds[1]+"&bounded="+this.bounded, handler);
-			//alert("http://nominatim.openstreetmap.org/search/&format=xml&polygon=0&addressdetails=1&q="+input+"&accept-language="+params['lang']+"&exclude_place_ids="+this.excludeList+"&viewbox="+bounds[0]+","+bounds[3]+","+bounds[2]+","+bounds[1]+"&bounded="+this.bounded);
+			requestApi("proxy", "url=http://nominatim.openstreetmap.org/search/&format=xml&polygon=0&addressdetails=1&q="+input+"&accept-language="+params['lang']+"&exclude_place_ids="+this.excludeList+"&viewbox="+bounds[0]+","+bounds[3]+","+bounds[2]+","+bounds[1]+"&bounded="+this.bounded+"&limit="+this.oldlimit, handler);
 		}
 	}
 
@@ -108,7 +115,10 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
     	var xml = response.responseXML;
     	var placesList = xml.getElementsByTagName('place');
     	var excludeList = xml.getElementsByTagName('searchresults')[0].getAttribute('exclude_place_ids');
-    	this.bar.removeChild(this.bar.lastChild);
+		if (this.bounded == 1)
+			this.bar.innerHTML = "";
+		else
+			this.bar.removeChild(this.bar.lastChild);
     	if (placesList.length > 0)
 		{
 			for (var i = 0; i < placesList.length; i++)
@@ -154,12 +164,21 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 			this.excludeList = excludeList;
 
 			// set "more results" link
+			this.bar.innerHTML += "<div id=\"moreResults\"><center><b>"+translations['moreresults']+"</b></center></div>";
 			if (this.bounded == 0)
 			{
-				this.bar.innerHTML += "<div id=\"moreResults\"><center><b>"+translations['moreresults']+"</b></center></div>";
 				var self = this;
 				gEBI('moreResults').onclick = function()
 				{
+					self.send();
+				}
+			}
+			else
+			{
+				var self = this;
+				gEBI('moreResults').onclick = function()
+				{
+					self.limit += 10;
 					self.send();
 				}
 			}
@@ -376,6 +395,8 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 	this.bounds = {};
 	this.extent = {};
 	this.panned = false;
+	this.limit = 10;
+	this.oldlimit = this.limit;
 
 	var self = this;
 	this.searchButton.onclick = function()
