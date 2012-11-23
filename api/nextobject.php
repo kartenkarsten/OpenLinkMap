@@ -152,7 +152,8 @@
 				if (!$entry[2])
 					$entry[2] = "null";
 				$output .= "<name>".$entry[2]."</name>\n";
-				$output .= "<distance unit=\"meter\">".$entry[3]."</distance>\n";
+				$distance = explode(".", $entry[3]);
+				$output .= "<distance unit=\"meter\">".$distance[0]."</distance>\n";
 				$output .= "</".$singular.">\n";
 			}
 
