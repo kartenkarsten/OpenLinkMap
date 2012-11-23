@@ -255,7 +255,7 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 		var caption = descriptions[details[1].localName];
 
 		if (!caption && caption != "")
-			var caption = descriptions["poi"];
+			var caption = descriptions[properties['country']];
 
 		for (var i = 1; i < details.length; i++)
 		{

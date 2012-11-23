@@ -8,6 +8,7 @@
 
 
 	require_once("functions.php");
+	require_once("addressformats.php");
 	// including translation file
 	require_once("../".includeLocale($_GET['lang']));
 
@@ -50,6 +51,7 @@
 				tags->'addr:postcode' AS \"postcode\",
 				tags->'addr:city' AS \"city\",
 				tags->'addr:housename' AS \"housename\",
+				tags->'addr:suburb' AS \"suburb\",
 				tags->'wikipedia' AS \"wikipedia\",
 				tags->'phone' AS \"phone1\",
 				tags->'contact:phone' AS \"phone2\",
@@ -175,7 +177,7 @@
 	// text/html output of extdetails
 	function textMoredetailsOut($response, $nameresponse, $wikipediaresponse, $langs, $offset = 0)
 	{
-		global $translations, $db, $id, $type;
+		global $translations, $db, $id, $type, $addressformats;
 
 		if ($response)
 		{
@@ -236,18 +238,27 @@
 				$output .= "<div class=\"moreInfoBox\">\n";
 				$output .= "<strong>".$translations['captions']['address']."</strong>\n";
 				$output .= "<table><tr><td>\n";
-					if (($response['housename']) && ($response['housename'] != $name))
-						$output .= "<span>".$response['housename']."</span><br />\n";
-					if ($response['street'] || $response['housenumber'])
-						$output .= "<span>".$response['street']." ".$response['housenumber']."</span>\n";
-					if (($response['country'] || $response['city'] || $response['postcode']) && ($response['street'] || $response['housenumber'] || $response['housename']))
-						$output .= "<br />\n";
-					if ($response['country'])
-						$output .= "<span>".strtoupper($response['country'])."-</span>";
-					if ($response['postcode'])
-						$output .= "<span>".$response['postcode']." </span>\n";
-					if ($response['city'])
-						$output .= "<span>".$response['city']."</span>\n";
+
+				// select template
+				if ($response['country'])
+					$template = $addressformats[strtolower($response['country'])];
+				else
+					$template = $addressformats['default'];
+
+				// replace placeholders
+				$template = str_replace("#street#", $response['street'], $template);
+				$template = str_replace("#housenumber#", $response['housenumber'], $template);
+				$template = str_replace("#country#", strtoupper($response['country']), $template);
+				$template = str_replace("#city#", $response['city'], $template);
+				$template = str_replace("#postcode#", $response['postcode'], $template);
+				$template = str_replace("#housename#", $response['housename'], $template);
+				$template = str_replace("#suburb#", $response['suburb'], $template);
+				// remove some format mistakes
+				$template = str_replace("</span>,", "</span>", $template);
+				$template = str_replace("-</span>", "</span>", $template);
+				// remove whitespaces
+				$output .= trim($template);
+
 				$output .= "</td></tr></table>\n";
 				$output .= "</div>\n";
 			}
@@ -656,6 +667,8 @@
 					$output .= "<postcode>".$response['postcode']."</postcode>\n";
 				if ($response['city'])
 					$output .= "<city>".$response['city']."</city>\n";
+				if ($response['suburb'])
+					$output .= "<suburb>".$response['suburb']."</suburb>\n";
 				$output .= "</address>\n";
 			}
 
@@ -953,6 +966,8 @@
 				$data['postcode'] = $response['postcode'];
 			if ($response['city'])
 				$data['city'] = $response['city'];
+			if ($response['suburb'])
+				$data['suburb'] = $response['suburb'];
 
 			// contact information
 			if ($phone)
