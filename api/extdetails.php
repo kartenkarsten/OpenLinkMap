@@ -242,7 +242,7 @@
 				// select template
 				if ($response['country'])
 					$template = $addressformats[strtolower($response['country'])];
-				else
+				if (!$response['country'] || $response['country'] == null || $template == null)
 					$template = $addressformats['default'];
 
 				// replace placeholders

@@ -110,6 +110,7 @@
 		<script type="text/javascript" src="js/fullscreen.js"></script>
 		<script type="text/javascript" src="js/panorama.js"></script>
 		<script type="text/javascript" src="js/functions.js"></script>
+		<script type="text/javascript" src="js/addressformats.js"></script>
 		<!-- Piwik -->
 		<script type="text/javascript">
 			var pkBaseURL = (("https:" == document.location.protocol) ? "https://www.openlinkmap.org/piwik/" : "http://www.openlinkmap.org/piwik/");

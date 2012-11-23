@@ -254,15 +254,17 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 		var properties = {};
 		var caption = descriptions[details[1].localName];
 
-		if (!caption && caption != "")
-			var caption = descriptions[properties['country']];
-
 		for (var i = 1; i < details.length; i++)
 		{
 			var key = details[i].localName;
 			var value = details[i].firstChild.nodeValue;
 			properties[key] = value;
 		}
+
+		if (!caption && caption != "")
+			var caption = descriptions[properties['country_code']];
+		if (!caption && caption != "")
+			var caption = descriptions['default'];
 
 		var matching = caption.match(/#\w+#/g);
 		if (!matching)
