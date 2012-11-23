@@ -355,7 +355,9 @@
 			$content = explode("<h2> <span class=\"mw-headline\"", $content[1]);
 
 			// remove wikipedia images
-			$content = str_replace("<img alt=\"\" src=\"//upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/25px-Disambig-dark.svg.png\" width=\"25\" height=\"19\">", "", $content[0]);
+			$content = str_replace("<img alt=\"\" src=\"//upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/25px-Disambig-dark.svg.png\" width=\"25\" height=\"19\" srcset=\"//upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/38px-Disambig-dark.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/50px-Disambig-dark.svg.png 2x\">", "", $content[0]);
+
+
 
 			// get image url
 			$pattern = "/<img.+src=\"(\S+)\"\s\w+=.+>/i";
