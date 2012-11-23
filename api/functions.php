@@ -657,8 +657,8 @@
 				$rawnumber = $number;
 
 		// correct some mistakes
-		$rawnumber = str_replace(" ", "-", $rawnumber);
 		$rawnumber = str_replace(" - ", "-", $rawnumber);
+		$rawnumber = str_replace(" ", "-", $rawnumber);
 		$rawnumber = str_replace("(", "", $rawnumber);
 		$rawnumber = str_replace(")", "", $rawnumber);
 
