@@ -3,14 +3,19 @@ OpenLinkMap Changelog
 
 (all changes without author notice are by [@rurseekatze](https://github.com/rurseekatze)
 
-## 7.4.1 (19.01.2013)
+## 7.4.1 (20.01.2013)
 
 ### Improvements
 
 #### Backend improvements
 
  * Show suburb in default address format
- * Added russian translation - by [@cquest](https://github.com/cquest) [#14](https://github.com/rurseekatze/OpenLinkMap/pull/14)
+ * Some improvements of french translation - by [@cquest](https://github.com/cquest) [#14](https://github.com/rurseekatze/OpenLinkMap/pull/14)
+
+#### Frontend improvements
+
+ * Added Changelog
+ * Added download information to Readme
 
 ### Bugfixes
 
