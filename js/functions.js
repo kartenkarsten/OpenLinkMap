@@ -85,7 +85,32 @@ function createMap()
 			context: {
 				radius: function(feature)
 				{
-					return Math.min(feature.attributes.count, 7) + 4;
+					if (feature.attributes.count == 1)
+					{
+						if (map.getZoom() == 18)
+							return 10;
+						else if (map.getZoom() == 17)
+							return 9;
+						else if (map.getZoom() == 16)
+							return 7;
+						else if (map.getZoom() == 15)
+							return 7;
+						else
+							return 4;
+					}
+					else
+					{
+						if (map.getZoom() == 18)
+							return Math.min(feature.attributes.count+5, 10)+8;
+						else if (map.getZoom() == 17)
+							return Math.min(feature.attributes.count+4, 9)+7;
+						else if (map.getZoom() == 16)
+							return Math.min(feature.attributes.count+3, 8)+5;
+						else if (map.getZoom() == 15)
+							return Math.min(feature.attributes.count+2, 7)+4;
+						else
+							return Math.min(feature.attributes.count, 6)+4;
+					}
 				}
 		}
 	});
@@ -102,7 +127,32 @@ function createMap()
 			context: {
 				radius: function(feature)
 				{
-					return Math.min(feature.attributes.count, 7) + 5;
+					if (feature.attributes.count == 1)
+					{
+						if (map.getZoom() == 18)
+							return 10;
+						else if (map.getZoom() == 17)
+							return 9;
+						else if (map.getZoom() == 16)
+							return 7;
+						else if (map.getZoom() == 15)
+							return 7;
+						else
+							return 4;
+					}
+					else
+					{
+						if (map.getZoom() == 18)
+							return Math.min(feature.attributes.count+5, 10)+8;
+						else if (map.getZoom() == 17)
+							return Math.min(feature.attributes.count+4, 9)+7;
+						else if (map.getZoom() == 16)
+							return Math.min(feature.attributes.count+3, 8)+5;
+						else if (map.getZoom() == 15)
+							return Math.min(feature.attributes.count+2, 7)+4;
+						else
+							return Math.min(feature.attributes.count, 6)+4;
+					}
 				}
 		}
 	});
