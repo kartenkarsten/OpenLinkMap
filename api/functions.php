@@ -11,8 +11,9 @@
 	$mail = "AlexanderMatheisen@ish.de";
 	// available translations
 	$langs = array("de", "en", "fr", "it", "ru", "ja");
-	// name of database
+	// name of databases
 	$db = "olm";
+	$ptdb = "nextobjects";
 	// name of application
 	$appname = "OpenLinkMap";
 
@@ -442,6 +443,44 @@
 			$response = requestDetails("SELECT ST_X(geom), ST_Y(geom), id
 											FROM ".$type."s
 											WHERE geom && ST_SetSRID(ST_MakeBox2D(ST_Point(".$bbox[0].",".$bbox[1]."), ST_Point(".$bbox[2].",".$bbox[3].")), 4326);", $connection);
+			// putting out the results
+			if ($response)
+			{
+				foreach ($response as $element)
+					array_push($list, array($element['st_x'], $element['st_y'], $element['id'], $type));
+			}
+		}
+		return $list;
+	}
+
+
+	// request all public transports with given tags for a given bbox and echo them
+	function getPtForBbox($connection, $bbox)
+	{
+		// if no bbox was given
+		if (!$bbox)
+		{
+			reportError("Some parameters are missing.");
+			return false;
+		}
+
+		// if there is no connecting to server
+		if (!$connection)
+		{
+			reportError("Not connected to database.");
+			return false;
+		}
+
+		// requests
+		$types = array("node", "way");
+
+		// executing requests
+		$list = array();
+		foreach ($types as $type)
+		{
+			$response = requestDetails("SELECT ST_X(geom), ST_Y(geom), id
+											FROM ".$type."s
+											WHERE geom && ST_SetSRID(ST_MakeBox2D(ST_Point(".$bbox[0].",".$bbox[1]."), ST_Point(".$bbox[2].",".$bbox[3].")), 4326) AND (tags->'highway'='bus_stop' OR tags->'amenity'='bus_station' OR tags->'railway'='station' OR tags->'railway'='halt' OR tags->'railway'='tram_stop');", $connection);
 			// putting out the results
 			if ($response)
 			{

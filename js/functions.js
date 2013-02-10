@@ -181,6 +181,116 @@ function createMap()
 		})
 	});
 
+	// styles for object layer
+	var ptStyle = new OpenLayers.Style(
+	{
+		pointRadius: "${radius}",
+		strokeColor: "#0d97d8",
+		strokeWidth: 2,
+		fillColor: "#0d97d8",
+		fillOpacity: 0.2,
+		cursor: "pointer"
+		},
+		{
+			context: {
+				radius: function(feature)
+				{
+					if (feature.attributes.count == 1)
+					{
+						if (map.getZoom() == 18)
+							return 9;
+						else if (map.getZoom() == 17)
+							return 8;
+						else if (map.getZoom() == 16)
+							return 6;
+						else if (map.getZoom() == 15)
+							return 3;
+						else
+							return 4;
+					}
+					else
+					{
+						if (map.getZoom() == 18)
+							return Math.min(feature.attributes.count+5, 10)+8;
+						else if (map.getZoom() == 17)
+							return Math.min(feature.attributes.count+4, 9)+7;
+						else if (map.getZoom() == 16)
+							return Math.min(feature.attributes.count+3, 8)+5;
+						else if (map.getZoom() == 15)
+							return Math.min(feature.attributes.count+2, 7)+4;
+						else
+							return Math.min(feature.attributes.count, 6)+4;
+					}
+				}
+		}
+	});
+	var ptStyleSelected = new OpenLayers.Style(
+	{
+		pointRadius: "${radius}",
+		strokeColor: "#0d97d8",
+		strokeWidth: 4,
+		fillColor: "#0d97d8",
+		fillOpacity: 0.3,
+		cursor: "pointer"
+		},
+		{
+			context: {
+				radius: function(feature)
+				{
+					if (feature.attributes.count == 1)
+					{
+						if (map.getZoom() == 18)
+							return 10;
+						else if (map.getZoom() == 17)
+							return 9;
+						else if (map.getZoom() == 16)
+							return 7;
+						else if (map.getZoom() == 15)
+							return 7;
+						else
+							return 4;
+					}
+					else
+					{
+						if (map.getZoom() == 18)
+							return Math.min(feature.attributes.count+5, 10)+8;
+						else if (map.getZoom() == 17)
+							return Math.min(feature.attributes.count+4, 9)+7;
+						else if (map.getZoom() == 16)
+							return Math.min(feature.attributes.count+3, 8)+5;
+						else if (map.getZoom() == 15)
+							return Math.min(feature.attributes.count+2, 7)+4;
+						else
+							return Math.min(feature.attributes.count, 6)+4;
+					}
+				}
+		}
+	});
+	var ptStyleMap = new OpenLayers.StyleMap(
+	{
+		'default': ptStyle,
+		'select': ptStyleSelected
+	});
+	// adding public transport overlay
+	ptLayer = new OpenLayers.Layer.Vector("Public transport",
+	{
+		projection: wgs84,
+		maxResolution: 10.0,
+		visibility: false,
+		transitionEffect: 'resize',
+		styleMap: ptStyleMap,
+		strategies:
+		[
+			new OpenLayers.Strategy.BBOX({ratio: 2.5}),
+			new OpenLayers.Strategy.Cluster()
+		],
+		protocol: new OpenLayers.Protocol.HTTP(
+		{
+			url: root+'api/pt.php',
+			format: new OpenLayers.Format.OLM()
+		})
+	});
+
 	// styles for marker layer
 	var markerStyle = new OpenLayers.Style(
 	{
@@ -205,9 +315,9 @@ function createMap()
 	});
 
 	// adding layers to map
-	map.addLayers([mapnikMap, hillMap, markerLayer, objectsLayer]);
+	map.addLayers([mapnikMap, hillMap, markerLayer, objectsLayer, ptLayer]);
 
-	// adding control features (clicking on markers) to overlays
+	// adding control features (clicking on markers) to objects overlay
 	eventHandlerClick = new OpenLayers.Control.SelectFeature(objectsLayer,
 	{
 		multiple: true,
@@ -218,11 +328,26 @@ function createMap()
 	map.addControl(eventHandlerClick);
 	eventHandlerClick.activate();
 
+	/*
+	// adding control features (clicking on markers) to public transport overlay
+	eventHandlerClick = new OpenLayers.Control.SelectFeature(ptLayer,
+	{
+		multiple: true,
+		toggle: true,
+		onSelect: showPtPopup,
+		onUnselect: hidePtPopup
+	});
+	map.addControl(eventHandlerClick);
+	eventHandlerClick.activate();
+	*/
+
 	// register moving of map
 	map.events.register('zoomend', map, mapZoomed);
 	// register events of loading marker
 	objectsLayer.events.register('loadstart', map, loadStart);
 	objectsLayer.events.register('loadend', map, loadEnd);
+	ptLayer.events.register('loadstart', map, loadStart);
+	ptLayer.events.register('loadend', map, loadEnd);
 
 	// loading timestamp
 	var timestamp = new Timestamp("info");
@@ -465,6 +590,67 @@ function showPopup(feature)
 
 // removes given popup from map
 function hidePopup(feature, popup)
+{
+	// first remove all features of nearest objects
+	markerLayer.removeAllFeatures();
+	map.removePopup(feature.cluster[0].popup);
+	feature.cluster[0].popup.destroy();
+    feature.cluster[0].popup = null;
+}
+
+
+// add a popup to map and set content
+function showPtPopup(feature)
+{
+	// first remove all features of nearest objects
+	markerLayer.removeAllFeatures();
+	var item = feature.cluster[0];
+
+	// create popup
+	item.popup = new OpenLayers.Popup.FramedCloud("popup", new OpenLayers.LonLat(item.geometry.x, item.geometry.y), null, loading, {size: new OpenLayers.Size(6,6),offset: new OpenLayers.Pixel(-3,-3)}, true, function(){eventHandlerClick.unselectAll(item);});
+	map.addPopup(item.popup);
+
+	if (feature.cluster.length == 1)
+	{
+		// load popup contents
+		var handler = function(request)
+			{
+				var content = request.responseText;
+
+				if (content != "NULL")
+				{
+					item.popup.position = new OpenLayers.LonLat(item.geometry.x, item.geometry.y);
+					item.popup.setContentHTML(editPopupContent(content, item.popup.position.lat, item.popup.position.lon, item.attributes['type'], item.attributes['id']));
+					map.removePopup(item.popup);
+					map.addPopup(item.popup);
+					popupFullscreen.init();
+				}
+				else
+					map.removePopup(item.popup);
+			}
+		requestApi("ptdetails", "id="+item.attributes['id']+"&type="+item.attributes['type']+"&format=text&offset="+offset+"&lang="+params['lang'], handler);
+	}
+	else
+	{
+		cluster++;
+		item.popup.contentHTML = "<div id='clusterList"+cluster+"'>"+getNames(feature.cluster)+"</div>";
+
+		// update popup
+		map.removePopup(item.popup);
+		map.addPopup(item.popup);
+
+		// destroy cluster popup before creating selected popup
+		gEBI("clusterList"+cluster).onclick =
+			function()
+			{
+				map.removePopup(item.popup);
+			}
+	}
+}
+
+
+// removes given popup from map
+function hidePtPopup(feature, popup)
 {
 	// first remove all features of nearest objects
 	markerLayer.removeAllFeatures();
