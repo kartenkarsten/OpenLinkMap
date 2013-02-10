@@ -1,6 +1,6 @@
-// osmfilter 2012-07-15 19:20
-#define VERSION "1.2N"
-// (c) 2011 Markus Weber, Nuernberg
+// osmfilter 2012-12-16 11:00
+#define VERSION "1.2S"
+// (c) 2011, 2012 Markus Weber, Nuernberg
 //
 // compile this file:
 // gcc osmfilter.c -O3 -o osmfilter
@@ -282,7 +282,7 @@ const char* helptext=
 "TAG_FILTER\n"
 "        The tag filter determines which tags will be kept and which\n"
 "        will be not. The example\n"
-"          --keep-tags=highway=motorway =primary\n"
+"          --keep-tags=\"highway=motorway =primary\"\n"
 "        will not accept \"highway\" tags other than \"motorway\" or\n"
 "        \"primary\". Note that neither the object itself will be\n"
 "        deleted, nor the remaining tags. If you want to drop every\n"
@@ -300,15 +300,15 @@ const char* helptext=
 "Tuning\n"
 "\n"
 "To speed-up the process, the program uses some main memory for a\n"
-"hash table. By default, it uses 320 MiB for storing a flag for every\n"
-"possible node, 60 for the way flags, and 20 relation flags.\n"
-"Every byte holds the flags for 8 ID numbers, i.e., in 320 MiB the\n"
-"program can store 2684 million flags. As there are less than 1300\n"
-"million IDs for nodes at present (May 2011), 160 MiB would suffice.\n"
-"So, for example, you can decrease the hash sizes to e.g. 160, 16 and\n"
-"4 MiB (for relations, 2 flags are needed each) using this option:\n"
+"hash table. By default, it uses 480 MB for storing a flag for every\n"
+"possible node, 90 for the way flags, and 30 relation flags.\n"
+"Every byte holds the flags for 8 ID numbers, i.e., in 480 MB the\n"
+"program can store 3840 million flags. As there are less than 1900\n"
+"million IDs for nodes at present (July 2012), 240 MB would suffice.\n"
+"So, for example, you can decrease the hash sizes to e.g. 240, 30 and\n"
+"2 MB (for relations, 2 flags are needed each) using this option:\n"
 "\n"
-"  --hash-memory=160-16-4\n"
+"  --hash-memory=240-30-2\n"
 "\n"
 "But keep in mind that the OSM database is continuously expanding. For\n"
 "this reason the program-own default value is higher than shown in the\n"
@@ -2701,14 +2701,16 @@ static int fil_plausi() {
             // change to 'or'
           fp[0].left_bracketn++;
             if(loglevel>=2)
-              PINFOv("inserting[%i][%i]: \"(\"",ft,fp-fil__pair[ft])
+              PINFOv("inserting[%i][%i]: \"(\"",
+                ft,(int)(fp-fil__pair[ft]))
           }
         else if(!fp[-1].operator && fp>f &&
             (fp[0].operator || fp==fe-1)) {
             // change to 'and'
           fp[0].right_bracketn++;
             if(loglevel>=2)
-              PINFOv("inserting[%i][%i]: \")\"",ft,fp-fil__pair[ft])
+              PINFOv("inserting[%i][%i]: \")\"",
+                ft,(int)(fp-fil__pair[ft]))
           }
         fp++;
         }  // for every key/val pair in filter
@@ -3744,15 +3746,23 @@ static void str_read(byte** pp,char** s1p,char** s2p) {
   char* p;
   int len1,len2;
   int ref;
+  bool donotstore;  // string has 'do not store flag'  2012-10-01 ,,,,,
 
   p= (char*)*pp;
   if(*p==0) {  // string (pair) given directly
-    *s1p= ++p;
+    p++;
+    donotstore= false;
+    #if 0  // not used because strings would not be transparent anymore
+    if(*p==(char)0xff) {  // string has 'do-not-store' flag
+      donotstore= true;
+      p++;
+      }  // string has 'do-not-store' flag
+      #endif
+    *s1p= p;
     len1= strlen(p);
     p+= len1+1;
     if(s2p==NULL) {  // single string
-      //p= strchr(p,0)+1;  // jump over second string (if any)
-      if(len1<=str__tabstrM) {
+      if(!donotstore && len1<=str__tabstrM) {
           // single string short enough for string table
         stpcpy0(str__infop->tab[str__infop->tabi],*s1p)[1]= 0;
           // add a second terminator, just in case someone will try
@@ -3765,7 +3775,7 @@ static void str_read(byte** pp,char** s1p,char** s2p) {
       *s2p= p;
       len2= strlen(p);
       p+= len2+1;
-      if(len1+len2<=str__tabstrM) {
+      if(!donotstore && len1+len2<=str__tabstrM) {
           // string pair short enough for string table
         memcpy(str__infop->tab[str__infop->tabi],*s1p,len1+len2+2);
         if(++str__infop->tabi>=str__tabM) str__infop->tabi= 0;
@@ -5106,6 +5116,7 @@ return 0;
           // too close to end of prefetched data
         read_bufp= (byte*)sp;
         read_input();
+        sp= (char*)read_bufp;
         }
       c1= sp[1]; c2= sp[2]; c3= sp[3];
       if(c1=='n' && c2=='o' && c3=='d')
@@ -5418,11 +5429,11 @@ return 16;
   continue;
         }
       c= bufsp[1];
-      if(c=='n' && bufsp[2]=='o')  // node
+      if(c=='n' && bufsp[2]=='o' && bufsp[3]=='d')  // node 2012-12-13
         otype= 0;
-      else if(c=='w' && bufsp[2]=='a')  // way
+      else if(c=='w' && bufsp[2]=='a' && bufsp[3]=='y')  // way
         otype= 1;
-      else if(c=='r' && bufsp[2]=='e')  // relation
+      else if(c=='r' && bufsp[2]=='e' && bufsp[3]=='l')  // relation
         otype= 2;
       else if(c=='c' || (c=='m' && bufsp[2]=='o') || c=='d') {
           // create, modify or delete
@@ -5897,7 +5908,7 @@ return 0;  // end the program, because without having parameters
       break;
           }
         ap= strchr(ap,0);  // find end of string
-        while(ap>aa && ap[-1]=='\n')
+        while(ap>aa && (ap[-1]=='\r' || ap[-1]=='\n'))
           *--ap= 0;  // cut newline chars
         *ap++= ' '; *ap= 0;  // add a space
         }
@@ -5937,13 +5948,13 @@ return 1;
     if(loglevel>0)  // verbose mode
       fprintf(stderr,"osmfilter Parameter: %.2000s\n",a);
     if(strcmp(a,"-h")==0) {  // user wants parameter overview
-      fprintf(stderr,"%s",shorthelptext);  // print brief help text
+      fprintf(stdout,"%s",shorthelptext);  // print brief help text
         // (took "%s", to prevent oversensitive compiler reactions)
 return 0;
       }
     if(strcmp(a,"-help")==0 || strcmp(a,"--help")==0) {
         // user wants help text
-      fprintf(stderr,"%s",helptext);  // print help text
+      fprintf(stdout,"%s",helptext);  // print help text
         // (took "%s", to prevent oversensitive compiler reactions)
 return 0;
       }
@@ -6199,7 +6210,7 @@ return 3;
   if(global_recursive) {
     int r;
 
-    if(h_n==0) h_n= 400;  // use standard value if not set otherwise
+    if(h_n==0) h_n= 600;  // use standard value if not set otherwise
     if(h_w==0 && h_r==0) {
         // user chose simple form for hash memory value
       // take the one given value as reference and determine the 
