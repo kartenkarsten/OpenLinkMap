@@ -311,11 +311,8 @@
 
 		if ($content)
 		{
-			// delete everything before main article
-			$content = explode("<h1 id=\"firstHeading\">", $content);
-
-			// delete everything after first paragraph
-			$content = explode("<h2> <span class=\"mw-headline\"", $content[1]);
+			// delete everything after main article
+			$content = explode("<div class=\"section\"><h2 class=\"section_heading\" id=\"section_1\">", $content);
 
 			// delete headline
 			$content = explode("</h1>", $content[0]);
@@ -349,16 +346,11 @@
 
 		if ($content)
 		{
-			// delete everything before main article
-			$content = explode("<h1 id=\"firstHeading\">", $content);
-
 			// delete everything after first paragraph
-			$content = explode("<h2> <span class=\"mw-headline\"", $content[1]);
+			$content = explode("<div class=\"section\"><h2 class=\"section_heading\" id=\"section_2\">", $content);
 
 			// remove wikipedia images
 			$content = str_replace("<img alt=\"\" src=\"//upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/25px-Disambig-dark.svg.png\" width=\"25\" height=\"19\" srcset=\"//upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/38px-Disambig-dark.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/50px-Disambig-dark.svg.png 2x\">", "", $content[0]);
-
-
 
 			// get image url
 			$pattern = "/<img.+src=\"(\S+)\"\s\w+=.+>/i";
