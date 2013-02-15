@@ -350,7 +350,9 @@
 			$content = explode("<div class=\"section\"><h2 class=\"section_heading\" id=\"section_2\">", $content);
 
 			// remove wikipedia images
-			$content = str_replace("<img alt=\"\" src=\"//upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/25px-Disambig-dark.svg.png\" width=\"25\" height=\"19\" srcset=\"//upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/38px-Disambig-dark.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/50px-Disambig-dark.svg.png 2x\">", "", $content[0]);
+			$content = preg_replace("<img alt=\".*\" src=\"//upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Disambig_gray.svg/25px-Disambig_gray.svg.png\" width=\"25\" height=\"19\" srcset=\"//upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Disambig_gray.svg/38px-Disambig_gray.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Disambig_gray.svg/50px-Disambig_gray.svg.png 2x\">", "", $content[0]);
+			$content = preg_replace("<img alt=\".*\" src=\"//upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/25px-Disambig-dark.svg.png\" width=\"25\" height=\"19\" srcset=\"//upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/38px-Disambig-dark.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Disambig-dark.svg/50px-Disambig-dark.svg.png 2x\">", "", $content);
+			$content = preg_replace("<img alt=\".*\" src=\"//upload.wikimedia.org/wikipedia/commons/thumb/6/63/Homoph_colour.svg/20px-Homoph_colour.svg.png\" width=\"20\" height=\"15\" srcset=\"//upload.wikimedia.org/wikipedia/commons/thumb/6/63/Homoph_colour.svg/30px-Homoph_colour.svg.png 1.5x, //upload.wikimedia.org/wikipedia/commons/thumb/6/63/Homoph_colour.svg/40px-Homoph_colour.svg.png 2x\">", "", $content);
 
 			// get image url
 			$pattern = "/<img.+src=\"(\S+)\"\s\w+=.+>/i";
