@@ -56,7 +56,7 @@ osmfilter temp.o5m --drop-relations --drop-ways --keep-nodes="wikipedia= wikiped
 rm temp.o5m
 osmconvert temp-olm.o5m --fake-lonlat --fake-author --out-pbf >temp.pbf
 rm temp-olm.o5m
-osmosis-0.40.1/bin/osmosis --rb file="temp.pbf" --s --wb file="old-olm.pbf" omitmetadata="true"
+osmosis-0.42/bin/osmosis --rb file="temp.pbf" --s --wb file="old-olm.pbf" omitmetadata="true"
 rm temp.pbf
 osmconvert old-olm.pbf --drop-author --out-osm >old-olm.osm
 rm old-olm.pbf
@@ -67,7 +67,7 @@ osmfilter temp.o5m --drop-relations --drop-ways --keep-nodes="amenity=bus_statio
 rm temp.o5m
 osmconvert temp-nextobjects.o5m --fake-lonlat --fake-author --out-pbf >temp.pbf
 rm temp-nextobjects.o5m
-osmosis-0.40.1/bin/osmosis --rb file="temp.pbf" --s --wb file="old-nextobjects.pbf" omitmetadata="true"
+osmosis-0.42/bin/osmosis --rb file="temp.pbf" --s --tt ../locales/timetables.xml --wb file="old-nextobjects.pbf" omitmetadata="true"
 rm temp.pbf
 osmconvert old-nextobjects.pbf --drop-author --out-osm >old-nextobjects.osm
 rm old-nextobjects.pbf

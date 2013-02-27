@@ -57,7 +57,8 @@
 				tags->'email' AS \"email1\",
 				tags->'contact:email' AS \"email2\",
 				tags->'addr:email' AS \"email3\",
-				tags->'image' AS \"image\"
+				tags->'image' AS \"image\",
+				tags->'timetable' AS \"timetable\"
 			FROM ".$type."s WHERE (id = ".$id.");";
 
 		$wikipediarequest = "SELECT
@@ -207,6 +208,8 @@
 				}
 				if ($wikipedia[1])
 					$output .= "<div class=\"wikipedia\">".$translations['captions']['wikipedia'].": <a target=\"_blank\" href=\"".$wikipedia[1]."\">".urldecode($wikipedia[2])."</a></div>\n";
+				if ($response['timetable'])
+					$output .= "<div class=\"wikipedia\">".$translations['captions']['wikipedia'].": <a target=\"_blank\" href=\"".$response['timetable']."\">".urldecode($response['timetable'])."</a></div>\n";	
 				$output .= "</div>\n";
 			}
 

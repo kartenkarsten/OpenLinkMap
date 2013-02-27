@@ -26,6 +26,11 @@ wget -O - http://m.m.i24.cc/osmupdate.c | cc -x c - -o osmupdate
 wget -O - http://m.m.i24.cc/osmfilter.c |cc -x c - -o osmfilter
 wget -O - http://m.m.i24.cc/osmconvert.c | cc -x c - -lz -o osmconvert
 
+mkdir osmosis
+cd osmosis
+wget -O - http://bretth.dev.openstreetmap.org/osmosis-build/osmosis-latest.tgz | tar xz
+cd ..
+
 
 # set up database
 su postgres
