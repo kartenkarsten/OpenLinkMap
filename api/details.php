@@ -150,7 +150,7 @@
 			$fax = getPhoneFaxDetail(array($response['fax1'], $response['fax2'], $response['fax3']));
 			$fax = $fax[1];
 
-			$mobilephone = getPhoneFaxDetail(array($element['mobilephone1'], $element['mobilephone2']));
+			$mobilephone = getPhoneFaxDetail(array($response['mobilephone1'], $response['mobilephone2']));
 			$mobilephonenumber = $mobilephone[0];
 			$mobilephone = $mobilephone[1];
 
