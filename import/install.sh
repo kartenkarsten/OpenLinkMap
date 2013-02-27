@@ -30,6 +30,7 @@ mkdir osmosis
 cd osmosis
 wget -O - http://bretth.dev.openstreetmap.org/osmosis-build/osmosis-latest.tgz | tar xz
 cd ..
+wget -O $(echo osmosis*)/lib/default/tagtransform.jar http://www.imn.htwk-leipzig.de/~cmuelle8/tagtransform.jar
 
 
 # set up database

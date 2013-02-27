@@ -64,12 +64,14 @@
 				<tag k="public_transport" v="stop_position"/>
 				<tag k="railway" v="stop"/>
 			</match>
-			<tag k="operator" v="(.*;|^)DB(;.*|$)"/>
-			<tag k="operator" v="(.*;|^)DB AG(;.*|$)"/>
-			<tag k="operator" v="(.*;|^)DB Netz AG(;.*|$)"/>
-			<tag k="operator" v="(.*;|^)DB Station &amp; Service AG(;.*|$)"/>
-			<tag k="operator" v="(.*;|^)DB Regio AG(;.*|$)"/>
-			<tag k="operator" v="(.*;|^)DB Regio(;.*|$)"/>
+			<match mode="or">
+				<tag k="operator" v="(.*;|^)DB(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)DB AG(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)DB Netz AG(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)DB Station &amp; Service AG(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)DB Regio AG(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)DB Regio(;.*|$)"/>
+			</match>
 		</match>
 		<find>
 			<tag k="uic_ref" v="([0-9]*)" match_id="uic_ref"/>
