@@ -318,7 +318,7 @@ function createMap()
 	map.addLayers([mapnikMap, hillMap, markerLayer, objectsLayer, ptLayer]);
 
 	// adding control features (clicking on markers) to objects overlay
-	eventHandlerClick = new OpenLayers.Control.SelectFeature(objectsLayer,
+	eventHandlerClick = new OpenLayers.Control.SelectFeature([objectsLayer, ptLayer],
 	{
 		multiple: true,
 		toggle: true,
@@ -327,19 +327,6 @@ function createMap()
 	});
 	map.addControl(eventHandlerClick);
 	eventHandlerClick.activate();
-
-	/*
-	// adding control features (clicking on markers) to public transport overlay
-	eventHandlerClick = new OpenLayers.Control.SelectFeature(ptLayer,
-	{
-		multiple: true,
-		toggle: true,
-		onSelect: showPtPopup,
-		onUnselect: hidePtPopup
-	});
-	map.addControl(eventHandlerClick);
-	eventHandlerClick.activate();
-	*/
 
 	// register moving of map
 	map.events.register('zoomend', map, mapZoomed);
@@ -546,7 +533,7 @@ function showPopup(feature)
 	var item = feature.cluster[0];
 
 	// create popup
-	item.popup = new OpenLayers.Popup.FramedCloud("popup", new OpenLayers.LonLat(item.geometry.x, item.geometry.y), null, loading, {size: new OpenLayers.Size(6,6),offset: new OpenLayers.Pixel(-3,-3)}, true, function(){eventHandlerClick.unselectAll(item);});
+	item.popup = new OpenLayers.Popup.FramedCloud("popup", new OpenLayers.LonLat(item.geometry.x, item.geometry.y), null, loading, {size: new OpenLayers.Size(6,6), offset: new OpenLayers.Pixel(-3,-3)}, true, function(){eventHandlerClick.unselectAll(item);});
 	map.addPopup(item.popup);
 
 	if (feature.cluster.length == 1)
@@ -567,7 +554,11 @@ function showPopup(feature)
 				else
 					map.removePopup(item.popup);
 			}
-		requestApi("details", "id="+item.attributes['id']+"&type="+item.attributes['type']+"&format=text&offset="+offset+"&lang="+params['lang'], handler);
+		// detect on which layer the clicked feature is
+		if (feature.layer.name == translations['object'])
+			requestApi("details", "id="+item.attributes['id']+"&type="+item.attributes['type']+"&format=text&offset="+offset+"&lang="+params['lang'], handler);
+		else
+			requestApi("ptdetails", "id="+item.attributes['id']+"&type="+item.attributes['type']+"&format=text&offset="+offset+"&lang="+params['lang'], handler);
 	}
 	else
 	{
@@ -596,65 +587,6 @@ function hidePopup(feature, popup)
 	map.removePopup(feature.cluster[0].popup);
 	feature.cluster[0].popup.destroy();
     feature.cluster[0].popup = null;
-}
-
-
-// add a popup to map and set content
-function showPtPopup(feature)
-{
-	// first remove all features of nearest objects
-	markerLayer.removeAllFeatures();
-	var item = feature.cluster[0];
-
-	// create popup
-	item.popup = new OpenLayers.Popup.FramedCloud("popup", new OpenLayers.LonLat(item.geometry.x, item.geometry.y), null, loading, {size: new OpenLayers.Size(6,6),offset: new OpenLayers.Pixel(-3,-3)}, true, function(){eventHandlerClick.unselectAll(item);});
-	map.addPopup(item.popup);
-
-	if (feature.cluster.length == 1)
-	{
-		// load popup contents
-		var handler = function(request)
-			{
-				var content = request.responseText;
-
-				if (content != "NULL")
-				{
-					item.popup.position = new OpenLayers.LonLat(item.geometry.x, item.geometry.y);
-					item.popup.setContentHTML(editPopupContent(content, item.popup.position.lat, item.popup.position.lon, item.attributes['type'], item.attributes['id']));
-					map.removePopup(item.popup);
-					map.addPopup(item.popup);
-					popupFullscreen.init();
-				}
-				else
-					map.removePopup(item.popup);
-			}
-		requestApi("ptdetails", "id="+item.attributes['id']+"&type="+item.attributes['type']+"&format=text&offset="+offset+"&lang="+params['lang'], handler);
-	}
-	else
-	{
-		cluster++;
-		item.popup.contentHTML = "<div id='clusterList"+cluster+"'>"+getNames(feature.cluster)+"</div>";
-
-		// update popup
-		map.removePopup(item.popup);
-		map.addPopup(item.popup);
-
-		// destroy cluster popup before creating selected popup
-		gEBI("clusterList"+cluster).onclick =
-			function()
-			{
-				map.removePopup(item.popup);
-			}
-	}
-}
-
-
-// removes given popup from map
-function hidePtPopup(feature, popup)
-{
-	// first remove all features of nearest objects
-	markerLayer.removeAllFeatures();
-	map.removePopup(feature.cluster[0].popup);
 }
 
 
