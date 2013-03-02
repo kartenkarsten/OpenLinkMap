@@ -8,7 +8,7 @@
 
 	See http://wiki.openstreetmap.org/wiki/Osmosis/TagTransform for the format specifications.
 
-	Supported timetables:
+	Supported operators:
 	* AT: ÖBB
 	* BE: De Lijn
 	* DE: Deutsche Bahn
@@ -31,7 +31,7 @@
 		</find>
 		<output>
 			<copy-all/>
-			<tag from_match="stop_ref" k="timetable" v="http://mijnlijn.be/{0}"/>
+			<tag from_match="stop_ref" k="departures" v="http://mijnlijn.be/{0}"/>
 		</output>
 	</translation>
 	<translation>
@@ -51,7 +51,7 @@
 		</find>
 		<output>
 			<copy-all/>
-			<tag from_match="uic_ref" k="timetable" v="http://fahrplan.oebb.at/bin/stboard.exe/dn?L=vs_liveticker&amp;boardType=dep&amp;tickerID=dep&amp;start=yes&amp;eqstops=true&amp;input={0}"/>
+			<tag from_match="uic_ref" k="departures" v="http://fahrplan.oebb.at/bin/stboard.exe/dn?L=vs_liveticker&amp;boardType=dep&amp;tickerID=dep&amp;start=yes&amp;eqstops=true&amp;input={0}"/>
 		</output>
 	</translation>
 	<translation>
@@ -78,7 +78,7 @@
 		</find>
 		<output>
 			<copy-all/>
-			<tag from_match="uic_ref" k="timetable" v="http://mobile.bahn.de/bin/mobil/bhftafel.exe/dox?country=DEU&amp;rt=1&amp;use_realtime_filter=1&amp;productsFilter=1111111111000000&amp;boardType=Abfahrt&amp;start=Suchen&amp;input={0}"/>
+			<tag from_match="uic_ref" k="departures" v="http://mobile.bahn.de/bin/mobil/bhftafel.exe/dox?country=DEU&amp;rt=1&amp;use_realtime_filter=1&amp;productsFilter=1111111111000000&amp;boardType=Abfahrt&amp;start=Suchen&amp;input={0}"/>
 		</output>
 	</translation>
 </translations>

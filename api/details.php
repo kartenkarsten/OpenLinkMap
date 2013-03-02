@@ -138,9 +138,9 @@
 			if ($name[0] == "")
 			{
 				$tags = getTags($db, $id, $type);
-				foreach ($tags as $tag)
-					if ($translations['tags'][$tag[0]][$tag[1]] != "")
-						$name[0] = $translations['tags'][$tag[0]][$tag[1]];
+				foreach ($tags as $key => $value)
+					if ($translations['tags'][$key][$value] != "")
+						$name[0] = $translations['tags'][$key][$value];
 			}
 
 			$phone = getPhoneFaxDetail(array($response['phone1'], $response['phone2'], $response['phone3']));

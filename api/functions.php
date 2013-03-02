@@ -98,10 +98,8 @@
 
 		// choose most matching language from available langs
 		foreach ($langlist as $value)
-		{
 			if (in_array($value, $langs))
 				return $value;
-		}
 
 		// if no matching language could be found, choose english
 		return "en";
@@ -474,7 +472,7 @@
 		{
 			$response = requestDetails("SELECT ST_X(geom), ST_Y(geom), id
 											FROM ".$type."s
-											WHERE geom && ST_SetSRID(ST_MakeBox2D(ST_Point(".$bbox[0].",".$bbox[1]."), ST_Point(".$bbox[2].",".$bbox[3].")), 4326) AND (tags->'highway'='bus_stop' OR tags->'amenity'='bus_station' OR tags->'railway'='station' OR tags->'railway'='halt' OR tags->'railway'='tram_stop');", $connection);
+											WHERE geom && ST_SetSRID(ST_MakeBox2D(ST_Point(".$bbox[0].",".$bbox[1]."), ST_Point(".$bbox[2].",".$bbox[3].")), 4326) AND (tags->'highway'='bus_stop' OR tags->'amenity'='bus_station' OR tags->'railway'='station' OR tags->'railway'='halt' OR tags->'railway'='tram_stop') AND (tags ? 'name');", $connection);
 			// putting out the results
 			if ($response)
 			{
@@ -644,18 +642,17 @@
 		// if there is no connection
 		if (!$connection)
 			exit;
-
 		$response = requestDetails($request, $connection);
-
 		pg_close($connection);
 
 		if ($response)
 		{
-			$temp = explode("\", \"", $response[0]['tags']);
+			$text = substr($response[0]['tags'], 1, -1);
+			$temp = explode("\", \"", $text);
 			for ($i=1; $i<count($temp); $i++)
 			{
 				$tag = explode("\"=>\"", $temp[$i]);
-				$tags[$i-1] = array($tag[0], $tag[1]);
+				$tags[$tag[0]] = $tag[1];
 			}
 			return $tags;
 		}
@@ -1192,5 +1189,130 @@
 			return "http://commons.wikimedia.org/wiki/special:filepath/".substr($url, 40);
 		else
 			return $url;
+	}
+
+
+	// apply tag-transformation-file on hstore-tags-field
+	function tagTransform($filename, $tags, $osmtype)
+	{
+		$results = array();
+
+		if (file_exists($filename))
+   			$xml = simplexml_load_file($filename);
+		else
+    		reportError("Could not open file: ".$filename);
+
+		foreach ($xml->translation as $translation)
+		{
+			$regexmatches = array();
+			if ($translation->match != false)
+				if (!tagsMatch($translation->match, $tags, $regexmatches, $osmtype))
+					continue;
+
+			if ($translation->find != false)
+				foreach ($translation->find->children() as $find)
+					$regexmatches[(string)$find['match_id']] = tagMatch($find['k'], $find['v'], $tags);
+
+			if ($translation->output != false)
+			{
+				foreach ($translation->output->children() as $output)
+				{
+					$type = $output->getName();
+					if ($type == "copy-all")
+						$results = $tags;
+					else if ($type == "copy-unmatched")
+					{
+						$results = $tags;
+						foreach ($regexmatches as $regexmatch)
+							if ($results[$regexmatch[0][0]] == $regexmatch[1][0])
+								unset($results[$regexmatch[0][0]]);
+					}
+					else if ($type == "copy-matched")
+					{
+						$results = $regexmatches;
+						foreach ($regexmatches as $regexmatch)
+							$results[$regexmatch[0][0]] == $regexmatch[1][0];
+					}
+					else if ($type == "tag")
+					{
+						if (($regexmatches[(string)$output['from_match']]) && ((string)$output['from_match']!=""))
+						{
+							for ($i=0; $i<count($regexmatches[(string)$output['from_match']][0]); $i++)
+							{
+								$newKey = preg_replace('/\{'.$i.'\}/', $regexmatches[(string)$output['from_match']][0][$i], (string) $output['k']);
+								$newValue = preg_replace('/\{'.$i.'\}/', $regexmatches[(string)$output['from_match']][1][$i], (string) $output['v']);
+							}
+							$results[$newKey] = $newValue;
+						}
+						else
+							$results[$output['k']] = $output['v'];
+					}
+				}
+			}
+			return $results;
+		}
+		return $tags;
+	}
+
+
+	// returns true, if xml-element "match" matches the given tags
+	function tagsMatch($matches, $tags, $regexmatches, $osmtype)
+	{
+		if (($osmtype != $matches['type']) && ($matches['type'] != ""))
+			return false;
+		
+		foreach ($matches->children() as $match)
+		{
+			$type = $match->getName();
+			if ($type == "tag")
+			{
+				$tagmatch = tagMatch($match['k'], $match['v'], $tags);
+				$regexmatches[$match['match_id']] = $tagmatch;
+				if (($matches['mode'] == "or") && (gettype($tagmatch) == "array"))
+					$condition = true;
+				else if (($matches['mode'] == "and") || !$matches['mode'])
+					$condition = $condition && (gettype($tagmatch) == "array");
+			}
+			else if ($type == "notag")
+			{
+				$notagmatch = !tagMatch($match['k'], $match['v'], $tags);
+				$regexmatches[$match['match_id']] = $notagmatch;
+				if (($matches['mode'] == "or") && (gettype($tagmatch) != "array"))
+					$condition = true;
+				else if (($matches['mode'] == "and") || !$matches['mode'])
+					$condition = $condition && (gettype($notagmatch) != "array");
+			}
+			else if ($type == "match")
+			{
+				$tagsmatch = tagsMatch($match, $tags, $regexmatches, $osmtype);			
+				if ($matches['mode'] == "or")
+				{
+					if (!$condition)
+						$condition = $tagsmatch;
+					else
+						$condition = $condition || $tagsmatch;
+				}
+				else if (($matches['mode'] == "and") || !$matches['mode'])
+				{
+					if (!$condition)
+						$condition = $tagsmatch;
+					else
+						$condition = $condition && $tagsmatch;
+				}
+			}
+		}
+		return $condition;
+	}
+
+
+	// returns regex matches, if regex expressions for key and value match at least one of the given tags, otherwise false is returned
+	function tagMatch($key, $value, $tags)
+	{
+		foreach ($tags as $k => $v)
+		{
+			if (preg_match('/'.$key.'/', $k, $keyMatch) && preg_match('/'.$value.'/', $v, $valueMatch))
+				return array($keyMatch, $valueMatch);
+		}
+		return false;
 	}
 ?>

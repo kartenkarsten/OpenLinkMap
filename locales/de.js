@@ -32,6 +32,7 @@ var translations =
 	"hillshading" : "Höhenprofil",
 	"object" : "POI-Details",
 	"marker" : "Markierungen",
+	"publictransport" : "Öffentlicher Verkehr",
 	"searchresults" : "Suchergebnisse",
 	"routing" : "Route",
 	"searchoption" : "Nur im aktuellen Kartenausschnitt suchen",

@@ -7,7 +7,7 @@
 
 
 # working directory, please change
-cd /home/www/sites/194.245.35.149/site/import
+cd ~/import
 PATH="$PATH:/home/www/sites/194.245.35.149/site/import/bin"
 export JAVACMD_OPTIONS=-Xmx2800M
 
@@ -59,7 +59,7 @@ osmfilter temp.o5m --drop-relations --drop-ways --keep-nodes="amenity=bus_statio
 rm temp.o5m
 osmconvert temp-nextobjects.o5m --fake-lonlat --fake-author --out-pbf >temp.pbf
 rm temp-nextobjects.o5m
-osmosis-0.42/bin/osmosis --rb file="temp.pbf" --s --tt ../locales/timetables.xml --wb file="nextobjects.pbf" omitmetadata="true"
+osmosis-0.42/bin/osmosis --rb file="temp.pbf" --s --wb file="nextobjects.pbf" omitmetadata="true"
 rm temp.pbf
 osmconvert nextobjects.pbf --drop-author --out-o5m >nextobjects.o5m
 rm nextobjects.pbf

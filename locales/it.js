@@ -34,6 +34,7 @@ var translations =
 	"hillshading" : "Ombreggiatura rilievi",
 	"object" : "Dettagli POI",
 	"marker" : "Marcatori",
+	"publictransport" : "Trasporto pubblico",
 	"searchresults" : "Risultati della ricerca",
 	"routing" : "Route",
 	"searchoption" : "Cercare solo nella mappa visualizzata",

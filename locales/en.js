@@ -32,6 +32,7 @@ var translations =
 	"hillshading" : "Hillshading",
 	"object" : "POI-Details",
 	"marker" : "Marker",
+	"publictransport" : "Public transport",
 	"searchresults" : "Search results",
 	"routing" : "Route",
 	"searchoption" : "Search only in the current map view",

@@ -32,6 +32,7 @@ var translations =
 	"hillshading" : "陰影処理",
 	"object" : "POIの詳細",
 	"marker" : "マーカー",
+	"publictransport" : "大規模交通",
 	"searchresults" : "検索結果",
 	"routing" : "ルート",
 	"searchoption" : "現在のマップビュー内のみを検索",

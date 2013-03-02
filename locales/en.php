@@ -108,7 +108,8 @@
 			"copyrightandbig" => "License, author, original page...",
 			"unnamed" => "without name",
 			"nojavascriptheader" => "JavaScript is not activated.",
-			"nojavascripttext" => "JavaScript is needed to show the map and run this website. Please turn on JavaScript in your browser settings."
+			"nojavascripttext" => "JavaScript is needed to show the map and run this website. Please turn on JavaScript in your browser settings.",
+			"departures" => "Realtime departures"
 		),
 		"date" => array(
 			"seconds" => "Seconds",

@@ -110,7 +110,8 @@
 			"copyrightandbig" => "Licenza, autore, pagina originale...",
 			"unnamed" => "senza nome",
 			"nojavascriptheader" => "JavaScript non è abilitato.",
-			"nojavascripttext" => "JavaScript è richiesto per la presentazione della pagina. si prega di abilitare javascript nel browser."
+			"nojavascripttext" => "JavaScript è richiesto per la presentazione della pagina. si prega di abilitare javascript nel browser.",
+			"departures" => "Tempo reale delle partenze"
 		),
 		"date" => array(
 			"seconds" => "secondi",

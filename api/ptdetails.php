@@ -20,7 +20,6 @@
 
 	date_default_timezone_set('UTC');
 
-
 	// protection of sql injections
 	if (!isValidType($type) || !isValidId($id))
 	{
@@ -42,25 +41,6 @@
 		global $format, $callback;
 
 		// request
-		$request = "SELECT
-				tags->'phone' AS \"phone1\",
-				tags->'contact:phone' AS \"phone2\",
-				tags->'addr:phone' AS \"phone3\",
-				tags->'fax' AS \"fax1\",
-				tags->'contact:fax' AS \"fax2\",
-				tags->'addr:fax' AS \"fax3\",
-				tags->'website' AS \"website1\",
-				tags->'url' AS \"website2\",
-				tags->'url:official' AS \"website3\",
-				tags->'contact:website' AS \"website4\",
-				tags->'operator' AS \"operator\",
-				tags->'email' AS \"email1\",
-				tags->'contact:email' AS \"email2\",
-				tags->'addr:email' AS \"email3\",
-				tags->'image' AS \"image\",
-				tags->'timetable' AS \"timetable\"
-			FROM ".$type."s WHERE (id = ".$id.");";
-
 		$wikipediarequest = "SELECT
 								foo.keys, foo.values
 							FROM (
@@ -89,20 +69,21 @@
 		if (!$connection)
 			exit;
 
-		$response = requestDetails($request, $connection);
 		$wikipediaresponse = requestDetails($wikipediarequest, $connection);
 		$nameresponse = requestDetails($namerequest, $connection);
 
 		pg_close($connection);
 
+		$response = tagTransform("../locales/timetables.xml", getTags($ptdb, $id, $type), $type);
+
 		if ($response)
 		{
 			if ($format == "text")
-				echo textDetailsOut($response[0], $nameresponse, $wikipediaresponse, $langs, $offset);
+				echo textDetailsOut($response, $nameresponse, $wikipediaresponse, $langs, $offset);
 			else if ($format == "json")
-				echo jsonDetailsOut($response[0], $nameresponse, $wikipediaresponse, $langs, $offset, $id, $type, $callback);
+				echo jsonDetailsOut($response, $nameresponse, $wikipediaresponse, $langs, $offset, $id, $type, $callback);
 			else
-				echo xmlDetailsOut($response[0], $nameresponse, $wikipediaresponse, $langs, $offset, $id, $type);
+				echo xmlDetailsOut($response, $nameresponse, $wikipediaresponse, $langs, $offset, $id, $type);
 			return true;
 		}
 		else
@@ -128,33 +109,18 @@
 			// if no name is set, use the poi type as name instead
 			if ($name[0] == "")
 			{
-				$tags = getTags($ptdb, $id, $type);
-				foreach ($tags as $tag)
-					if ($translations['tags'][$tag[0]][$tag[1]] != "")
-						$name[0] = $translations['tags'][$tag[0]][$tag[1]];
+				foreach ($response as $key => $value)
+					if ($translations['tags'][$key][$value] != "")
+						$name[0] = $translations['tags'][$key][$value];
 			}
 
-			$phone = getPhoneFaxDetail(array($response['phone1'], $response['phone2'], $response['phone3']));
-			$phonenumber = $phone[0];
-			$phone = $phone[1];
-
-			$fax = getPhoneFaxDetail(array($response['fax1'], $response['fax2'], $response['fax3']));
-			$fax = $fax[1];
-
-			$mobilephone = getPhoneFaxDetail(array($element['mobilephone1'], $element['mobilephone2']));
-			$mobilephonenumber = $mobilephone[0];
-			$mobilephone = $mobilephone[1];
-
-			$website = getWebsiteDetail(array($response['website1'], $response['website2'], $response['website3'], $response['website4']));
-
-			$email = getMailDetail(array($response['email1'], $response['email2'], $response['email3']));
+			$website = getWebsiteDetail(array($response['website'], $response['url'], $response['url:official'], $response['contact:website']));
 
 			// get wikipedia link and make translation
 			if ($wikipediaresponse)
 				$wikipedia = getWikipediaDetail($langs, $wikipediaresponse);
 
-			$openinghours = getOpeninghoursDetail($response['openinghours']);
-			$servicetimes = getOpeninghoursDetail($response['servicetimes']);
+			$departures = parse_url(urldecode($response['departures']));
 
 			// printing popup details
 
@@ -179,23 +145,8 @@
 				$output .= "</div>\n";
 			}
 
-			// contact information
-			if ($phone || $fax || $mobilephone || $email)
-			{
-				$output .= "<div class=\"contact\">\n";
-				if ($phone)
-					$output .= "<div class=\"tel\"><span class=\"type\">".$translations['captions']['phone']."</span>: <a class=\"value\" href=\"callto:".$phonenumber."\">".$phone."</a></div>\n";
-				if ($fax)
-					$output .= "<div class=\"tel\"><span class=\"type\">".$translations['captions']['fax']."</span>: <span class=\"value\">".$fax."</span></div>\n";
-				if ($mobilephone)
-					$output .= "<div class=\"tel\"><span class=\"type\">".$translations['captions']['mobile']."</span>: <span class=\"value\" href=\"callto:".$mobilephonenumber."\">".$mobilephone."</span></div>\n";
-				if ($email)
-					$output .= "<div>".$translations['captions']['email'].": <a class=\"email\" href=\"mailto:".$email."\">".$email."</a></div>\n";
-				$output .= "</div>\n";
-			}
-
 			// website and wikipedia links
-			if ($website[0] || $wikipedia[0])
+			if ($website[0] || $wikipedia[0] || $response['departures'])
 			{
 				$output .= "<div class=\"web\">\n";
 				if ($website[0])
@@ -208,8 +159,8 @@
 				}
 				if ($wikipedia[1])
 					$output .= "<div class=\"wikipedia\">".$translations['captions']['wikipedia'].": <a target=\"_blank\" href=\"".$wikipedia[1]."\">".urldecode($wikipedia[2])."</a></div>\n";
-				if ($response['timetable'])
-					$output .= "<div class=\"wikipedia\">".$translations['captions']['wikipedia'].": <a target=\"_blank\" href=\"".$response['timetable']."\">".urldecode($response['timetable'])."</a></div>\n";	
+				if ($response['departures'])
+					$output .= "<div class=\"departures\">".$translations['captions']['departures'].": <a target=\"_blank\" href=\"".$response['departures']."\">".$departures['host']."</a></div>\n";
 				$output .= "</div>\n";
 			}
 
@@ -217,39 +168,10 @@
 			if ($response['operator'])
 				$output .= "<div class=\"operator\">".$translations['captions']['operator'].": ".$response['operator']."</div>\n";
 
-			// opening hours
-			if ($openinghours)
-			{
-				$output .= "<div class=\"openinghours\">".$translations['captions']['opening'].":<br />".$openinghours;
-				if (isOpen247($response['openinghours']))
-					$output .= "<br /><b class=\"open\">".$translations['opening']['alwaysopen']."</b>";
-				else if (isPoiOpen($response['openinghours'], $offset))
-					$output .= "<br /><b class=\"open\">".$translations['opening']['open']."</b>";
-				else if (isInHoliday($response['openinghours'], $offset))
-					$output .= "<br /><b class=\"maybeopen\">".$translations['opening']['maybeopen']."</b>";
-				else
-					$output .= "<br /><b class=\"closed\">".$translations['opening']['closed']."</b>";
-				$output .= "</div>\n";
-			}
-
-			// service times
-			if ($servicetimes)
-			{
-				$output .= "<div class=\"servicetimes\">".$translations['captions']['service'].":<br />".$servicetimes;
-				if (isPoiOpen($response['openinghours'], $offset))
-					$output .= "<br /><b class=\"open\">".$translations['opening']['open']."</b>";
-				else if (isInHoliday($response['servicetimes'], $offset))
-					$output .= "<br /><b class=\"maybeopen\">".$translations['opening']['maybeopen']."</b>";
-				else
-					$output .= "<br /><b class=\"closed\">".$translations['opening']['closed']."</b>";
-				$output .= "</div>\n";
-			}
-
 			$output .= "</div>\n";
 
 			return $output;
 		}
-
 		else
 			return false;
 	}
@@ -264,25 +186,11 @@
 
 			$name = getNameDetail($langs, $nameresponse);
 
-			$phone = getPhoneFaxDetail(array($response['phone1'], $response['phone2'], $response['phone3']));
-			$phone = $phone[1];
-
-			$fax = getPhoneFaxDetail(array($response['fax1'], $response['fax2'], $response['fax3']));
-			$fax = $fax[1];
-
-			$mobilephone = getPhoneFaxDetail(array($element['mobilephone1'], $element['mobilephone2']));
-			$mobilephone = $mobilephone[1];
-
-			$website = getWebsiteDetail(array($response['website1'], $response['website2'], $response['website3'], $response['website4']));
-
-			$email = getMailDetail(array($response['email1'], $response['email2'], $response['email3']));
+			$website = getWebsiteDetail(array($response['website'], $response['url'], $response['url:official'], $response['contact:website']));
 
 			// get wikipedia link and make translation
 			if ($wikipediaresponse)
 				$wikipedia = getWikipediaDetail($langs, $wikipediaresponse);
-
-			$openinghours = getOpeninghoursDetail($response['openinghours']);
-			$servicetimes = getOpeninghoursDetail($response['servicetimes']);
 
 			// printing popup details
 			if ($name)
@@ -291,21 +199,6 @@
 				if ($name[0])
 					$output .= " lang=\"".$name[1]."\"";
 				$output .= ">".$name[0]."</name>\n";
-			}
-
-			// contact information
-			if ($phone || $fax || $mobilephone || $email)
-			{
-				$output .= "<contact>\n";
-				if ($phone)
-					$output .= "<phone>".$phone."</phone>\n";
-				if ($fax)
-					$output .= "<fax>".$fax."</fax>\n";
-				if ($mobilephone)
-					$output .= "<mobilephone>".$mobilephone."</mobilephone>\n";
-				if ($email)
-					$output .= "<email>".$email."</email>\n";
-				$output .= "</contact>\n";
 			}
 
 			// website and wikipedia links
@@ -323,35 +216,9 @@
 			if ($response['operator'])
 				$output .= "<operator>".$response['operator']."</operator>\n";
 
-			// opening hours
-			if ($openinghours)
-			{
-				$output .= "<openinghours state=\"";
-
-				if (isPoiOpen($response['openinghours'], $offset))
-					$output .= "open";
-				else if (isInHoliday($response['openinghours'], $offset))
-					$output .= "maybeopen";
-				else
-					$output .= "closed";
-
-				$output .= "\">".$response['openinghours']."</openinghours>\n";
-			}
-
-			// service times
-			if ($servicetimes)
-			{
-				$output .= "<servicetimes state=\"";
-
-				if (isPoiOpen($response['servicetimes'], $offset))
-					$output .= "open";
-				else if (isInHoliday($response['servicetimes'], $offset))
-					$output .= "maybeopen";
-				else
-					$output .= "closed";
-
-				$output .= "\">".$response['servicetimes']."</servicetimes>\n";
-			}
+			// timetable departures
+			if ($response['departures'])
+				$output .= "<departures>".$response['departures']."</departures>\n";
 
 			// image, only images from wikimedia are supported
 			if (substr($response['image'], 14, 14) == "wikimedia.org/")
@@ -386,25 +253,11 @@
 		{
 			$name = getNameDetail($langs, $nameresponse);
 
-			$phone = getPhoneFaxDetail(array($response['phone1'], $response['phone2'], $response['phone3']));
-			$phone = $phone[1];
-
-			$fax = getPhoneFaxDetail(array($response['fax1'], $response['fax2'], $response['fax3']));
-			$fax = $fax[1];
-
-			$mobilephone = getPhoneFaxDetail(array($element['mobilephone1'], $element['mobilephone2']));
-			$mobilephone = $mobilephone[1];
-
 			$website = getWebsiteDetail(array($response['website1'], $response['website2'], $response['website3'], $response['website4']));
-
-			$email = getMailDetail(array($response['email1'], $response['email2'], $response['email3']));
 
 			// get wikipedia link and make translation
 			if ($wikipediaresponse)
 				$wikipedia = getWikipediaDetail($langs, $wikipediaresponse);
-
-			$openinghours = getOpeninghoursDetail($response['openinghours']);
-			$servicetimes = getOpeninghoursDetail($response['servicetimes']);
 
 			$data = array(
 				'id' => (int)$id,
@@ -420,16 +273,6 @@
 					$data['name'] = $name[0];
 			}
 
-			// contact information
-			if ($phone)
-				$data['phone'] = $phone;
-			if ($fax)
-				$data['fax'] = $fax;
-			if ($mobilephone)
-				$data['mobilephone'] = $mobilephone;
-			if ($email)
-				$data['email'] = $email;
-
 			// website and wikipedia links
 			if ($website[0])
 				$data['website'] = $website[0];
@@ -440,31 +283,9 @@
 			if ($response['operator'])
 				$data['operator'] = $response['operator'];
 
-			// opening hours
-			if ($openinghours)
-			{
-				if (isPoiOpen($response['openinghours'], $offset))
-					$state .= "open";
-				else if (isInHoliday($response['openinghours'], $offset))
-					$state .= "maybeopen";
-				else
-					$state .= "closed";
-
-				$data['openinghours'] = array('state' => $state, 'openinghours' => $response['openinghours']);
-			}
-
-			// service times
-			if ($servicetimes)
-			{
-				if (isPoiOpen($response['servicetimes'], $offset))
-					$state .= "open";
-				else if (isInHoliday($response['servicetimes'], $offset))
-					$state .= "maybeopen";
-				else
-					$state .= "closed";
-
-				$data['servicetimes'] = array('state' => $state, 'servicetimes' => $response['servicetimes']);
-			}
+			// timetable departures
+			if ($response['departures'])
+				$data['departures'] = $response['departures'];
 
 			// image, only images from wikimedia are supported
 			if (substr($response['image'], 14, 14) == "wikimedia.org/")

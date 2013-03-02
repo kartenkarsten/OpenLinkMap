@@ -108,7 +108,8 @@
 			"copyrightandbig" => "License, auteur, page originale...",
 			"unnamed" => "sans nom",
 			"nojavascriptheader" => "Javascript n\'est pas activé.",
-			"nojavascripttext" => "JavaScript est nécessaire pour cette page. S\'il vous plaît activer JavaScript dans votre navigateur."
+			"nojavascripttext" => "JavaScript est nécessaire pour cette page. S\'il vous plaît activer JavaScript dans votre navigateur.",
+			"departures" => "Départs en temps réel"
 		),
 		"date" => array(
 			"seconds" => "Secondes",

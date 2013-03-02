@@ -108,7 +108,8 @@
 			"copyrightandbig" => "Lizenz, Autor, Originalseite...",
 			"unnamed" => "ohne Namen",
 			"nojavascriptheader" => "JavaScript ist nicht aktiviert.",
-			"nojavascripttext" => "JavaScript wird für diese Seite benötigt. Bitte schalten sie JavaScript in ihrem Browser ein."
+			"nojavascripttext" => "JavaScript wird für diese Seite benötigt. Bitte schalten sie JavaScript in ihrem Browser ein.",
+			"departures" => "Echtzeit-Abfahrtsmonitor"
 		),
 		"date" => array(
 			"seconds" => "Sekunden",

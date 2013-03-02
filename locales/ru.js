@@ -34,6 +34,7 @@ var translations =
 	"hillshading" : "Карта высот",
 	"object" : "POI-информация",
 	"marker" : "Метка",
+	"publictransport" : "Общественным транспортом",
 	"searchresults" : "Результаты поиска",
 	"routing" : "Маршрут",
 	"searchoption" : "Искать только на видимом участке карты",

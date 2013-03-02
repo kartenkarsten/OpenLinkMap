@@ -110,7 +110,8 @@
 			"copyrightandbig" => "Лицензия, автор, оригинальная страница...",
 			"unnamed" => "Без имени",
 			"nojavascriptheader" => "JavaScript не активирован.",
-			"nojavascripttext" => "Для отображения карты и запуска сайта необходим JavaScript. Пожалуйста, включите JavaScript в настройках вашего браузера."
+			"nojavascripttext" => "Для отображения карты и запуска сайта необходим JavaScript. Пожалуйста, включите JavaScript в настройках вашего браузера.",
+			"departures" => "Realtime departures"
 		),
 		"date" => array(//fixme: russian/ukr translations have different forms for plural: 0 - plural5(tags seconds5, minutes5...), 1 - singular (tag second...), 2-4 - plural(tags seconds, minutes...), 5-20 - plural5, 21 - singular, 22-24 - plural, 25-30 - plural5, etc.
 			"seconds" => "Секунды",

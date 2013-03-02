@@ -272,7 +272,7 @@ function createMap()
 		'select': ptStyleSelected
 	});
 	// adding public transport overlay
-	ptLayer = new OpenLayers.Layer.Vector("Public transport",
+	ptLayer = new OpenLayers.Layer.Vector(translations['publictransport'],
 	{
 		projection: wgs84,
 		maxResolution: 10.0,
@@ -286,7 +286,7 @@ function createMap()
 		],
 		protocol: new OpenLayers.Protocol.HTTP(
 		{
-			url: root+'api/pt.php',
+			url: root+'api/ptlist.php',
 			format: new OpenLayers.Format.OLM()
 		})
 	});
@@ -536,7 +536,7 @@ function showPopup(feature)
 	item.popup = new OpenLayers.Popup.FramedCloud("popup", new OpenLayers.LonLat(item.geometry.x, item.geometry.y), null, loading, {size: new OpenLayers.Size(6,6), offset: new OpenLayers.Pixel(-3,-3)}, true, function(){eventHandlerClick.unselectAll(item);});
 	map.addPopup(item.popup);
 
-	if (feature.cluster.length == 1)
+	if (feature.cluster.length == 1 || feature.layer.name != translations['object'])
 	{
 		// load popup contents
 		var handler = function(request)
@@ -563,7 +563,8 @@ function showPopup(feature)
 	else
 	{
 		cluster++;
-		item.popup.contentHTML = "<div id='clusterList"+cluster+"'>"+getNames(feature.cluster)+"</div>";
+
+		item.popup.contentHTML = "<div id='clusterList"+cluster+"'>"+getNames("name", feature.cluster)+"</div>";	
 
 		// update popup
 		map.removePopup(item.popup);

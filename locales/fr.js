@@ -32,6 +32,7 @@ var translations =
 	"hillshading" : "Terrain",
 	"object" : "Détails",
 	"marker" : "Marqueurs",
+	"publictransport" : "Transports publics",
 	"searchresults" : "Résultats de la recherche",
 	"routing" : "Route",
 	"searchoption" : "Chercher seulement dans la vue en cours",

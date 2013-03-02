@@ -108,7 +108,8 @@
 			"copyrightandbig" => "ライセンス, 作者, オリジナルのページ...",
 			"unnamed" => "名前無し",
 			"nojavascriptheader" => "JavaScript が無効です.",
-			"nojavascripttext" => "マップ表示とこのサイトの実行にはJavaScript が必要です. ブラウザ設定でJavaScript を有効にしてください."
+			"nojavascripttext" => "マップ表示とこのサイトの実行にはJavaScript が必要です. ブラウザ設定でJavaScript を有効にしてください.",
+			"departures" => "Realtime departures"
 		),
 		"date" => array(
 			"seconds" => "秒",
