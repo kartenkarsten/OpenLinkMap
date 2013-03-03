@@ -1239,13 +1239,13 @@
 						{
 							for ($i=0; $i<count($regexmatches[(string)$output['from_match']][0]); $i++)
 							{
-								$newKey = preg_replace('/\{'.$i.'\}/', $regexmatches[(string)$output['from_match']][0][$i], (string) $output['k']);
-								$newValue = preg_replace('/\{'.$i.'\}/', $regexmatches[(string)$output['from_match']][1][$i], (string) $output['v']);
+								$newKey = preg_replace('/\{'.$i.'\}/', $regexmatches[(string)$output['from_match']][0][$i], (string)$output['k']);
+								$newValue = preg_replace('/\{'.$i.'\}/', $regexmatches[(string)$output['from_match']][1][$i], (string)$output['v']);
 							}
 							$results[$newKey] = $newValue;
 						}
 						else
-							$results[$output['k']] = $output['v'];
+							$results[(string)$output['k']] = (string)$output['v'];
 					}
 				}
 			}
