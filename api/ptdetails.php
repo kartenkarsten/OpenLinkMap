@@ -74,7 +74,7 @@
 
 		pg_close($connection);
 
-		$response = tagTransform("../locales/timetables.xml", getTags($ptdb, $id, $type), $type);
+		$response = tagTransform("../locales/departures.xml", getTags($ptdb, $id, $type), $type);
 
 		if ($response)
 		{
