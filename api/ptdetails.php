@@ -134,7 +134,6 @@
 			elseif (getWikipediaImage($wikipedia[1]))
 			{
 				$image = getWikipediaImage($wikipedia[1]);
-
 				$output .= "<div id=\"loadingImage\"><img id=\"image\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($image)."\" /></div></a>\n";
 			}
 
@@ -167,6 +166,41 @@
 			// operator
 			if ($response['operator'])
 				$output .= "<div class=\"operator\">".$translations['captions']['operator'].": ".$response['operator']."</div>\n";
+
+			// shelter
+			if ($response['shelter'] == "yes")
+				$output .= "<div class=\"shelter\">".$translations['captions']['shelter']."</div>\n";
+			else if ($response['shelter'] == "no")
+				$output .= "<div class=\"shelter\">".$translations['captions']['noshelter']."</div>\n";
+			// bench
+			if ($response['bench'] == "yes")
+				$output .= "<div class=\"bench\">".$translations['captions']['bench']."</div>\n";
+			else if ($response['shelter'] == "no")
+				$output .= "<div class=\"bench\">".$translations['captions']['nobench']."</div>\n";
+			// bin
+			if ($response['bin'] == "yes")
+				$output .= "<div class=\"bin\">".$translations['captions']['bin']."</div>\n";
+			else if ($response['bin'] == "no")
+				$output .= "<div class=\"bin\">".$translations['captions']['nobin']."</div>\n";
+
+			// tactile paving
+			if ($response['tactile_paving'] == "yes")
+				$output .= "<div class=\"tactilepaving\">".$translations['captions']['tactilepaving']."</div>\n";
+			else if ($response['tactile_paving'] == "no")
+				$output .= "<div class=\"tactilepaving\">".$translations['captions']['notactilepaving']."</div>\n";
+			else if ($response['tactile_paving'] == "incorrect")
+				$output .= "<div class=\"tactilepaving\">".$translations['captions']['incorrecttactilepaving']."</div>\n";
+
+			// wheelchair
+			if ($response['wheelchair'])
+			{
+				if ($response['wheelchair'] == "yes")
+					$output .= "<div class=\"wheelchair\">".$translations['captions']['wheelchair']."</div>\n";
+				else if ($response['wheelchair'] == "no")
+					$output .= "<div class=\"wheelchair\">".$translations['captions']['wheelchairno']."</div>\n";
+				else if ($response['wheelchair'] == "limited")
+					$output .= "<div class=\"wheelchair\">".$translations['captions']['wheelchairlimited']."</div>\n";
+			}
 
 			$output .= "</div>\n";
 
@@ -219,6 +253,22 @@
 			// timetable departures
 			if ($response['departures'])
 				$output .= "<departures>".$response['departures']."</departures>\n";
+
+			// stop details
+			if ($response['shelter'])
+				$output .= "<shelter>".$response['shelter']."</shelter>\n";
+			if ($response['bench'])
+				$output .= "<bench>".$response['bench']."</bench>\n";
+			if ($response['bin'])
+				$output .= "<bin>".$response['bench']."</bin>\n";
+
+			// tactile paving
+			if ($response['tactile_paving'])
+				$output .= "<tactilepaving>".$response['tactile_paving']."</tactilepaving>\n";
+
+			// wheelchair
+			if ($response['wheelchair'])
+				$output .= "<wheelchair>".$response['wheelchair']."</wheelchair>\n";
 
 			// image, only images from wikimedia are supported
 			if (substr($response['image'], 14, 14) == "wikimedia.org/")
@@ -286,6 +336,22 @@
 			// timetable departures
 			if ($response['departures'])
 				$data['departures'] = $response['departures'];
+
+			// stop details
+			if ($response['shelter'])
+				$data['shelter'] = $response['shelter'];
+			if ($response['bench'])
+				$data['bench'] = $response['bench'];
+			if ($response['bin'])
+				$data['bin'] = $response['bin'];
+
+			// tactile paving
+			if ($response['tactile_paving'])
+				$data['tactile_paving'] = $response['tactile_paving'];
+
+			// wheelchair
+			if ($response['wheelchair'])
+				$data['wheelchair'] = $response['wheelchair'];
 
 			// image, only images from wikimedia are supported
 			if (substr($response['image'], 14, 14) == "wikimedia.org/")

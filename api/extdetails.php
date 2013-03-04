@@ -538,6 +538,7 @@
 				$output .= "</table>\n";
 				$output .= "</div>\n";
 			}
+
 			// wikipedia box
 			if ($wikipedia)
 			{

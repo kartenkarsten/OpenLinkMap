@@ -23,7 +23,7 @@
 			"fuel" => "ガソリンスタンド",
 			"gastro" => "飲食店",
 			"other" => "その他",
-			"geographic" => "Geographic",
+			"geographic" => "Geographic",				// TODO: needs translation
 			"accessibility" => "車椅子",
 			"publictransport" => "アクセシビリティ",
 			"cuisine" => "料理",
@@ -109,7 +109,16 @@
 			"unnamed" => "名前無し",
 			"nojavascriptheader" => "JavaScript が無効です.",
 			"nojavascripttext" => "マップ表示とこのサイトの実行にはJavaScript が必要です. ブラウザ設定でJavaScript を有効にしてください.",
-			"departures" => "Realtime departures"
+			"departures" => "Realtime departures",						// TODO: needs translation
+			"shelter" => "With shelter",								// TODO: needs translation
+			"noshelter" => "Without shelter",							// TODO: needs translation
+			"bench" => "With bench",									// TODO: needs translation
+			"nobench" => "Without bench",								// TODO: needs translation
+			"bin" => "With bin",										// TODO: needs translation
+			"nobin" => "Without bin",									// TODO: needs translation
+			"tactilepaving" => "Tactile paving",						// TODO: needs translation
+			"notactilepaving" => "No tactile paving",					// TODO: needs translation
+			"incorrecttactilepaving" => "Incorrect tactile paving"		// TODO: needs translation
 		),
 		"date" => array(
 			"seconds" => "秒",
@@ -138,7 +147,7 @@
 			"off" => "終了",
 			"ph" => "祭日",
 			"sh" => "学校休日",
-			"+" => "open ending",
+			"+" => "open ending",		// TODO: needs translation
 			"and" => "かつ",
 			"247" => "24時間無休",
 			"open" => "開店中",
@@ -549,8 +558,8 @@
 				"moor" => "荒地",
 				"mud" => "泥地",
 				"peak" => "山頂",
-				"reef" => "Reef",
-				"ridge" => "Ridge",
+				"reef" => "Reef",		// TODO: needs translation
+				"ridge" => "Ridge",		// TODO: needs translation
 				"river" => "川",
 				"rock" => "岩",
 				"sand" => "砂地",
@@ -590,7 +599,7 @@
 				"county" => "郡",
 				"farm" => "農園",
 				"hamlet" => "大字・町",
-				"house" => "House",
+				"house" => "House",				// TODO: needs translation
 				"island" => "島",
 				"islet" => "小島",
 				"locality" => "地名",
@@ -726,7 +735,7 @@
 				"alpine_hut" => "山小屋",
 				"artwork" => "芸術作品",
 				"attraction" => "アトラクション",
-				"bed_and_breakfast" => "Bed and breakfast",
+				"bed_and_breakfast" => "Bed and breakfast",		// TODO: needs translation
 				"camp_site" => "キャンプ場",
 				"caravan_site" => "オートキャンプ場",
 				"chalet" => "バンガロー",

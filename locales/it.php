@@ -111,7 +111,16 @@
 			"unnamed" => "senza nome",
 			"nojavascriptheader" => "JavaScript non è abilitato.",
 			"nojavascripttext" => "JavaScript è richiesto per la presentazione della pagina. si prega di abilitare javascript nel browser.",
-			"departures" => "Tempo reale delle partenze"
+			"departures" => "Tempo reale delle partenze",
+			"shelter" => "With shelter",								// TODO: needs translation
+			"noshelter" => "Without shelter",							// TODO: needs translation
+			"bench" => "With bench",									// TODO: needs translation
+			"nobench" => "Without bench",								// TODO: needs translation
+			"bin" => "With bin",										// TODO: needs translation
+			"nobin" => "Without bin",									// TODO: needs translation
+			"tactilepaving" => "Tactile paving",						// TODO: needs translation
+			"notactilepaving" => "No tactile paving",					// TODO: needs translation
+			"incorrecttactilepaving" => "Incorrect tactile paving"		// TODO: needs translation
 		),
 		"date" => array(
 			"seconds" => "secondi",

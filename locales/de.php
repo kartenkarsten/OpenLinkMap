@@ -109,7 +109,16 @@
 			"unnamed" => "ohne Namen",
 			"nojavascriptheader" => "JavaScript ist nicht aktiviert.",
 			"nojavascripttext" => "JavaScript wird für diese Seite benötigt. Bitte schalten sie JavaScript in ihrem Browser ein.",
-			"departures" => "Echtzeit-Abfahrtsmonitor"
+			"departures" => "Echtzeit-Abfahrtsmonitor",
+			"shelter" => "mit Wartehäuschen",
+			"noshelter" => "ohne Wartehäuschen",
+			"bench" => "mit Sitzbank",
+			"nobench" => "ohne Sitzbank",
+			"bin" => "mit Mülleimer",
+			"nobin" => "ohne Mülleimer",
+			"tactilepaving" => "Ertastbarer Untergrund",
+			"notactilepaving" => "Kein ertastbarer Untergrund",
+			"incorrecttactilepaving" => "Falscher ertastbarer Untergrund"
 		),
 		"date" => array(
 			"seconds" => "Sekunden",

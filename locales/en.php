@@ -109,7 +109,16 @@
 			"unnamed" => "without name",
 			"nojavascriptheader" => "JavaScript is not activated.",
 			"nojavascripttext" => "JavaScript is needed to show the map and run this website. Please turn on JavaScript in your browser settings.",
-			"departures" => "Realtime departures"
+			"departures" => "Realtime departures",
+			"shelter" => "With shelter",
+			"noshelter" => "Without shelter",
+			"bench" => "With bench",
+			"nobench" => "Without bench",
+			"bin" => "With wastebasket",
+			"nobin" => "Without wastebasket",
+			"tactilepaving" => "Tactile paving",
+			"notactilepaving" => "No tactile paving",
+			"incorrecttactilepaving" => "Incorrect tactile paving"
 		),
 		"date" => array(
 			"seconds" => "Seconds",
