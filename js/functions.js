@@ -546,7 +546,7 @@ function showPopup(feature)
 				if (content != "NULL")
 				{
 					item.popup.position = new OpenLayers.LonLat(item.geometry.x, item.geometry.y);
-					item.popup.setContentHTML(editPopupContent(content, item.popup.position.lat, item.popup.position.lon, item.attributes['type'], item.attributes['id']));
+					item.popup.setContentHTML(editPopupContent(content, item.popup.position.lat, item.popup.position.lon, item.attributes['type'], item.attributes['id'], true));
 					map.removePopup(item.popup);
 					map.addPopup(item.popup);
 					popupFullscreen.init();
@@ -554,11 +554,29 @@ function showPopup(feature)
 				else
 					map.removePopup(item.popup);
 			}
+
+		// load public transport popup contents
+		var ptHandler = function(request)
+			{
+				var content = request.responseText;
+
+				if (content != "NULL")
+				{
+					item.popup.position = new OpenLayers.LonLat(item.geometry.x, item.geometry.y);
+					item.popup.setContentHTML(editPopupContent(content, item.popup.position.lat, item.popup.position.lon, item.attributes['type'], item.attributes['id'], false));
+					map.removePopup(item.popup);
+					map.addPopup(item.popup);
+					popupFullscreen.init();
+				}
+				else
+					map.removePopup(item.popup);
+			}
+
 		// detect on which layer the clicked feature is
 		if (feature.layer.name == translations['object'])
 			requestApi("details", "id="+item.attributes['id']+"&type="+item.attributes['type']+"&format=text&offset="+offset+"&lang="+params['lang'], handler);
 		else
-			requestApi("ptdetails", "id="+item.attributes['id']+"&type="+item.attributes['type']+"&format=text&offset="+offset+"&lang="+params['lang'], handler);
+			requestApi("ptdetails", "id="+item.attributes['id']+"&type="+item.attributes['type']+"&format=text&offset="+offset+"&lang="+params['lang'], ptHandler);
 	}
 	else
 	{
@@ -684,7 +702,7 @@ function createPopup(id, type, lat, lon)
 			if (content != "NULL")
 			{
 				// set popup content
-				popup.setContentHTML(editPopupContent(content, popup.lonlat.lat, popup.lonlat.lon, type, id));
+				popup.setContentHTML(editPopupContent(content, popup.lonlat.lat, popup.lonlat.lon, type, id, true));
 				map.removePopup(popup);
 				map.addPopup(popup);
 				popupFullscreen.init();
@@ -697,7 +715,7 @@ function createPopup(id, type, lat, lon)
 
 
 // doing some edits on the popup content like adding links
-function editPopupContent(content, lat, lon, type, id)
+function editPopupContent(content, lat, lon, type, id, moreInfo)
 {
 	// get bbox of shown map
 	var bounds = map.getExtent().transform(map.getProjectionObject(), wgs84).toArray();
@@ -713,10 +731,10 @@ function editPopupContent(content, lat, lon, type, id)
 
 	// add some links to the bottom of a popup
 	content = '<table><tr><td>'+content+'</td></tr><tr><td>';
-	content +=
-		'<br /><small id="popupLinks">'+
-		'<b><a id="moreInfoLink" href="javascript:showMoreInfo('+id+',\''+type+'\', '+lat+', '+lon+')">'+translations['more']+' >></a></b>'+
-		'&nbsp;&nbsp;<a id="permalink" href="'+root+'?'+queryLatLonZoom(lat, lon, map.getZoom())+'&id='+id+'&type='+type;
+	content += '<br /><small id="popupLinks">';
+	if (moreInfo)
+		content += '<b><a id="moreInfoLink" href="javascript:showMoreInfo('+id+',\''+type+'\', '+lat+', '+lon+')">'+translations['more']+' >></a></b>&nbsp;&nbsp;';
+	content += '<a id="permalink" href="'+root+'?'+queryLatLonZoom(lat, lon, map.getZoom())+'&id='+id+'&type='+type;
 	// save language in permalink
 	if (params['lang'] != "")
 		content += '&lang='+params['lang'];
