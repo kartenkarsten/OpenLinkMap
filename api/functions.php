@@ -522,25 +522,33 @@
 	// returns latlon of given id and type
 	function getLatLon($id, $type)
 	{
+		global $db, $ptdb;
+
 		if ($id && $type)
 		{
-			$connection = connectToDatabase("olm");
-
-			// if there is no connection
+			$connection = connectToDatabase($db);
 			if (!$connection)
 				exit;
-
 			$query = "SELECT
 						id, ST_X(geom), ST_Y(geom)
 						FROM ".$type."s
 						WHERE (id = ".$id.");";
 			$response = requestDetails($query, $connection);
-
 			pg_close($connection);
 
-			if ($response)
-				foreach ($response as $element)
-					return array($element['st_x'], $element['st_y']);
+			if (!$response)
+			{
+				$connection = connectToDatabase($ptdb);
+				if (!$connection)
+					exit;
+				$response = requestDetails($query, $connection);
+				pg_close($connection);
+				if (!$response)
+					return false;
+			}
+
+			foreach ($response as $element)
+				return array($element['st_x'], $element['st_y']);
 		}
 
 		return false;

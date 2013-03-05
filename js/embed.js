@@ -181,13 +181,28 @@ function queryLatLonZoom(lat, lon, zoom)
 function showPopup(feature)
 {
 	// create popup
-	feature.popup = new OpenLayers.Popup.FramedCloud("popup", new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y), null, loading, {size: new OpenLayers.Size(6,6),offset: new OpenLayers.Pixel(-3,-3)}, true, function(){eventHandlerClick.unselectAll(feature);});
+	feature.popup = new OpenLayers.Popup.FramedCloud("popup", new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y), null, loading, {size: new OpenLayers.Size(6,6), offset: new OpenLayers.Pixel(-3,-3)}, true, function(){eventHandlerClick.unselectAll(feature);});
 	map.addPopup(feature.popup);
 
 	// load popup contents
 	var handler = function(request)
 	{
 		var content = request.responseText;
+
+		var ptHandler = function(request)
+		{
+			var content = request.responseText;
+
+			if (content != "NULL")
+			{
+				feature.popup.position = new OpenLayers.LonLat(feature.geometry.x, feature.geometry.y);
+				feature.popup.setContentHTML(content+'<br/><a id="popupLinks" target="_blank" href="'+root+'index.php?id='+feature.attributes['id']+'&type='+feature.attributes['type']+'">'+translations['inolm']+'</a>');
+				map.removePopup(feature.popup);
+				map.addPopup(feature.popup);
+			}
+			else
+				map.removePopup(feature.popup);
+		}
 
 		if (content != "NULL")
 		{
@@ -197,7 +212,7 @@ function showPopup(feature)
 			map.addPopup(feature.popup);
 		}
 		else
-			map.removePopup(feature.popup);
+			requestApi("ptdetails", "id="+feature.attributes['id']+"&type="+feature.attributes['type']+"&format=text&offset="+offset+"&lang="+params['lang'], ptHandler);
 	}
 	requestApi("details", "id="+feature.attributes['id']+"&type="+feature.attributes['type']+"&format=text&offset="+offset+"&lang="+params['lang'], handler);
 }
@@ -207,4 +222,7 @@ function showPopup(feature)
 function hidePopup(feature, popup)
 {
 	map.removePopup(feature.popup);
+	map.removePopup(feature.cluster[0].popup);
+	feature.cluster[0].popup.destroy();
+    feature.cluster[0].popup = null;
 }
