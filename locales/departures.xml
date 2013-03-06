@@ -44,7 +44,10 @@
 				<tag k="public_transport" v="stop_position"/>
 				<tag k="railway" v="stop"/>
 			</match>
-			<tag k="operator" v="(.*;|^)ÖBB(;.*|$)"/>
+			<match mode="or">
+				<tag k="operator" v="(.*;|^)ÖBB(;.*|$)"/>
+				<tag k="uic_ref" v="81[0-9]*"/>
+			</match>
 		</match>
 		<find>
 			<tag k="uic_ref" v="([0-9]*)" match_id="uic_ref"/>
@@ -71,6 +74,7 @@
 				<tag k="operator" v="(.*;|^)DB Station &amp; Service AG(;.*|$)"/>
 				<tag k="operator" v="(.*;|^)DB Regio AG(;.*|$)"/>
 				<tag k="operator" v="(.*;|^)DB Regio(;.*|$)"/>
+				<tag k="uic_ref" v="80[0-9]*"/>
 			</match>
 		</match>
 		<find>
