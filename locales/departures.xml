@@ -54,7 +54,7 @@
 		</find>
 		<output>
 			<copy-all/>
-			<tag from_match="uic_ref" k="departures" v="http://fahrplan.oebb.at/bin/stboard.exe/dn?L=vs_liveticker&amp;boardType=dep&amp;tickerID=dep&amp;start=yes&amp;eqstops=true&amp;input={0}"/>
+			<tag from_match="uic_ref" k="departures" v="http://fahrplan.oebb.at/bin/stboard.exe/dn?L=vs_liveticker&amp;boardType=dep&amp;tickerID=dep&amp;start=yes&amp;eqstops=true&amp;showJourneys=20&amp;input={0}"/>
 		</output>
 	</translation>
 	<translation>
