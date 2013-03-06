@@ -82,7 +82,7 @@
 		</find>
 		<output>
 			<copy-all/>
-			<tag from_match="uic_ref" k="departures" v="http://mobile.bahn.de/bin/mobil/bhftafel.exe/dox?country=DEU&amp;rt=1&amp;use_realtime_filter=1&amp;productsFilter=1111111111000000&amp;boardType=Abfahrt&amp;start=Suchen&amp;input={0}"/>
+			<tag from_match="uic_ref" k="departures" v="http://reiseauskunft.bahn.de/bin/bhftafel.exe/dn?country=DEU&amp;rt=1&amp;use_realtime_filter=1&amp;productsFilter=1111111111000000&amp;boardType=Abfahrt&amp;start=Suchen&amp;input={0}"/>
 		</output>
 	</translation>
 </translations>
