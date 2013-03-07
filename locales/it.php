@@ -111,7 +111,7 @@
 			"unnamed" => "senza nome",
 			"nojavascriptheader" => "JavaScript non è abilitato.",
 			"nojavascripttext" => "JavaScript è richiesto per la presentazione della pagina. si prega di abilitare javascript nel browser.",
-			"departures" => "Tempo reale delle partenze",
+			"departures" => "Partenze",
 			"shelter" => "With shelter",								// TODO: needs translation
 			"noshelter" => "Without shelter",							// TODO: needs translation
 			"bench" => "With bench",									// TODO: needs translation
@@ -629,7 +629,7 @@
 				"historic_station" => "Stazione storica",
 				"junction" => "Raccordo ferroviario",
 				"level_crossing" => "Passaggio a livello",
-				"light_rail" => "Metropolitana di superficie",
+				"light_rail" => "Metropolitana leggera",
 				"monorail" => "Monorotaia",
 				"narrow_gauge" => "Ferrovia a scartamento ridotto",
 				"platform" => "Marciapiede",
