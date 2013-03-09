@@ -8,8 +8,8 @@
 
 
 	require_once("functions.php");
-	// including translation file
-	require_once("../".includeLocale($_GET['lang']));
+	// include translation file
+	includeLocale($_GET['lang']);
 
 	$format = $_GET['format'];
 	$id = $_GET['id'];
@@ -39,31 +39,39 @@
 	if (!$connection)
 		exit;
 
-	$next['busstops'] = getNearObjectsForId($connection, $lat, $lon,
-							array(
-								array("highway", "bus_stop"),
-								array("highway", "bus_station")
-							),
-							2000
+	$next['busstops'] = array(_("Busstops"),
+								getNearObjectsForId($connection, $lat, $lon,
+								array(
+									array("highway", "bus_stop"),
+									array("highway", "bus_station")
+								),
+								2000
+							)
 						);
-	$next['stations'] = getNearObjectsForId($connection, $lat, $lon,
-							array(
-								array("railway", "station"),
-								array("railway", "halt")
-							),
-							20000
+	$next['stations'] = array(_("Stations"),
+								getNearObjectsForId($connection, $lat, $lon,
+								array(
+									array("railway", "station"),
+									array("railway", "halt")
+								),
+								20000
+							)
 						);
-	$next['tramhalts'] = getNearObjectsForId($connection, $lat, $lon,
-							array(
-								array("railway", "tram_stop")
-							),
-							5000
+	$next['tramhalts'] = array(_("Tramhalts"),
+								getNearObjectsForId($connection, $lat, $lon,
+								array(
+									array("railway", "tram_stop")
+								),
+								5000
+							)
 						);
-	$next['parkings'] = getNearObjectsForId($connection, $lat, $lon,
-							array(
-								array("amenity", "parking")
-							),
-							5000
+	$next['parkings'] = array(_("Parkings"),
+								getNearObjectsForId($connection, $lat, $lon,
+								array(
+									array("amenity", "parking")
+								),
+								5000
+							)
 						);
 
 	pg_close($connection);
@@ -73,8 +81,8 @@
 		if ($format == "xml")
 		{
 			echo xmlStart("nextobjects");
-			foreach ($next as $type => $data)
-				echo xmlNextobjectOut($data, $type, $lat, $lon);
+			foreach ($next as $data)
+				echo xmlNextobjectOut($data[1], $data[0], $lat, $lon);
 			echo "</nextobjects>\n";
 		}
 		else if ($format == "json")
@@ -82,8 +90,8 @@
 			header("Content-Type: text/plain; charset=UTF-8");
 
 			$list = array();
-			foreach ($next as $type => $data)
-				$list[$type] = jsonNextobjectOut($data, $type, $lat, $lon);
+			foreach ($next as $data)
+				$list[$type] = jsonNextobjectOut($data[1], $data[0], $lat, $lon);
 			$jsonData = json_encode($list);
 
 			// JSONP request?
@@ -98,11 +106,11 @@
 			echo "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">";
 
 			echo "<div class=\"moreInfoBox\">\n";
-			echo "<strong>".$translations['captions']['publictransport']."</strong>\n";
+			echo "<strong>"._("Accessibility")."</strong>\n";
 			echo "<table>\n";
 
-			foreach ($next as $type => $data)
-				echo textNextobjectOut($data, $type, $lat, $lon);
+			foreach ($next as $data)
+				echo textNextobjectOut($data[1], $data[0], $lat, $lon);
 
 			echo "</table>\n";
 			echo "</div>\n";
@@ -115,16 +123,14 @@
 	// returns the nextobjects as HTML
 	function textNextobjectOut($near, $caption, $lat, $lon)
 	{
-		global $translations;
-
 		if ($near)
 		{
 			$singular = substr($caption, 0, -1);
-			$output .= "<tr><td><span><u>".$translations['captions'][$caption].":</u></span></td></tr>\n";
+			$output .= "<tr><td><span><u>".$caption.":</u></span></td></tr>\n";
 			foreach ($near as $entry)
 			{
 				if (!$entry[2])
-					$entry[2] = $translations['captions'][$singular];
+					$entry[2] = _("Unnamed");
 				$entry[3] = formatDistance($entry[3]);
 				$output .= "<tr><td>&nbsp;&nbsp;<span><a href=\"javascript:showPoint(".$entry[1].", ".$entry[0].", ".$lat.", ".$lon.");\">".$entry[2]."</a> (".$entry[3].")</span></td></tr>\n";
 			}

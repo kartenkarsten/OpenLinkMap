@@ -1,12 +1,12 @@
 <?php
 	require_once("api/functions.php");
 
-	if (isset($_GET['lang']) && in_array($_GET['lang'], $langs))
+	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $langs))
 		$lang = $_GET['lang'];
 	else
 		$lang = getUserLang();
 
-	require_once("locales/".$lang.".php");
+	includeLocale($lang);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<? echo $lang; ?>" lang="<? echo $lang; ?>">
@@ -70,7 +70,7 @@
 			echo "</script>\n";
 		?>
 		<script type="text/javascript" src="locales/<? echo $lang; ?>.js"></script>
-		<script type="text/javascript" src="api/langfile.php?lang=<? echo $lang; ?>"></script>
+		<script type="text/javascript" src="api/jstranslations.php?lang=<? echo $lang; ?>"></script>
 		<script type="text/javascript" src="js/OpenStreetMap.js"></script>
 		<script type="text/javascript" src="js/startposition.js"></script>
 		<script type="text/javascript" src="js/format.js"></script>
@@ -83,7 +83,7 @@
 		<img class="locateButton" id="locateButton" src="img/locate.png" />
 		<div id="mapFrame" class="mapFrame">
 			<noscript>
-				<p><b><?=$translations['captions']['nojavascriptheader']?></b><br /><?=$translations['captions']['nojavascripttext']?></p>
+				<p><b><?=_("Javascript is not activated")?></b><br /><?=_("Javascript is needed to show the map and run this website. Please turn on Javascript in your browser settings.")?></p>
 			</noscript>
 		</div>
 	</body>

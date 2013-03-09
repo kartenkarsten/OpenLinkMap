@@ -7,44 +7,6 @@ See olm.openstreetmap.de/info for details.
 Russian translation by NothisIm, see https://github.com/NothisIm
 */
 
-// translations of labels
-var translations =
-{
-	"back" : "Назад",
-	"details" : "Подробнее",
-	"search" : "Поиск",
-	"spam" : "Сообщить об ошибке на карте",
-	"title" : "Карта и данные <a href=\"http://www.openstreetmap.org/copyright\">© OpenStreetMap contributors</a>.<br />Карта высот: <a href=\"http://nasa.gov/\">NASA SRTM</a>.",
-	"info" : "О сайте",
-	"contact" : "Связаться с нами",
-	"loading" : "Загрузка...",
-	"nothing" : "Ничего не найдено.",
-	"nothingmore" : "Больше нет результатов.",
-	"update" : "Последнее обновление:",
-	"showMarker" : "Увеличьте масштаб для отображения меток",
-	"empty" : "Пустой ввод.",
-	"more" : "Узнать больше",
-	"moreresults" : "Ещё результаты...",
-	"less" : "Меньше",
-	"hide" : "Спрятать",
-	"show" : "Показать",
-	"permalink" : "Постоянная ссылка",
-	"finish" : "Завершить",
-	"markerLoading" : "Загрузка точек...",
-	"hillshading" : "Карта высот",
-	"object" : "POI-информация",
-	"marker" : "Метка",
-	"publictransport" : "Общественным транспортом",
-	"searchresults" : "Результаты поиска",
-	"routing" : "Маршрут",
-	"searchoption" : "Искать только на видимом участке карты",
-	"close" : "Нажмите для закрытия",
-	"ad" : "Совершенствуйте данные! Исправьте неправильные ссылки на веб-сайты с помощью нового валидатора веб-сайтов от Keepright!",
-	"inolm" : "Показать в OpenLinkMap...",
-	"embed" : "HTML-код",
-	"embeddescription" : "Copia questo codice HTML sul tuo sito web per mostrare una piccola mappa con un pennarello.",
-	"embedattribution" : "Карта и данные <a href=\"http://www.openstreetmap.org/copyright\">© OpenStreetMap contributors</a>.<br />Карта высот: <a href=\"http://nasa.gov/\">NASA SRTM</a>."
-};
 
 // translations of OpenLayers
 OpenLayers.Lang.ru =

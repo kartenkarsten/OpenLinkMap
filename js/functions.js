@@ -23,9 +23,6 @@ function createMap()
 		offset = -(now.getTimezoneOffset() / 60);
 	}
 
-	// translate strings
-	translateStrings();
-
 	// projections
 	wgs84 = new OpenLayers.Projection("EPSG:4326");
 	google = new OpenLayers.Projection("EPSG:900913");
@@ -418,20 +415,6 @@ function mapZoomed(event)
 		setMessageBarInfo(translations['showMarker'], "messageBar", 'messageBarTrue');
 	else
 		setMessageBarInfo("", "messageBar", 'messageBarFalse');
-}
-
-
-// translates strings and captions on the page to user's language
-function translateStrings()
-{
-	gEBI('hideSidebarButton').title = translations['hide'];
-	gEBI('searchButton').title = translations['search'];
-	gEBI("spamButton").innerHTML = translations['spam'];
-	gEBI('infoButton').innerHTML = translations['info'];
-	gEBI('contactButton').innerHTML = translations['contact'];
-	gEBI("osm").innerHTML = translations['title'];
-	gEBI("searchOptionCaption").innerHTML = translations['searchoption'];
-	gEBI("ad").innerHTML = translations['ad'];
 }
 
 

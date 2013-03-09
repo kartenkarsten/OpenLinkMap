@@ -9,8 +9,8 @@
 
 	require_once("functions.php");
 	require_once("addressformats.php");
-	// including translation file
-	require_once("../".includeLocale($_GET['lang']));
+	// include translation file
+	includeLocale($_GET['lang']);
 
 	$format = $_GET['format'];
 	$id = $_GET['id'];
@@ -177,7 +177,7 @@
 	// text/html output of extdetails
 	function textMoredetailsOut($response, $nameresponse, $wikipediaresponse, $langs, $offset = 0)
 	{
-		global $translations, $db, $id, $type, $addressformats;
+		global $db, $id, $type, $addressformats;
 
 		if ($response)
 		{
@@ -193,9 +193,10 @@
 			if ($name[0] == "")
 			{
 				$tags = getTags($db, $id, $type);
+				$tag = $key."=".$value;
 				foreach ($tags as $key => $value)
-					if ($translations['tags'][$key][$value] != "")
-						$name[0] = $translations['tags'][$key][$value];
+					if (dgettext("tags", $tag) != "")
+						$name[0] = dgettext("tags", $tag);
 			}
 
 			$phone = getPhoneFaxDetail(array($response['phone1'], $response['phone2'], $response['phone3']));
@@ -236,7 +237,7 @@
 			if ($response['street'] || $response['housenumber'] || $response['country'] || $response['city'] || $response['postcode'] || $response['housename'])
 			{
 				$output .= "<div class=\"moreInfoBox\">\n";
-				$output .= "<strong>".$translations['captions']['address']."</strong>\n";
+				$output .= "<strong>"._("Address")."</strong>\n";
 				$output .= "<table><tr><td>\n";
 
 				// select template
@@ -267,23 +268,23 @@
 			if ($phone || $fax || $email || $mobilephone || $website[0])
 			{
 				$output .= "<div class=\"moreInfoBox\">\n";
-				$output .= "<strong>".$translations['captions']['contact']."</strong>\n";
+				$output .= "<strong>"._("Contact")."</strong>\n";
 				$output .= "<table>\n";
 					if ($phone)
-						$output .= "<tr><td><u>".$translations['captions']['phone'].":</u> </td><td><a href=\"callto:".$phonenumber."\">".$phone."</a></td></tr>\n";
+						$output .= "<tr><td><u>"._("Phone").":</u> </td><td><a href=\"callto:".$phonenumber."\">".$phone."</a></td></tr>\n";
 					if ($mobilephone)
-						$output .= "<tr><td><u>".$translations['captions']['mobile'].":</u> </td><td><a href=\"callto:".$mobilephonenumber."\">".$mobilephone."</a></td></tr>\n";
+						$output .= "<tr><td><u>"._("Mobile phone").":</u> </td><td><a href=\"callto:".$mobilephonenumber."\">".$mobilephone."</a></td></tr>\n";
 					if ($fax)
-						$output .= "<tr><td><u>".$translations['captions']['fax'].":</u> </td><td>".$fax."</td></tr>\n";
+						$output .= "<tr><td><u>"._("Fax").":</u> </td><td>".$fax."</td></tr>\n";
 					if ($email)
-						$output .= "<tr><td><u>".$translations['captions']['email'].":</u> </td><td><a href=\"mailto:".$email."\">".$email."</a></td></tr>\n";
+						$output .= "<tr><td><u>"._("Email").":</u> </td><td><a href=\"mailto:".$email."\">".$email."</a></td></tr>\n";
 					if ($website[0])
 					{
 						if (($caption = strlen($website[1]) > 31) && (strlen($website[1]) > 34))
 							$caption = substr($website[1], 0, 31)."...";
 						else
 							$caption = $website[1];
-						$output .= "<tr><td><u>".$translations['captions']['homepage'].":</u> </td><td><a target=\"_blank\" href=\"".$website[0]."\">".$caption."</a></td></tr>\n";
+						$output .= "<tr><td><u>"._("Homepage").":</u> </td><td><a target=\"_blank\" href=\"".$website[0]."\">".$caption."</a></td></tr>\n";
 					}
 				$output .= "</table>\n";
 				$output .= "</div>\n";
@@ -293,15 +294,18 @@
 			if ($response['cuisine'] || $response['stars'] || $response['smoking'] || $response['microbrewery'] || $response['beer'])
 			{
 				$output .= "<div class=\"moreInfoBox\">\n";
-				$output .= "<strong>".$translations['captions']['gastro']."</strong>\n";
+				$output .= "<strong>"._("Gastronomy")."</strong>\n";
 				$output .= "<table>\n";
 					// cuisine
 					if ($response['cuisine'])
-						$output .= "<tr><td><span><u>".$translations['captions']['cuisine'].":</u> </td><td>".($translations['tags']['cuisine'][str_replace(";", ", ", $response['cuisine'])] != "" ? $translations['tags']['cuisine'][str_replace(";", ", ", $response['cuisine'])] : str_replace(";", ", ", $response['cuisine']))."</td></tr>\n";
+					{
+						$cuisinetag = "cuisine=".str_replace(";", ", ", $response['cuisine']);
+						$output .= "<tr><td><span><u>"._("Cuisine").":</u> </td><td>".(dgettext($lang."-tags", $cuisinetag) != "" ? dgettext($lang."-tags", $cuisinetag) : str_replace(";", ", ", $response['cuisine']))."</td></tr>\n";
+					}
 					// stars
 					if ($response['stars'])
 					{
-						$output .= "<tr><td><span><u>".$translations['captions']['stars'].":</u> </td><td>";
+						$output .= "<tr><td><span><u>"._("Stars").":</u> </td><td>";
 						for ($response['stars']; $response['stars'] > 0; $response['stars']--)
 							$output .= "<img class=\"star\" src=\"../img/star.png\"/>";
 						$output .= "</td></tr>\n";
@@ -309,26 +313,27 @@
 					// smoking
 					if ($response['smoking'])
 					{
+						$output .= "<tr><td><span><u>"._("Smoking").":</u> </td>";
 						if ($response['smoking'] == "yes")
-							$output .= "<tr><td><span><u>".$translations['captions']['smoking'].":</u> </td><td>".$translations['captions']['smokingyes']."</td></tr>\n";
+							$output .= "<td>"._("allowed")."</td></tr>\n";
 						else if ($response['smoking'] == "no")
-							$output .= "<tr><td><span><u>".$translations['captions']['smoking'].":</u> </td><td>".$translations['captions']['nosmoking']."</td></tr>\n";
+							$output .= "<td>"._("prohibited")."</td></tr>\n";
 						else if ($response['smoking'] == "dedicated")
-							$output .= "<tr><td><span><u>".$translations['captions']['smoking'].":</u> </td><td>".$translations['captions']['dedicatedsmoking']."</td></tr>\n";
+							$output .= "<td>"._("dedicated")."</td></tr>\n";
 						else if ($response['smoking'] == "separated")
-							$output .= "<tr><td><span><u>".$translations['captions']['smoking'].":</u> </td><td>".$translations['captions']['separatedsmoking']."</td></tr>\n";
+							$output .= "<td>"._("separated smoking area")."</td></tr>\n";
 						else if ($response['smoking'] == "isolated")
-							$output .= "<tr><td><span><u>".$translations['captions']['smoking'].":</u> </td><td>".$translations['captions']['isolatedsmoking']."</td></tr>\n";
+							$output .= "<td>"._("Isolated area")."</td></tr>\n";
 					}
 					// beer sorts
 					if ($response['beer'])
-						$output .= "<tr><td><span><u>".$translations['captions']['beer'].":</u> </td><td>".str_replace(";", ", ", $response['beer'])."</td></tr>\n";
+						$output .= "<tr><td><span><u>"._("Beer").":</u> </td><td>".str_replace(";", ", ", $response['beer'])."</td></tr>\n";
 					// microbrewery
 					if ($response['microbrewery'] == "yes")
-						$output .= "<tr><td><span>".$translations['captions']['microbrew']."</td></tr>\n";
+						$output .= "<tr><td><span>"._("with microbrewery")."</td></tr>\n";
 					// biergarten
 					if (($response['biergarten'] == "yes") || ($response['beer_garden'] == "yes"))
-						$output .= "<tr><td><span>".$translations['captions']['biergarten']."</td></tr>\n";
+						$output .= "<tr><td><span>"._("Beergarden")."</td></tr>\n";
 				$output .= "</table>\n";
 				$output .= "</div>\n";
 			}
@@ -337,63 +342,63 @@
 			if ($response['carwash'] || $response['carrepair'] || $response['kiosk'] || ($response['diesel'] == "yes") || ($response['gtldiesel'] == "yes") || ($response['hgvdiesel'] == "yes") || ($response['biodiesel'] == "yes") || ($response['octane91'] == "yes") || ($response['octane95'] == "yes") || ($response['octane98'] == "yes") || ($response['octane100'] == "yes") || ($response['octane98l'] == "yes") || ($response['fuel25'] == "yes") || ($response['fuel50'] == "yes") || ($response['alcohol'] == "yes") || ($response['ethanol'] == "yes") || ($response['methanol'] == "yes") || ($response['svo'] == "yes") || ($response['e85'] == "yes") || ($response['biogas'] == "yes") || ($response['lpg'] == "yes") || ($response['cng'] == "yes") || ($response['lh2'] == "yes") || ($response['electro'] == "yes") || ($response['adblue'] == "yes"))
 			{
 				$output .= "<div class=\"moreInfoBox\">\n";
-				$output .= "<strong>".$translations['captions']['fuel']."</strong>\n";
+				$output .= "<strong>"._("Fuel")."</strong>\n";
 				$output .= "<table>\n";
 				// fuel sorts
 				if ($response['diesel'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['diesel']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Diesel")."</span></td></tr>\n";
 				if ($response['gtldiesel'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['gtldiesel']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("High quality synthetic Diesel")."</span></td></tr>\n";
 				if ($response['hgvdiesel'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['hgvdiesel']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("HGV Diesel")."</span></td></tr>\n";
 				if ($response['biodiesel'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['biodiesel']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Biodiesel")."</span></td></tr>\n";
 				if ($response['octane91'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['octane91']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Octane 91")."</span></td></tr>\n";
 				if ($response['octane95'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['octane95']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Octane 95")."</span></td></tr>\n";
 				if ($response['octane98'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['octane98']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Octane 98")."</span></td></tr>\n";
 				if ($response['octane100'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['octane100']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Octane 100")."</span></td></tr>\n";
 				if ($response['octane98l'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['octane98l']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Octane 98, leaded")."</span></td></tr>\n";
 				if ($response['fuel25'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['fuel25']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Mixture 1:25")."</span></td></tr>\n";
 				if ($response['fuel50'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['fuel50']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Mixture 1:50")."</span></td></tr>\n";
 				if ($response['alcohol'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['alcohol']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Alcohol")."</span></td></tr>\n";
 				if ($response['ethanol'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['ethanol']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Ethanol")."</span></td></tr>\n";
 				if ($response['methanol'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['methanol']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Methanol")."</span></td></tr>\n";
 				if ($response['svo'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['svo']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Vegetable oil")."</span></td></tr>\n";
 				if ($response['e10'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['e10']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Ethanol-Mixture E10 (10% Ethanol)")."</span></td></tr>\n";
 				if ($response['e85'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['e85']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Ethanol-Mixture E85 (85% Ethanol)")."</span></td></tr>\n";
 				if ($response['biogas'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['biogas']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Biogas")."</span></td></tr>\n";
 				if ($response['lpg'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['lpg']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("LPG")."</span></td></tr>\n";
 				if ($response['cng'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['cng']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("CNG")."</span></td></tr>\n";
 				if ($response['lh2'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['lh2']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Liquid hydrogen")."</span></td></tr>\n";
 				if ($response['electro'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['electro']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("Electricity")."</span></td></tr>\n";
 				if ($response['adblue'] == "yes")
-					$output .= "<tr><td><span>".$translations['captions']['adblue']."</span></td></tr>\n";
+					$output .= "<tr><td><span>"._("AdBlue")."</span></td></tr>\n";
 				$output .= "<br/>";
 				// other properties of fuel station
 				if ($response['carwash'] == "yes")
-					$output .= "<tr><td><i>".$translations['captions']['carwash']."</i></td></tr>\n";
+					$output .= "<tr><td><i>"._("Car wash")."</i></td></tr>\n";
 				if ($response['carrepair'] == "yes")
-					$output .= "<tr><td><i>".$translations['captions']['carrepair']."</i></td></tr>\n";
+					$output .= "<tr><td><i>"._("Car repair")."</i></td></tr>\n";
 				if ($response['shop'] == "kiosk" || $response['kiosk'] == "yes")
-					$output .= "<tr><td><i>".$translations['captions']['kiosk']."</i></td></tr>\n";
+					$output .= "<tr><td><i>"._("Shop")."</i></td></tr>\n";
 				$output .= "</table>\n";
 				$output .= "</div>\n";
 			}
@@ -402,66 +407,66 @@
 			if ($response['operator'] || $response['capacity'] || $response['fee'] || $openinghours || $response['fee'] || $response['internet_access'] || $response['toll'] || $response['ref'])
 			{
 				$output .= "<div class=\"moreInfoBox\">\n";
-				$output .= "<strong>".$translations['captions']['other']."</strong>\n";
+				$output .= "<strong>"._("Other")."</strong>\n";
 				$output .= "<table>\n";
 					// opening hours
 					if ($openinghours)
 					{
-						$output .= "<tr><td><span><u>".$translations['captions']['opening'].":</u><br />".$openinghours."</span></td></tr>\n";
+						$output .= "<tr><td><span><u>"._("Opening hours").":</u><br />".$openinghours."</span></td></tr>\n";
 						if (isOpen247($response['openinghours']))
-							$output .= "<tr><td>&nbsp;&nbsp;<span class=\"open\">".$translations['opening']['alwaysopen']."</span></td></tr>\n";
+							$output .= "<tr><td>&nbsp;&nbsp;<span class=\"open\">"._("Open 24/7")."</span></td></tr>\n";
 						else if (isPoiOpen($response['openinghours'], $offset))
-							$output .= "<tr><td>&nbsp;&nbsp;<span class=\"open\">".$translations['opening']['open']."</span></td></tr>\n";
+							$output .= "<tr><td>&nbsp;&nbsp;<span class=\"open\">"._("Now open")."</span></td></tr>\n";
 						else if (isInHoliday($response['openinghours'], $offset))
-							$output .= "<tr><td>&nbsp;&nbsp;<span class=\"maybeopen\">".$translations['opening']['maybeopen']."</span></td></tr>\n";
+							$output .= "<tr><td>&nbsp;&nbsp;<span class=\"maybeopen\">"._("Open on holiday")."</span></td></tr>\n";
 						else
-							$output .= "<tr><td>&nbsp;&nbsp;<span class=\"closed\">".$translations['opening']['closed']."</span></td></tr>\n";
+							$output .= "<tr><td>&nbsp;&nbsp;<span class=\"closed\">"._("Now closed")."</span></td></tr>\n";
 					}
 					// service times
 					if ($servicetimes)
 					{
-						$output .= "<tr><td><span><u>".$translations['captions']['service'].":</u><br />".$servicetimes."</span></td></tr>\n";
+						$output .= "<tr><td><span><u>"._("Service hours").":</u><br />".$servicetimes."</span></td></tr>\n";
 						if (isPoiOpen($response['servicetimes'], $offset))
-							$output .= "<tr><td>&nbsp;&nbsp;<span class=\"open\">".$translations['opening']['open']."</span></td></tr>\n";
+							$output .= "<tr><td>&nbsp;&nbsp;<span class=\"open\">"._("Now open")."</span></td></tr>\n";
 						else if (isInHoliday($response['servicetimes'], $offset))
-							$output .= "<tr><td>&nbsp;&nbsp;<span class=\"maybeopen\">".$translations['opening']['maybeopen']."</span></td></tr>\n";
+							$output .= "<tr><td>&nbsp;&nbsp;<span class=\"maybeopen\">"._("Open on holiday")."</span></td></tr>\n";
 						else
-							$output .= "<tr><td>&nbsp;&nbsp;<span class=\"closed\">".$translations['opening']['closed']."</span></td></tr>\n";
+							$output .= "<tr><td>&nbsp;&nbsp;<span class=\"closed\">"._("Now closed")."</span></td></tr>\n";
 					}
 					// operator
 					if ($response['operator'])
-						$output .= "<tr><td><span><u>".$translations['captions']['operator'].":</u> ".$response['operator']."</span></td></tr>\n";
+						$output .= "<tr><td><span><u>"._("Operator").":</u> ".$response['operator']."</span></td></tr>\n";
 					// capacity
 					if ($response['capacity'])
-						$output .= "<tr><td><span><u>".$translations['captions']['capacity'].":</u> ".$response['capacity']."</span></td></tr>\n";
+						$output .= "<tr><td><span><u>"._("Capacity").":</u> ".$response['capacity']."</span></td></tr>\n";
 					// ref
 					if ($response['ref'])
-						$output .= "<tr><td><span><u>".$translations['captions']['ref']."</u>: ".$response['ref']."</span></td></tr>\n";
+						$output .= "<tr><td><span><u>"._("Reference")."</u>: ".$response['ref']."</span></td></tr>\n";
 					// internet access
 					if ($response['internet_access'])
 					{
 						if ($response['internet_access'] == "terminal")
-							$output .= "<tr><td><span>".$translations['captions']['terminal']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Internet terminal")."</span></td></tr>\n";
 						else if ($response['internet_access'] == "wlan")
-							$output .= "<tr><td><span>".$translations['captions']['wlan']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("WLAN hotspot")."</span></td></tr>\n";
 						else if ($response['internet_access'] == "wired")
-							$output .= "<tr><td><span>".$translations['captions']['wired']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Wired internet access")."</span></td></tr>\n";
 						else if ($response['internet_access'] == "service")
-							$output .= "<tr><td><span>".$translations['captions']['internetservice']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Internet access via service")."</span></td></tr>\n";
 					}
 					// fee
 					if ($response['fee'] == "yes")
-						$output .= "<tr><td><span>".$translations['captions']['fee']."</span></td></tr>\n";
+						$output .= "<tr><td><span>"._("With costs")."</span></td></tr>\n";
 					else if ($response['fee'] == "no")
-						$output .= "<tr><td><span>".$translations['captions']['nofee']."</span></td></tr>\n";
+						$output .= "<tr><td><span>"._("For free")."</span></td></tr>\n";
 					else if ($response['fee'] == "interval")
-						$output .= "<tr><td><span>".$translations['captions']['intervalfee']."</span></td></tr>\n";
+						$output .= "<tr><td><span>"._("Partly with costs")."</span></td></tr>\n";
 					// toll
 					if ($response['toll'] == "yes")
-						$output .= "<tr><td><span>".$translations['captions']['toll']."</span></td></tr>\n";
+						$output .= "<tr><td><span>"._("Toll")."</span></td></tr>\n";
 					// disused
 					if ($response['disused'] == "yes")
-						$output .= "<tr><td><span>".$translations['captions']['disused']."</span></td></tr>\n";
+						$output .= "<tr><td><span>"._("Disused")."</span></td></tr>\n";
 				$output .= "</table>\n";
 				$output .= "</div>\n";
 			}
@@ -470,16 +475,16 @@
 			if ($response['ele'] || $response['population'] || $response['iata'] || $response['icao'])
 			{
 				$output .= "<div class=\"moreInfoBox\">\n";
-				$output .= "<strong>".$translations['captions']['geographic']."</strong>\n";
+				$output .= "<strong>"._("Geographic")."</strong>\n";
 				$output .= "<table>\n";
 					if ($response['ele'])
-						$output .= "<tr><td><span><u>".$translations['captions']['ele'].":</u> ".$response['ele']."m</span></td></tr>\n";
+						$output .= "<tr><td><span><u>"._("Height about sea level").":</u> ".$response['ele']."m</span></td></tr>\n";
 					if ($response['population'])
-						$output .= "<tr><td><span><u>".$translations['captions']['population'].":</u> ".number_format($response['population'], 0, ',', '.')."</span></td></tr>\n";
+						$output .= "<tr><td><span><u>"._("Population").":</u> ".number_format($response['population'], 0, ',', '.')."</span></td></tr>\n";
 					if ($response['iata'])
-						$output .= "<tr><td><span><u>".$translations['captions']['iata'].":</u> ".$response['iata']."</span></td></tr>\n";
+						$output .= "<tr><td><span><u>"._("IATA").":</u> ".$response['iata']."</span></td></tr>\n";
 					if ($response['icao'])
-						$output .= "<tr><td><span><u>".$translations['captions']['icao'].":</u> ".$response['icao']."</span></td></tr>\n";
+						$output .= "<tr><td><span><u>"._("ICAO").":</u> ".$response['icao']."</span></td></tr>\n";
 				$output .= "</table>\n";
 				$output .= "</div>\n";
 			}
@@ -488,52 +493,52 @@
 			if ($response['wheelchair'] || $response['wheelchair:toilets'] || $response['wheelchair:rooms'] || $response['wheelchair:access'] || $response['wheelchair:places'])
 			{
 				$output .= "<div class=\"moreInfoBox\">\n";
-				$output .= "<strong>".$translations['captions']['accessibility']."</strong>\n";
+				$output .= "<strong>"._("Wheelchair")."</strong>\n";
 				$output .= "<table>\n";
 					if ($response['wheelchair'])
 					{
 						if ($response['wheelchair'] == "yes")
-							$output .= "<tr><td><span>".$translations['captions']['wheelchair']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Accessible for wheelchairs")."</span></td></tr>\n";
 						else if ($response['wheelchair'] == "no")
-							$output .= "<tr><td><span>".$translations['captions']['wheelchairno']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Not accessible for wheelchairs")."</span></td></tr>\n";
 						else if ($response['wheelchair'] == "limited")
-							$output .= "<tr><td><span>".$translations['captions']['wheelchairlimited']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Limited accessible for wheelchairs")."</span></td></tr>\n";
 					}
 					if ($response['wheelchair:toilets'])
 					{
 						if ($response['wheelchair:toilets'] == "yes")
-							$output .= "<tr><td><span>".$translations['captions']['wheelchairtoilets']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Toilets accessible")."</span></td></tr>\n";
 						else if ($response['wheelchair:toilets'] == "no")
-							$output .= "<tr><td><span>".$translations['captions']['wheelchairtoiletsno']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Toilets not accessible")."</span></td></tr>\n";
 						else if ($response['wheelchair:toilets'] == "limited")
-							$output .= "<tr><td><span>".$translations['captions']['wheelchairtoiletslimited']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Toilets limited accessible")."</span></td></tr>\n";
 					}
 					if ($response['wheelchair:rooms'])
 					{
 						if ($response['wheelchair:rooms'] == "yes" || $response['wheelchair:rooms'] != "no" || $response['wheelchair:rooms'] != "limited")
-							$output .= "<tr><td><span>".$translations['captions']['wheelchairrooms']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("All rooms accessible")."</span></td></tr>\n";
 						else if ($response['wheelchair:rooms'] == "no")
-							$output .= "<tr><td><span>".$translations['captions']['wheelchairroomsno']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Rooms not accessible")."</span></td></tr>\n";
 						else if ($response['wheelchair:rooms'] == "limited")
-							$output .= "<tr><td><span>".$translations['captions']['wheelchairroomslimited']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Most rooms accessible")."</span></td></tr>\n";
 					}
 					if ($response['wheelchair:access'])
 					{
 						if ($response['wheelchair:access'] == "yes" || $response['wheelchair:access'] != "no" || $response['wheelchair:access'] != "limited")
-							$output .= "<tr><td><span>".$translations['captions']['wheelchairaccess']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Building accessible")."</span></td></tr>\n";
 						else if ($response['wheelchair:access'] == "no")
-							$output .= "<tr><td><span>".$translations['captions']['wheelchairaccessno']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Building not accessible")."</span></td></tr>\n";
 						else if ($response['wheelchair:access'] == "limited")
-							$output .= "<tr><td><span>".$translations['captions']['wheelchairaccesslimited']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Building limited accessible")."</span></td></tr>\n";
 					}
 					if ($response['wheelchair:places'])
 					{
 						if ($response['wheelchair:places'] == "yes" || $response['wheelchair:places'] != "no" || $response['wheelchair:places'] != "limited")
-							$output .= "<tr><td><span>".$translations['captions']['wheelchairplaces']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Places for wheelchairs")."</span></td></tr>\n";
 						else if ($response['wheelchair:places'] == "no")
-							$output .= "<tr><td><span>".$translations['captions']['wheelchairplacesno']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("No places for wheelchairs")."</span></td></tr>\n";
 						else if ($response['wheelchair:places'] == "limited")
-							$output .= "<tr><td><span>".$translations['captions']['wheelchairplaceslimited']."</span></td></tr>\n";
+							$output .= "<tr><td><span>"._("Limited places for wheelchairs")."</span></td></tr>\n";
 					}
 				$output .= "</table>\n";
 				$output .= "</div>\n";
@@ -544,7 +549,7 @@
 			{
 				$output .= "<div class=\"moreInfoBox\">\n";
 				$output .= "<table>\n";
-					$output .= "<tr><td><strong>".$translations['captions']['wikipedia']."</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i><a target=\"_blank\" id=\"moreWikipediaFull\" href=\"".$wikipedia[1]."\">".$translations['captions']['fullarticle']."</a></i></td></tr>\n";
+					$output .= "<tr><td><strong>"._("Wikipedia")."</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i><a target=\"_blank\" id=\"moreWikipediaFull\" href=\"".$wikipedia[1]."\">"._("Full article...")."</a></i></td></tr>\n";
 					// request first lines
 					$output .= "<tr><td>".getWikipediaBeginning($wikipedia[1])."</td></tr>\n";
 				$output .= "</table>\n";
@@ -570,9 +575,9 @@
 
 				$output .= "<div class=\"moreInfoBox\">\n";
 				$output .= "<table>\n";
-					$output .= "<tr><td><strong>".$translations['captions']['image']."</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i id=\"moreWikipediaFull\"><a target=\"_blank\" href=\"http://commons.wikimedia.org/w/index.php?title=Special%3ASearch&search=".$search."\">".$translations['captions']['moreimages']."</a></i></td></tr>\n";
-					$output .= "<tr><td id=\"loadingImage\"><img id=\"moreImage\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></a></td></tr>\n";
-					$output .= "<tr><td><a target=\"_blank\" href=\"http://commons.wikimedia.org/wiki/File:".$attribution."\">".$translations['captions']['copyrightandbig']."</a></td></tr>\n";
+					$output .= "<tr><td><strong>"._("Image")."</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i id=\"moreWikipediaFull\"><a target=\"_blank\" href=\"http://commons.wikimedia.org/w/index.php?title=Special%3ASearch&search=".$search."\">"._("More images")."</a></i></td></tr>\n";
+					$output .= "<tr><td id=\"loadingImage\"><img id=\"moreImage\" title=\""._("Fullscreen")."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></a></td></tr>\n";
+					$output .= "<tr><td><a target=\"_blank\" href=\"http://commons.wikimedia.org/wiki/File:".$attribution."\">"._("License, author, original page...")."</a></td></tr>\n";
 				$output .= "</table>\n";
 				$output .= "</div>\n";
 			}
@@ -582,9 +587,9 @@
 
 				$output .= "<div class=\"moreInfoBox\">\n";
 				$output .= "<table>\n";
-				$output .= "<tr><td><strong>".$translations['captions']['image']."</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i id=\"moreWikipediaFull\"><a target=\"_blank\" href=\"http://commons.wikimedia.org/w/index.php?title=Special%3ASearch&search=".urldecode($wikipedia[2])."\">".$translations['captions']['moreimages']."</a></i></td></tr>\n";
-					$output .= "<tr><td id=\"loadingImage\"><img id=\"moreImage\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($image)."\" /></a></td></tr>\n";
-					$output .= "<tr><td><a target=\"_blank\" href=\"".$image."\">".$translations['captions']['copyrightandbig']."</a></td></tr>\n";
+				$output .= "<tr><td><strong>"._("Image")."</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i id=\"moreWikipediaFull\"><a target=\"_blank\" href=\"http://commons.wikimedia.org/w/index.php?title=Special%3ASearch&search=".urldecode($wikipedia[2])."\">"._("More images")."</a></i></td></tr>\n";
+					$output .= "<tr><td id=\"loadingImage\"><img id=\"moreImage\" title=\""._("Fullscreen")."\" src=\"".getWikipediaThumbnailUrl($image)."\" /></a></td></tr>\n";
+					$output .= "<tr><td><a target=\"_blank\" href=\"".$image."\">"._("License, author, original page...")."</a></td></tr>\n";
 				$output .= "</table>\n";
 				$output .= "</div>\n";
 			}
@@ -596,9 +601,9 @@
 				$attribution = explode("/", $response['panorama']);
 				$output .= "<div class=\"moreInfoBox\">\n";
 				$output .= "<table>\n";
-					$output .= "<tr><td><strong>".$translations['captions']['panorama']."</strong></td></tr>\n";
-					$output .= "<tr><td><img id=\"morePanorama\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($response['panorama'])."\" /></a></td></tr>\n";
-					$output .= "<tr><td><a target=\"_blank\" href=\"http://commons.wikimedia.org/wiki/File:".$attribution[7]."\">".$translations['captions']['copyrightandbig']."</a></td></tr>\n";
+					$output .= "<tr><td><strong>"._("Panorama")."</strong></td></tr>\n";
+					$output .= "<tr><td><img id=\"morePanorama\" title=\""._("Fullscreen")."\" src=\"".getWikipediaThumbnailUrl($response['panorama'])."\" /></a></td></tr>\n";
+					$output .= "<tr><td><a target=\"_blank\" href=\"http://commons.wikimedia.org/wiki/File:".$attribution[7]."\">"._("License, author, original page...")."</a></td></tr>\n";
 				$output .= "</table>\n";
 				$output .= "</div>\n";
 			}

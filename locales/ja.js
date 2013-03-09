@@ -5,47 +5,9 @@ This is free software, and you are welcome to redistribute it under certain cond
 See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
 */
 
-// translations of labels
-var translations =
-{
-	"back" : "戻る",
-	"details" : "詳細",
-	"search" : "検索",
-	"spam" : "マップエラーを報告",
-	"title" : "Maps and data <a href=\"http://www.openstreetmap.org/copyright\">© OpenStreetMap contributors</a>.<br />陰影処理: <a href=\"http://nasa.gov/\">NASA SRTM</a>.",
-	"info" : "追加情報",
-	"contact" : "連絡先",
-	"loading" : "ロード中...",
-	"nothing" : "見つかりませんでした.",
-	"nothingmore" : "結果はこれで全てです.",
-	"update" : "最終更新:",
-	"showMarker" : "ズームしてマーカーを表示",
-	"empty" : "空の入力.",
-	"more" : "さらに詳細",
-	"moreresults" : "さらに結果を...",
-	"less" : "未満",
-	"hide" : "隠す",
-	"show" : "表示",
-	"permalink" : "パーマリンク",
-	"finish" : "終了",
-	"markerLoading" : "ポイントをロード中...",
-	"hillshading" : "陰影処理",
-	"object" : "POIの詳細",
-	"marker" : "マーカー",
-	"publictransport" : "大規模交通",
-	"searchresults" : "検索結果",
-	"routing" : "ルート",
-	"searchoption" : "現在のマップビュー内のみを検索",
-	"close" : "クリックして閉じる",
-	"ad" : "Iデータを改善しよう! Keepright からの新しいウェブサイトチェッカーで間違ったリンクを修正しよう!",
-	"inolm" : "OpenLinkMap 内に表示...",
-	"embed" : "HTML コード",
-	"embeddescription" : "このHTMLコードをコピーして、マーカー付きの小さな地図をあなたのウェブサイトに表示.",
-	"embedattribution" : "Maps and data <a href=\"http://www.openstreetmap.org/copyright\">© OpenStreetMap contributors</a>.<br />陰影処理: <a href=\"http://nasa.gov/\">NASA SRTM</a>."
-};
 
 // translations of OpenLayers
-OpenLayers.Lang.en =
+OpenLayers.Lang.ja =
 {
 	'unhandledRequest': "ハンドルできないリクエストがリターンされました ${statusText}",
 	'Permalink': "パーマリンク",

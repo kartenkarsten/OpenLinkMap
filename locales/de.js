@@ -5,44 +5,6 @@ This is free software, and you are welcome to redistribute it under certain cond
 See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
 */
 
-// translations of labels
-var translations =
-{
-	"back" : "Zurück",
-	"details" : "Details",
-	"search" : "Suchen",
-	"spam" : "Kartenfehler melden",
-	"title" : "Datensatz und Karten <a href=\"http://www.openstreetmap.org/copyright\">© OpenStreetMap contributors</a>.<br />Höhenprofil: <a href=\"http://nasa.gov/\">NASA SRTM</a>.",
-	"info" : "Mehr Infos",
-	"contact" : "Kontakt",
-	"loading" : "Laden...",
-	"nothing" : "Nichts gefunden.",
-	"nothingmore" : "Keine weiteren Ergebnisse.",
-	"update" : "Letzte Aktualisierung:",
-	"showMarker" : "Hineinzoomen, um Marker anzuzeigen",
-	"empty" : "Leere Eingabe.",
-	"more" : "Mehr Infos",
-	"moreresults" : "Weitere Treffer...",
-	"less" : "Weniger",
-	"hide" : "Ausblenden",
-	"show" : "Einblenden",
-	"permalink" : "Permanentlink",
-	"finish" : "Fertig",
-	"markerLoading" : "Punkte laden...",
-	"hillshading" : "Höhenprofil",
-	"object" : "POI-Details",
-	"marker" : "Markierungen",
-	"publictransport" : "Öffentlicher Verkehr",
-	"searchresults" : "Suchergebnisse",
-	"routing" : "Route",
-	"searchoption" : "Nur im aktuellen Kartenausschnitt suchen",
-	"close" : "Klicken zum Schließen",
-	"ad" : "Verbessere die Daten! Korrigiere veraltete und fehlerhafte Links mit dem neuen Website Checker von Keepright!",
-	"inolm" : "In OpenLinkMap zeigen...",
-	"embed" : "HTML-Code",
-	"embeddescription" : "Kopieren Sie diesen HTML-Code und binden sie ihn ein in eine eigene Webseite ein, um eine kleine Karte mit einer Markierung anzuzeigen.",
-	"embedattribution" : "Datensatz und Karten <a href=\"http://www.openstreetmap.org/copyright\">© OpenStreetMap contributors</a>.<br />Höhenprofil: <a href=\"http://nasa.gov/\">NASA SRTM</a>."
-};
 
 // translations of OpenLayers
 OpenLayers.Lang.de =

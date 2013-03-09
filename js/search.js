@@ -87,19 +87,11 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 	// returns the translation for a key-value pair
 	this.getTagTranslation = function(key, value)
 	{
-		// some tests if translation (object) exists
-		if (typeof tags[key] != 'undefined')
-		{
-			if (typeof tags[key][value] != 'undefined')
-			{
-				var tag = tags[key][value];
-
-				if (tag)
-					return tag;
-			}
-		}
-
-		return "";
+		var response = requestApi("tagtranslation", "format=text&lang="+params['lang']+"&tag="+key+"="+value);
+		if (response)
+			return response.responseText;
+		else
+			return "";
 	}
 
 	// shows the returned search results

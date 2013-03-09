@@ -5,44 +5,6 @@ This is free software, and you are welcome to redistribute it under certain cond
 See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
 */
 
-// translations of labels
-var translations =
-{
-	"back" : "Back",
-	"details" : "Details",
-	"search" : "Search",
-	"spam" : "Report map errors",
-	"title" : "Maps and data <a href=\"http://www.openstreetmap.org/copyright\">© OpenStreetMap contributors</a>.<br />Hillshading: <a href=\"http://nasa.gov/\">NASA SRTM</a>.",
-	"info" : "More Info",
-	"contact" : "Contact",
-	"loading" : "Loading...",
-	"nothing" : "Nothing found.",
-	"nothingmore" : "No more results.",
-	"update" : "Last update:",
-	"showMarker" : "Zoom in to show marker",
-	"empty" : "Empty input.",
-	"more" : "More Details",
-	"moreresults" : "More results...",
-	"less" : "Less",
-	"hide" : "Hide",
-	"show" : "Show",
-	"permalink" : "Permalink",
-	"finish" : "Finish",
-	"markerLoading" : "Loading points...",
-	"hillshading" : "Hillshading",
-	"object" : "POI-Details",
-	"marker" : "Marker",
-	"publictransport" : "Public transport",
-	"searchresults" : "Search results",
-	"routing" : "Route",
-	"searchoption" : "Search only in the current map view",
-	"close" : "Click to close",
-	"ad" : "Improve the data! Correct wrong website links with the new website checker from Keepright!",
-	"inolm" : "Show in OpenLinkMap...",
-	"embed" : "HTML-Code",
-	"embeddescription" : "Copia questo codice HTML sul tuo sito web per mostrare una piccola mappa con un pennarello.",
-	"embedattribution" : "Maps and data <a href=\"http://www.openstreetmap.org/copyright\">© OpenStreetMap contributors</a>.<br />Hillshading: <a href=\"http://nasa.gov/\">NASA SRTM</a>."
-};
 
 // translations of OpenLayers
 OpenLayers.Lang.en =

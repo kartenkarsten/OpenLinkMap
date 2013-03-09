@@ -7,44 +7,6 @@ See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
 Italian translation by Daniele Forsi <dforsi@gmail.com>
 */
 
-// translations of labels
-var translations =
-{
-	"back" : "Indietro",
-	"details" : "Dettagli",
-	"search" : "Avanti",
-	"spam" : "Segnala errori",
-	"title" : "Mappa e dati da <a href=\"http://www.openstreetmap.org/copyright\">© OpenStreetMap contributors</a>.<br />Ombreggiatura rilievi: <a href=\"http://nasa.gov/\">NASA SRTM</a>.",
-	"info" : "Informazioni",
-	"contact" : "Contatti",
-	"loading" : "Caricamento...",
-	"nothing" : "Nessun risultato.",
-	"nothingmore" : "Nessun altro risultato.",
-	"update" : "Ultimo aggiornamento:",
-	"showMarker" : "Ingrandire per vedere i marcatori",
-	"empty" : "Inserimento vuoto.",
-	"more" : "Altri dettagli",
-	"moreresults" : "Altri risultati...",
-	"less" : "Meno",
-	"hide" : "Nascondi",
-	"show" : "Mostra",
-	"permalink" : "Permalink",
-	"finish" : "Finish",
-	"markerLoading" : "Caricamento punti...",
-	"hillshading" : "Ombreggiatura rilievi",
-	"object" : "Dettagli POI",
-	"marker" : "Marcatori",
-	"publictransport" : "Trasporto pubblico",
-	"searchresults" : "Risultati della ricerca",
-	"routing" : "Route",
-	"searchoption" : "Cercare solo nella mappa visualizzata",
-	"close" : "Fare clic per chiudere",
-	"ad" : "Migliorare i dati! Correggere i collegamenti obsoleti e rotto con il nuovo sito web check da Keep Right!",
-	"inolm" : "Visualizza in OpenLinkMap...",
-	"embed" : "HTML-Code",
-	"embeddescription" : "Copia questo codice HTML sul tuo sito web per mostrare una piccola mappa con un pennarello.",
-	"embedattribution" : "Mappa e dati da <a href=\"http://www.openstreetmap.org/copyright\">© OpenStreetMap contributors</a>.<br />Ombreggiatura rilievi: <a href=\"http://nasa.gov/\">NASA SRTM</a>."
-};
 
 // translations of OpenLayers
 OpenLayers.Lang.it =

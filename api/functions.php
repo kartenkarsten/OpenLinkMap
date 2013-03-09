@@ -10,7 +10,7 @@
 	// email address to send error reports to
 	$mail = "AlexanderMatheisen@ish.de";
 	// available translations
-	$langs = array("de", "en", "fr", "it", "ru", "ja");
+	$langs = array("de"=>"de_DE", "en"=>"en_GB", "fr"=>"fr_FR", "it"=>"it_IT", "ru"=>"ru_RU", "ja"=>"ja_JA");
 	// name of databases
 	$db = "olm";
 	$ptdb = "nextobjects";
@@ -57,15 +57,20 @@
 	}
 
 
-	// includes a translation string file, either the given or the most matching language
+	// sets a language file for gettext, either in the given or the most matching language
 	function includeLocale($lang)
 	{
 		global $langs;
 
-		if ((!$lang) || (!in_array($lang, $langs)))
+		if ((!$lang) || (!array_key_exists($lang, $langs)))
 			$lang = getUserLang();
 
-		return "locales/".$lang.".php";
+		setlocale(LC_ALL, $langs[$lang]);
+		bind_textdomain_codeset("messages", "UTF-8");
+		bind_textdomain_codeset("tags", "UTF-8");
+		bindtextdomain("messages", "../locales");
+		bindtextdomain("tags", "../locales");
+		textdomain("messages");
 	}
 
 
@@ -98,7 +103,7 @@
 
 		// choose most matching language from available langs
 		foreach ($langlist as $value)
-			if (in_array($value, $langs))
+			if (array_key_exists($value, $langs))
 				return $value;
 
 		// if no matching language could be found, choose english
@@ -123,51 +128,39 @@
 	// returns an human-readable string of the given difference timestamp
 	function timeAgoString($diff)
 	{
-		global $translations;
-
 		if (!$diff)
 			return false;
 
-		// translations and unit conversion factors
-		$units[0][0] = 60;
-		$units[0][1] = $translations['date']['seconds'];
-		$units[0][2] = $translations['date']['second'];
-		$units[1][0] = 60;
-		$units[1][1] = $translations['date']['minutes'];
-		$units[1][2] = $translations['date']['minute'];
-		$units[2][0] = 24;
-		$units[2][1] = $translations['date']['hours'];
-		$units[2][2] = $translations['date']['hour'];
-		$units[3][0] = 7;
-		$units[3][1] = $translations['date']['days'];
-		$units[3][2] = $translations['date']['day'];
-		$units[4][0] = 4;
-		$units[4][1] = $translations['date']['weeks'];
-		$units[4][2] = $translations['date']['week'];
-		$units[5][0] = 12;
-		$units[5][1] = $translations['date']['months'];
-		$units[5][2] = $translations['date']['month'];
+		// unit conversion factors
+		$units[0] = 60;	// seconds
+		$units[1] = 60;	// minutes
+		$units[2] = 24;	// hours
+		$units[3] = 7;	// days
+		$units[4] = 4;	// weeks
+		$units[5] = 12;	// months
 
 		// calculating difference as human readable string
 		for ($i=0; $i<count($units); $i++)
 		{
-			if ($diff >= $units[$i][0])
-			{
-				if (($diff > $units[$i][0]) && ($i > 2))
-					$more = $translations['date']['morethan']." ";
-				$diff=$diff / $units[$i][0];
-			}
+			if ($diff >= $units[$i])
+				$diff = $diff / $units[$i];
 			else
 				break;
 		}
 
 		// singular and plural forms
-		if ((int)$diff == 1)
-			$unit = $units[$i][2];
-		else
-			$unit = $units[$i][1];
+		$interval[0] = sprintf(ngettext("%d second", "%d seconds", (int)$diff), (int)$diff);
+		$interval[1] = sprintf(ngettext("%d minute", "%d minutes", (int)$diff), (int)$diff);
+		$interval[2] = sprintf(ngettext("%d hour", "%d hours", (int)$diff), (int)$diff);
+		$interval[3] = sprintf(ngettext("%d day", "%d days", (int)$diff), (int)$diff);
+		$interval[4] = sprintf(ngettext("%d week", "%d weeks", (int)$diff), (int)$diff);
+		$interval[5] = sprintf(ngettext("%d month", "%d months", (int)$diff), (int)$diff);
 
-		return $more.(int)$diff." ".$unit." ".$translations['date']['ago'];
+		// display "more than"
+		if (($diff > $units[$i]) && ($i > 2))
+			return sprintf(_("more than %s ago"), $interval[$i]);
+		else
+			return sprintf(_("%s ago"), $interval[$i]);
 	}
 
 
@@ -232,27 +225,6 @@
 		}
 
 		return $offset;
-	}
-
-
-	// returns translation of a caption
-	function getTranslationString($string)
-	{
-		global $translations;
-
-		if (!$string)
-			return false;
-
-		$level = explode(".", $string);
-
-		$caption = $translations[$level[0]];
-		for ($i = 1; $i < count($level); $i++)
-			$caption = $caption[$level[$i]];
-
-		if (isset($caption))
-			return $caption;
-
-		return false;
 	}
 
 
@@ -602,12 +574,8 @@
 	// returns translation for given key-value-pair
 	function translateKeyValue($key, $value)
 	{
-		global $translations;
-
-		$keyvalue = $translations['tags'][$key][$value];
-		if (!$keyvalue)
-			return "";
-
+		$tag = $key."=".$value;
+		$keyvalue = dgettext("tags", $tag);
 		return $keyvalue;
 	}
 
@@ -722,10 +690,8 @@
 	// translate and parse the opening hours
 	function getOpeninghoursDetail($openinghours)
 	{
-		global $translations;
-
 		$original = array("Mo", "Tu", "We", "Th", "Fr", "Sa", "Su", "off", "PH", "SH", "+", ";", ",", "24/7");
-		$translation = array($translations['opening']['mo'], $translations['opening']['tu'], $translations['opening']['we'], $translations['opening']['th'], $translations['opening']['fr'], $translations['opening']['sa'], $translations['opening']['su'], $translations['opening']['off'], $translations['opening']['ph'], $translations['opening']['sh'], " ".$translations['opening']['+'], "<br />", " ".$translations['opening']['and']." ", $translations['opening']['247']);
+		$translation = array(_("Mo"), _("Tu"), _("We"), _("Th"), _("Fr"), _("Sa"), _("Su"), _("closed"), _("Public holiday"), _("School holiday"), " "._("open ending"), "<br />", " "._("and")." ", _("24/7"));
 		return str_replace($original, $translation, $openinghours);
 	}
 

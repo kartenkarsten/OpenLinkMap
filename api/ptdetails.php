@@ -8,8 +8,8 @@
 
 
 	require_once("functions.php");
-	// including translation file
-	require_once("../".includeLocale($_GET['lang']));
+	// include translation file
+	includeLocale($_GET['lang']);
 
 	$format = $_GET['format'];
 	$id = $_GET['id'];
@@ -94,7 +94,7 @@
 	// output of details data in plain text format
 	function textDetailsOut($response, $nameresponse, $wikipediaresponse, $langs = "en", $offset = 0)
 	{
- 		global $translations, $ptdb, $id, $type, $addressformats;
+ 		global $lang, $ptdb, $id, $type, $addressformats;
 
 		if ($response)
 		{
@@ -109,9 +109,10 @@
 			// if no name is set, use the poi type as name instead
 			if ($name[0] == "")
 			{
+				$tag = $key."=".$value;
 				foreach ($response as $key => $value)
-					if ($translations['tags'][$key][$value] != "")
-						$name[0] = $translations['tags'][$key][$value];
+					if (dgettext("tags", $tag) != "")
+						$name[0] = dgettext("tags", $tag);
 			}
 
 			$website = getWebsiteDetail(array($response['website'], $response['url'], $response['url:official'], $response['contact:website']));
@@ -129,12 +130,12 @@
 			{
 				$url = getImageUrl($response['image']);
 				$attribution = explode("/", $url);
-				$output .= "<div id=\"loadingImage\"><img id=\"image\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></div></a>\n";
+				$output .= "<div id=\"loadingImage\"><img id=\"image\" title=\""._("Fullscreen")."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></div></a>\n";
 			}
 			elseif (getWikipediaImage($wikipedia[1]))
 			{
 				$image = getWikipediaImage($wikipedia[1]);
-				$output .= "<div id=\"loadingImage\"><img id=\"image\" title=\"".$translations['captions']['fullscreen']."\" src=\"".getWikipediaThumbnailUrl($image)."\" /></div></a>\n";
+				$output .= "<div id=\"loadingImage\"><img id=\"image\" title=\""._("Fullscreen")."\" src=\"".getWikipediaThumbnailUrl($image)."\" /></div></a>\n";
 			}
 
 			if ($name)
@@ -154,52 +155,52 @@
 						$caption = substr($website[1], 0, 37)."...";
 					else
 						$caption = $website[1];
-					$output .= "<div>".$translations['captions']['homepage'].": <a class=\"url\" target=\"_blank\" href=\"".$website[0]."\">".$caption."</a></div>\n";
+					$output .= "<div>"._("Homepage").": <a class=\"url\" target=\"_blank\" href=\"".$website[0]."\">".$caption."</a></div>\n";
 				}
 				if ($wikipedia[1])
-					$output .= "<div class=\"wikipedia\">".$translations['captions']['wikipedia'].": <a target=\"_blank\" href=\"".$wikipedia[1]."\">".urldecode($wikipedia[2])."</a></div>\n";
+					$output .= "<div class=\"wikipedia\">"._("Wikipedia").": <a target=\"_blank\" href=\"".$wikipedia[1]."\">".urldecode($wikipedia[2])."</a></div>\n";
 				if ($response['departures'])
-					$output .= "<div class=\"departures\">".$translations['captions']['departures'].": <a target=\"_blank\" href=\"".$response['departures']."\">".$departures['host']."</a></div>\n";
+					$output .= "<div class=\"departures\">"._("Realtime departures").": <a target=\"_blank\" href=\"".$response['departures']."\">".$departures['host']."</a></div>\n";
 				$output .= "</div>\n";
 			}
 
 			// operator
 			if ($response['operator'])
-				$output .= "<div class=\"operator\">".$translations['captions']['operator'].": ".$response['operator']."</div>\n";
+				$output .= "<div class=\"operator\">"._("Operator").": ".$response['operator']."</div>\n";
 
 			// shelter
 			if ($response['shelter'] == "yes")
-				$output .= "<div class=\"shelter\">".$translations['captions']['shelter']."</div>\n";
+				$output .= "<div class=\"shelter\">"._("With shelter")."</div>\n";
 			else if ($response['shelter'] == "no")
-				$output .= "<div class=\"shelter\">".$translations['captions']['noshelter']."</div>\n";
+				$output .= "<div class=\"shelter\">"._("Without shelter")."</div>\n";
 			// bench
 			if ($response['bench'] == "yes")
-				$output .= "<div class=\"bench\">".$translations['captions']['bench']."</div>\n";
+				$output .= "<div class=\"bench\">"._("With bench")."</div>\n";
 			else if ($response['shelter'] == "no")
-				$output .= "<div class=\"bench\">".$translations['captions']['nobench']."</div>\n";
+				$output .= "<div class=\"bench\">"._("Without bench")."</div>\n";
 			// bin
 			if ($response['bin'] == "yes")
-				$output .= "<div class=\"bin\">".$translations['captions']['bin']."</div>\n";
+				$output .= "<div class=\"bin\">"._("With wastebasket")."</div>\n";
 			else if ($response['bin'] == "no")
-				$output .= "<div class=\"bin\">".$translations['captions']['nobin']."</div>\n";
+				$output .= "<div class=\"bin\">"._("Without wastebasket")."</div>\n";
 
 			// tactile paving
 			if ($response['tactile_paving'] == "yes")
-				$output .= "<div class=\"tactilepaving\">".$translations['captions']['tactilepaving']."</div>\n";
+				$output .= "<div class=\"tactilepaving\">"._("Tactile paving")."</div>\n";
 			else if ($response['tactile_paving'] == "no")
-				$output .= "<div class=\"tactilepaving\">".$translations['captions']['notactilepaving']."</div>\n";
+				$output .= "<div class=\"tactilepaving\">"._("No tactile paving")."</div>\n";
 			else if ($response['tactile_paving'] == "incorrect")
-				$output .= "<div class=\"tactilepaving\">".$translations['captions']['incorrecttactilepaving']."</div>\n";
+				$output .= "<div class=\"tactilepaving\">"._("Incorrect tactile paving")."</div>\n";
 
 			// wheelchair
 			if ($response['wheelchair'])
 			{
 				if ($response['wheelchair'] == "yes")
-					$output .= "<div class=\"wheelchair\">".$translations['captions']['wheelchair']."</div>\n";
+					$output .= "<div class=\"wheelchair\">"._("Accessable for wheelchairs")."</div>\n";
 				else if ($response['wheelchair'] == "no")
-					$output .= "<div class=\"wheelchair\">".$translations['captions']['wheelchairno']."</div>\n";
+					$output .= "<div class=\"wheelchair\">"._("Not accessable for wheelchairs")."</div>\n";
 				else if ($response['wheelchair'] == "limited")
-					$output .= "<div class=\"wheelchair\">".$translations['captions']['wheelchairlimited']."</div>\n";
+					$output .= "<div class=\"wheelchair\">"._("Limited accessable for wheelchairs")."</div>\n";
 			}
 
 			$output .= "</div>\n";

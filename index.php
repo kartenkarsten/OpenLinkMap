@@ -1,12 +1,12 @@
 <?php
 	require_once("api/functions.php");
 
-	if (isset($_GET['lang']) && in_array($_GET['lang'], $langs))
+	if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $langs))
 		$lang = $_GET['lang'];
 	else
 		$lang = getUserLang();
 
-	require_once("locales/".$lang.".php");
+	includeLocale($lang);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<? echo $lang; ?>" lang="<? echo $lang; ?>">
@@ -101,7 +101,7 @@
 			}
 		?>
 		<script type="text/javascript" src="locales/<? echo $lang; ?>.js"></script>
-		<script type="text/javascript" src="api/langfile.php?lang=<? echo $lang; ?>"></script>
+		<script type="text/javascript" src="api/jstranslations.php?lang=<? echo $lang; ?>"></script>
 		<script type="text/javascript" src="js/OpenStreetMap.js"></script>
 		<script type="text/javascript" src="js/search.js"></script>
 		<script type="text/javascript" src="js/startposition.js"></script>
@@ -168,9 +168,9 @@
 				</select>
 			</form>
 			<br />
-			<p id="osm">Maps and data <a href="http://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>.<br />Hillshading: <a href="http://nasa.gov/">NASA SRTM</a>.</p>
+			<p id="osm"><?=_("Maps and data <a href=\"http://www.openstreetmap.org/copyright\">© OpenStreetMap contributors</a>.<br />Hillshading: <a href=\"http://nasa.gov/\">NASA SRTM</a>.")?></p>
 			<a href="http://joker.com/" id="poweredby"><img src="img/ad.png" /></a>
-			<p id="ad" onclick="clickAd();">Improve the data! Correct wrong website links with the new website checker from Keepright!</p>
+			<p id="ad" onclick="clickAd();"><?=_("Improve the data! Correct wrong website links with the new website checker from Keepright!")?></p>
 			<form target="_blank" action="https://www.paypal.com/cgi-bin/webscr" method="post" id="PaypalButton">
 				<input type="hidden" name="cmd" value="_s-xclick">
 				<input type="hidden" name="hosted_button_id" value="ELF9KT74GH32G">
@@ -185,9 +185,9 @@
 			</noscript>
 			<p id="info"></p>
 			<div id="linkBar">
-				<a class="links" id="spamButton" onclick="reportSpam();">Report bug in map</a>&nbsp;•
-				<a class="links" id="infoButton" href="http://wiki.openstreetmap.org/wiki/OpenLinkMap" target="_blank">More Info</a>&nbsp;•
-				<a class="links" id="contactButton" href="#">Contact</a>
+				<a class="links" id="spamButton" onclick="reportSpam();"><?=_("Report bug in map")?></a>&nbsp;•
+				<a class="links" id="infoButton" href="http://wiki.openstreetmap.org/wiki/OpenLinkMap" target="_blank"><?=_("More Info")?></a>&nbsp;•
+				<a class="links" id="contactButton" href="#"><?=_("Contact")?></a>
 				<script language="javascript">
 					var usr = "info";
 					var dom = "openlinkmap";
@@ -196,19 +196,19 @@
 				</script>
 			</div>
 			<input type="text" id="searchBox" size="20" />
-			<img id="searchButton" src="img/search.png" onclick="Search.request();" title="Search" />
+			<img id="searchButton" src="img/search.png" onclick="Search.request();" title="<?=_('Search')?>" />
 			<img id="clearButton" src="img/clear.png" onclick="Search.clear();" />
 			<br />
-			<input type="checkbox" id="searchOption"><label for="searchOption" id="searchOptionCaption">Search only in the current map view</label><br /><br />
+			<input type="checkbox" id="searchOption"><label for="searchOption" id="searchOptionCaption"><?=_("Search only in the current map view")?><label><br /><br />
 			<div id="searchBar" class="infoBarOut"></div>
 			<div id="detailsBar" class="infoBarOut"></div>
 			<iframe id="josmFrame" src="about:blank"></iframe>
 		</div>
-		<div class="hideSidebarButton" id="hideSidebarButton" onclick="hideSideBar();" title="Hide"><b id="hideText">«</b></div>
+		<div class="hideSidebarButton" id="hideSidebarButton" onclick="hideSideBar();" title="<?=_('Hide')?>"><b id="hideText">«</b></div>
 		<img class="locateButton" id="locateButton" src="img/locate.png" />
 		<div id="mapFrame" class="mapFrame">
 			<noscript>
-				<p><b><?=$translations['captions']['nojavascriptheader']?></b><br /><?=$translations['captions']['nojavascripttext']?></p>
+				<p><b><?=_("Javascript is not activated")?></b><br /><?=_("Javascript is needed to show the map and run this website. Please turn on Javascript in your browser settings.")?></p>
 			</noscript>
 		</div>
 		<b class="errorBarFalse" id="errorBar"></b>
