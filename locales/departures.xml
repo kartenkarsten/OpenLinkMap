@@ -11,7 +11,7 @@
 	Supported operators:
 	* AT: ÖBB
 	* BE: De Lijn
-	* DE: Deutsche Bahn
+	* DE: Deutsche Bahn, Verkehrsverbund Stuttgart
 	* IT: ATAC
 -->
 
@@ -104,6 +104,25 @@
 		<output>
 			<copy-all/>
 			<tag from_match="uic_ref" k="departures" v="http://reiseauskunft.bahn.de/bin/bhftafel.exe/dn?country=DEU&amp;rt=1&amp;use_realtime_filter=1&amp;productsFilter=1111111111000000&amp;boardType=Abfahrt&amp;start=Suchen&amp;input={0}"/>
+		</output>
+	</translation>
+	<translation>
+		<name>VVS</name>
+		<description>Timetables for train stations operated by the Verkehrs- und Tarifverbund Stuttgart VVS.</description>
+		<match mode="and">
+			<match mode="or">
+				<tag k="highway" v="bus_stop"/>
+				<tag k="public_transport" v="platform"/>
+				<tag k="public_transport" v="stop_position"/>
+				<tag k="railway" v="halt"/>
+				<tag k="railway" v="tram_stop"/>
+				<tag k="railway" v="station"/>
+			</match>
+			<tag k="ref:vvs" v="([0-9]*)" match_id="ref_vvs"/>
+		</match>
+		<output>
+			<copy-all/>
+			<tag from_match="ref_vvs" k="departures" v="http://www2.vvs.de/vvsDM/XSLT_DM_REQUEST?dmMacro=mini&amp;name_dm={0}&amp;itdLPxx_limit=20"/>
 		</output>
 	</translation>
 </translations>

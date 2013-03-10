@@ -7,7 +7,7 @@
 
 
 # working directory, please change
-cd ~/import
+cd /home/www/sites/194.245.35.149/site/import
 PATH="$PATH:/home/www/sites/194.245.35.149/site/import/bin"
 export JAVACMD_OPTIONS=-Xmx2800M
 

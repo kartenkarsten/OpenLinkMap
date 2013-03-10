@@ -1179,10 +1179,13 @@
 
 		foreach ($xml->translation as $translation)
 		{
-			$regexmatches = array();
 			if ($translation->match != false)
-				if (!tagsMatch($translation->match, $tags, $regexmatches, $osmtype))
+			{
+				$tagsmatch = tagsMatch($translation->match, $tags, $osmtype);
+				if (!$tagsmatch[0])
 					continue;
+			}
+			$regexmatches = $tagsmatch[1];
 
 			if ($translation->find != false)
 				foreach ($translation->find->children() as $find)
@@ -1231,7 +1234,7 @@
 
 
 	// returns true, if xml-element "match" matches the given tags
-	function tagsMatch($matches, $tags, $regexmatches, $osmtype)
+	function tagsMatch($matches, $tags, $osmtype)
 	{
 		if (($osmtype != $matches['type']) && ($matches['type'] != ""))
 			return false;
@@ -1241,8 +1244,8 @@
 			$type = $match->getName();
 			if ($type == "tag")
 			{
-				$tagmatch = tagMatch($match['k'], $match['v'], $tags);
-				$regexmatches[$match['match_id']] = $tagmatch;
+				$tagmatch = tagMatch((string)$match['k'], (string)$match['v'], $tags);
+				$regexmatches[(string)$match['match_id']] = $tagmatch;
 				if (($matches['mode'] == "or") && (gettype($tagmatch) == "array"))
 					$condition = true;
 				else if (($matches['mode'] == "and") || !$matches['mode'])
@@ -1250,8 +1253,8 @@
 			}
 			else if ($type == "notag")
 			{
-				$notagmatch = !tagMatch($match['k'], $match['v'], $tags);
-				$regexmatches[$match['match_id']] = $notagmatch;
+				$notagmatch = !tagMatch((string)$match['k'], (string)$match['v'], $tags);
+				$regexmatches[(string)$match['match_id']] = $notagmatch;
 				if (($matches['mode'] == "or") && (gettype($tagmatch) != "array"))
 					$condition = true;
 				else if (($matches['mode'] == "and") || !$matches['mode'])
@@ -1259,24 +1262,30 @@
 			}
 			else if ($type == "match")
 			{
-				$tagsmatch = tagsMatch($match, $tags, $regexmatches, $osmtype);			
+				$tagsmatch = tagsMatch($match, $tags, $osmtype);
 				if ($matches['mode'] == "or")
 				{
 					if (!$condition)
-						$condition = $tagsmatch;
+						$condition = $tagsmatch[0];
 					else
-						$condition = $condition || $tagsmatch;
+						$condition = $condition || $tagsmatch[0];
 				}
 				else if (($matches['mode'] == "and") || !$matches['mode'])
 				{
 					if (!$condition)
-						$condition = $tagsmatch;
+						$condition = $tagsmatch[0];
 					else
-						$condition = $condition && $tagsmatch;
+						$condition = $condition && $tagsmatch[0];
 				}
+				if (!$regexmatches)
+					$regexmatches = array();
+				if (gettype($tagsmatch[1]) == "array")
+					array_push($regexmatches, $tagsmatch[1]);
+
 			}
 		}
-		return $condition;
+
+		return array($condition, $regexmatches);
 	}
 
 
