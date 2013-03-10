@@ -170,37 +170,37 @@
 
 			// shelter
 			if ($response['shelter'] == "yes")
-				$output .= "<div class=\"shelter\">"._("With shelter")."</div>\n";
+				$output .= "<div class=\"shelter\"><small>"._("With shelter")."</small></div>\n";
 			else if ($response['shelter'] == "no")
-				$output .= "<div class=\"shelter\">"._("Without shelter")."</div>\n";
+				$output .= "<div class=\"shelter\"><small>"._("Without shelter")."</small></div>\n";
 			// bench
 			if ($response['bench'] == "yes")
-				$output .= "<div class=\"bench\">"._("With bench")."</div>\n";
+				$output .= "<div class=\"bench\"><small>"._("With bench")."</small></div>\n";
 			else if ($response['shelter'] == "no")
-				$output .= "<div class=\"bench\">"._("Without bench")."</div>\n";
+				$output .= "<div class=\"bench\"><small>"._("Without bench")."</small></div>\n";
 			// bin
 			if ($response['bin'] == "yes")
-				$output .= "<div class=\"bin\">"._("With wastebasket")."</div>\n";
+				$output .= "<div class=\"bin\"><small>"._("With wastebasket")."</small></div>\n";
 			else if ($response['bin'] == "no")
-				$output .= "<div class=\"bin\">"._("Without wastebasket")."</div>\n";
+				$output .= "<div class=\"bin\"><small>"._("Without wastebasket")."</small></div>\n";
 
 			// tactile paving
 			if ($response['tactile_paving'] == "yes")
-				$output .= "<div class=\"tactilepaving\">"._("Tactile paving")."</div>\n";
+				$output .= "<div class=\"tactilepaving\"><small>"._("Tactile paving")."</small></div>\n";
 			else if ($response['tactile_paving'] == "no")
-				$output .= "<div class=\"tactilepaving\">"._("No tactile paving")."</div>\n";
+				$output .= "<div class=\"tactilepaving\"><small>"._("No tactile paving")."</small></div>\n";
 			else if ($response['tactile_paving'] == "incorrect")
-				$output .= "<div class=\"tactilepaving\">"._("Incorrect tactile paving")."</div>\n";
+				$output .= "<div class=\"tactilepaving\"><small>"._("Incorrect tactile paving")."</small></div>\n";
 
 			// wheelchair
 			if ($response['wheelchair'])
 			{
 				if ($response['wheelchair'] == "yes")
-					$output .= "<div class=\"wheelchair\">"._("Accessable for wheelchairs")."</div>\n";
+					$output .= "<div class=\"wheelchair\"><small>"._("Accessable for wheelchairs")."</small></div>\n";
 				else if ($response['wheelchair'] == "no")
-					$output .= "<div class=\"wheelchair\">"._("Not accessable for wheelchairs")."</div>\n";
+					$output .= "<div class=\"wheelchair\"><small>"._("Not accessable for wheelchairs")."</small></div>\n";
 				else if ($response['wheelchair'] == "limited")
-					$output .= "<div class=\"wheelchair\">"._("Limited accessable for wheelchairs")."</div>\n";
+					$output .= "<div class=\"wheelchair\"><small>"._("Limited accessable for wheelchairs")."</small></div>\n";
 			}
 
 			$output .= "</div>\n";
