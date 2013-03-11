@@ -565,7 +565,7 @@ function showPopup(feature)
 	{
 		cluster++;
 
-		item.popup.contentHTML = "<div id='clusterList"+cluster+"'>"+getNames("name", feature.cluster)+"</div>";	
+		item.popup.contentHTML = "<div id='clusterList"+cluster+"'>"+getNames(feature.cluster)+"</div>";	
 
 		// update popup
 		map.removePopup(item.popup);
@@ -596,6 +596,7 @@ function hidePopup(feature, popup)
 function getNames(cluster)
 {
 	var content = "";
+
 	for (var i=0; i<cluster.length; ++i)
 	{
 		var request = requestApi("name", "type="+cluster[i].attributes['type']+"&id="+cluster[i].attributes['id']);
