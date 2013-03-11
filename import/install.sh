@@ -15,18 +15,36 @@ pecl install geoip
 
 # add extension=geoip.so to php.ini
 
+
+if [ ! -e /usr/share/GeoIP ]; then
+	mkdir /usr/share/GeoIP
+fi
 cd /usr/share/GeoIP
-wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+# clean up first so we unpack the latest one, and not the first one ever downloaded
+rm -Rf /usr/share/GeoIP/GeoIP.dat.g*
+rm -Rf /usr/share/GeoIP/GeoLiteCity.dat.g*
+# Since they seem to block based on user agents of curl/wget, keep them happy with some mac user agent, if not you will get 404
+# country
+wget --user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.112 Safari/534.30"  http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
 gunzip GeoIP.dat.gz
-wget -N -q http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+# cities
+wget --user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.112 Safari/534.30"  http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
 gunzip GeoLiteCity.dat.gz
 mv GeoLiteCity.dat GeoIPCity.dat
 
+
+echo "Compiling tools"
 wget -O - http://m.m.i24.cc/osmupdate.c | cc -x c - -o osmupdate
-wget -O - http://m.m.i24.cc/osmfilter.c |cc -x c - -o osmfilter
+wget -O - http://m.m.i24.cc/osmfilter.c | cc -x c - -o osmfilter
 wget -O - http://m.m.i24.cc/osmconvert.c | cc -x c - -lz -o osmconvert
 
-mkdir osmosis
+
+echo "Installing osmosis"
+if [ -d osmosis ] ; then
+	# cleaning old stuff
+	rm -Rf osmosis
+fi
+mkdir -p osmosis
 cd osmosis
 wget -O - http://bretth.dev.openstreetmap.org/osmosis-build/osmosis-latest.tgz | tar xz
 cd ..
