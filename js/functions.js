@@ -273,7 +273,7 @@ function createMap()
 	{
 		projection: wgs84,
 		maxResolution: 10.0,
-		visibility: false,
+		visibility: true,
 		transitionEffect: 'resize',
 		styleMap: ptStyleMap,
 		strategies:
