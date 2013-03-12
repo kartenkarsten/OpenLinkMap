@@ -108,8 +108,8 @@
 		</output>
 	</translation>
 	<translation>
-		<name>VVS</name>
-		<description>Timetables for train stations operated by the Verkehrs- und Tarifverbund Stuttgart VVS.</description>
+		<name>VVS.1</name>
+		<description>Timetables for public transport stops operated by the Verkehrs- und Tarifverbund Stuttgart VVS.</description>
 		<match mode="and">
 			<match mode="or">
 				<tag k="highway" v="bus_stop"/>
@@ -124,6 +124,75 @@
 		<output>
 			<copy-all/>
 			<tag from_match="ref_vvs" k="departures" v="http://www2.vvs.de/vvsDM/XSLT_DM_REQUEST?dmMacro=mini&amp;name_dm={0}&amp;itdLPxx_limit=20"/>
+		</output>
+	</translation>
+	<translation>
+		<name>VVS.2</name>
+		<description>Timetables for public transport stops operated by the Verkehrs- und Tarifverbund Stuttgart VVS.</description>
+		<match mode="and">
+			<match mode="or">
+				<tag k="highway" v="bus_stop"/>
+				<tag k="public_transport" v="platform"/>
+				<tag k="public_transport" v="stop_position"/>
+				<tag k="railway" v="halt"/>
+				<tag k="railway" v="tram_stop"/>
+				<tag k="railway" v="station"/>
+			</match>
+			<match mode="or">
+				<tag k="operator" v="(.*;|^)SSB(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Stuttgarter Strassenbahnen(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Stuttgarter Straßenbahnen(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)SVE(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)LVL(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Schlienz(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Bader(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Böltz(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Dannenmann(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Däuble(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Eberhardt(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Eisemann(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)END(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Fischle(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Flattich(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Ganter(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Hassler(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Haussmann &amp; Bauer(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Jäger(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Kappus(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Klingel(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Knauss(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Kniesel(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Ludwigsburger Verkehrslinien(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Melchinger(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Omnibusverkehr Ernst Maier(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Ernst Maier(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)OVK(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Omnibus Verkehr Kirchheim(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)OVR(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Pflieger(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Pflüger(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Römer(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Schefenacker(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Seitter(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Seiz(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Spillmann(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Stadtwerke Herrenberg(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Stadtwerke Remseck(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Stäbler(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Städtischer Verkehrsbetrieb Esslingen(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)VBN(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Verkehrsbetriebe Nagoldtal(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)WEG(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)Wöhr(;.*|$)"/>
+				<tag k="network" v="(.*;|^)VVS(;.*|$)"/>
+			</match>
+		</match>
+		<find>
+			<tag k="uic_name" v="(.*)" match_id="uic_name"/>
+		</find>
+		<output>
+			<copy-all/>
+			<tag from_match="uic_name" k="departures" v="http://reiseauskunft.bahn.de/bin/bhftafel.exe/dn?country=DEU&amp;rt=1&amp;use_realtime_filter=1&amp;productsFilter=1111111111000000&amp;boardType=Abfahrt&amp;start=Suchen&amp;input={0}"/>
 		</output>
 	</translation>
 	<translation>
