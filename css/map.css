@@ -1131,3 +1131,9 @@ noscript p
 {
 	margin-left: 5px;
 }
+
+/* workaround to hide non-loading tiles */
+.olImageLoadError
+{
+	display: none;
+}
