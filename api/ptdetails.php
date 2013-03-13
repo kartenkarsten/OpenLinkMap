@@ -196,11 +196,11 @@
 			if ($response['wheelchair'])
 			{
 				if ($response['wheelchair'] == "yes")
-					$output .= "<div class=\"wheelchair\"><small>"._("Accessable for wheelchairs")."</small></div>\n";
+					$output .= "<div class=\"wheelchair\"><small>"._("Accessible for wheelchairs")."</small></div>\n";
 				else if ($response['wheelchair'] == "no")
-					$output .= "<div class=\"wheelchair\"><small>"._("Not accessable for wheelchairs")."</small></div>\n";
+					$output .= "<div class=\"wheelchair\"><small>"._("Not accessible for wheelchairs")."</small></div>\n";
 				else if ($response['wheelchair'] == "limited")
-					$output .= "<div class=\"wheelchair\"><small>"._("Limited accessable for wheelchairs")."</small></div>\n";
+					$output .= "<div class=\"wheelchair\"><small>"._("Limited accessible for wheelchairs")."</small></div>\n";
 			}
 
 			$output .= "</div>\n";
