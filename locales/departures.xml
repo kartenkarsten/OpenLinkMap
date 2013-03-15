@@ -11,7 +11,7 @@
 	Supported operators:
 	* AT: ÖBB
 	* BE: De Lijn
-	* DE: Deutsche Bahn, Verkehrsverbund Stuttgart
+	* DE: Deutsche Bahn, Verkehrsverbund Stuttgart, SWN
 	* ES: Titsa
 	* IT: ATAC
 -->
@@ -19,7 +19,7 @@
 <translations>
 	<translation>
 		<name>De Lijn</name>
-		<description>Timetables for public transport stops operated by "De Lijn" in Flanders/Belgium.</description>
+		<description>Timetables for public transport stops operated by "De Lijn" in Flanders, Belgium.</description>
 		<match mode="and">
 			<match mode="or">
 				<tag k="highway" v="bus_stop"/>
@@ -38,7 +38,7 @@
 	</translation>
 	<translation>
 		<name>ATAC</name>
-		<description>Timetables for public transport stops operated by "ATAC" in Rome (Italy).</description>
+		<description>Timetables for public transport stops operated by "ATAC" in Rome, Italy.</description>
 		<match mode="and">
 			<match mode="or">
 				<tag k="highway" v="bus_stop"/>
@@ -109,7 +109,7 @@
 	</translation>
 	<translation>
 		<name>VVS.1</name>
-		<description>Timetables for public transport stops operated by the Verkehrs- und Tarifverbund Stuttgart VVS.</description>
+		<description>Timetables for public transport stops operated by the "Verkehrs- und Tarifverbund Stuttgart VVS" in Stuttgart, Germany.</description>
 		<match mode="and">
 			<match mode="or">
 				<tag k="highway" v="bus_stop"/>
@@ -128,7 +128,7 @@
 	</translation>
 	<translation>
 		<name>VVS.2</name>
-		<description>Timetables for public transport stops operated by the Verkehrs- und Tarifverbund Stuttgart VVS.</description>
+		<description>Timetables for public transport stops operated by the "Verkehrs- und Tarifverbund Stuttgart VVS" in Stuttgart, Germany.</description>
 		<match mode="and">
 			<match mode="or">
 				<tag k="highway" v="bus_stop"/>
@@ -212,6 +212,28 @@
 		<output>
 			<copy-all/>
 			<tag from_match="stop_ref" k="departures" v="http://www.titsa.com/correspondencias.php?idc={0}"/>
+		</output>
+	</translation>
+	<translation>
+		<name>SWN</name>
+		<description>Timetables for public transport stops operated by "Stadtwerke Neuss" in Neuss, Germany.</description>
+		<match mode="and">
+			<match mode="or">
+				<tag k="highway" v="bus_stop"/>
+				<tag k="public_transport" v="platform"/>
+				<tag k="public_transport" v="stop_position"/>
+				<tag k="railway" v="halt"/>
+				<tag k="railway" v="station"/>
+			</match>
+			<match mode="or">
+				<tag k="operator" v="(?i)(.*;|^)SWN(;.*|$)"/>
+				<tag k="operator" v="(?i)(.*;|^)Stadtwerke Neuss(;.*|$)"/>
+			</match>
+			<tag k="name" v="(.*)" match_id="name"/>
+		</match>
+		<output>
+			<copy-all/>
+			<tag from_match="name" k="departures" v="http://efa.vrr.de/vrr/XSLT_DM_REQUEST?language=de&amp;place_dm=Neuss&amp;name_dm={0}&amp;type_dm=stop&amp;sessionID=0&amp;itdLPxx_transpCompany=swn&amp;itdTripDateTimeDepArr=dep"/>
 		</output>
 	</translation>
 </translations>
