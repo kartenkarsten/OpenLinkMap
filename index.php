@@ -199,7 +199,7 @@
 			<img id="searchButton" src="img/search.png" onclick="Search.request();" title="<?=_('Search')?>" />
 			<img id="clearButton" src="img/clear.png" onclick="Search.clear();" />
 			<br />
-			<input type="checkbox" id="searchOption"><label for="searchOption" id="searchOptionCaption"><?=_("Search only in the current map view")?><label><br /><br />
+			<input type="checkbox" id="searchCheckbox"><label id="searchCheckboxCaption"><?=_("Search only in the current map view")?><label><br /><br />
 			<div id="searchBar" class="infoBarOut"></div>
 			<div id="detailsBar" class="infoBarOut"></div>
 			<iframe id="josmFrame" src="about:blank"></iframe>

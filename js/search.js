@@ -20,19 +20,12 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 	// resets all parameters for a new search
     this.reset = function()
     {
-		var bounded = this.option.checked == true ? 1 : 0;
-
     	this.bar.innerHTML = "";
 		this.layer.removeAllFeatures();
 		this.resultCount = 1;
 		this.excludeList = "";
 		this.extent = {};
 		this.panned = false;
-		if (this.limit <= this.oldlimit)
-		{
-			this.limit = 10;
-			this.oldlimit = 10;
-		}
     }
 
 	// sends a search request
@@ -54,33 +47,31 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 		}
 
 		// if a new string was entered or other search type
-		if (input != this.request || bounded != this.bounded || ((bounds != this.bounds) && (!this.panned)))
-		{
+		if (input != this.request || bounded != this.bounded)
 			this.reset();
-		}
-
-		if ((bounded == 1) && (this.bar.innerHTML != ""))
-			return false;
 
 		if (input != this.request || this.excludeList != "" || bounded != this.bounded || bounds != this.bounds)
 		{
 			// show search results box
 			this.bar.className = "infoBar";
+
 			if (this.excludeList != "")
 				this.bar.removeChild(this.bar.lastChild);
+
 			// show that search results are loaded
 			this.bar.innerHTML += "<div class=\"loadingMoreInfo\">"+loading+"</div>";
 			this.request = input;
 			this.bounded = bounded;
-			this.oldlimit = this.limit;
+
 			input = input.replace(/ /g, "+");
 
+			var self = this;
 			var handler = function(response)
-					{
-						self.showResults(response);
-					}
+				{
+					self.showResults(response);
+				}
 
-			requestApi("proxy", "url=http://nominatim.openstreetmap.org/search/&format=xml&polygon=0&addressdetails=1&q="+input+"&accept-language="+params['lang']+"&exclude_place_ids="+this.excludeList+"&viewbox="+bounds[0]+","+bounds[3]+","+bounds[2]+","+bounds[1]+"&bounded="+this.bounded+"&limit="+this.oldlimit, handler);
+			requestApi("proxy", "url=http://nominatim.openstreetmap.org/search/&format=xml&polygon=0&addressdetails=1&q="+input+"&accept-language="+params['lang']+"&exclude_place_ids="+this.excludeList+"&viewbox="+bounds[0]+","+bounds[3]+","+bounds[2]+","+bounds[1]+"&bounded="+this.bounded, handler);
 		}
 	}
 
@@ -106,11 +97,9 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 		var self = this;
     	var xml = response.responseXML;
     	var placesList = xml.getElementsByTagName('place');
-    	var excludeList = xml.getElementsByTagName('searchresults')[0].getAttribute('exclude_place_ids');
-		if (this.bounded == 1)
-			this.bar.innerHTML = "";
-		else
-			this.bar.removeChild(this.bar.lastChild);
+    	var exclude = xml.getElementsByTagName('searchresults')[0].getAttribute('exclude_place_ids');
+
+		this.bar.removeChild(this.bar.lastChild);
     	if (placesList.length > 0)
 		{
 			for (var i = 0; i < placesList.length; i++)
@@ -153,26 +142,14 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 					this.resultCount++;
 				}
 			}
-			this.excludeList = excludeList;
 
-			// set "more results" link
+			this.excludeList = exclude;
+
+			// add "more results" link
 			this.bar.innerHTML += "<div id=\"moreResults\"><center><b>"+translations['moreresults']+"</b></center></div>";
-			if (this.bounded == 0)
+			gEBI('moreResults').onclick = function()
 			{
-				var self = this;
-				gEBI('moreResults').onclick = function()
-				{
-					self.send();
-				}
-			}
-			else
-			{
-				var self = this;
-				gEBI('moreResults').onclick = function()
-				{
-					self.limit += 10;
-					self.send();
-				}
+				self.send();
 			}
 			if (this.bounded == 0)
 				this.setBbox();
@@ -244,8 +221,6 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
     this.getDescription = function(details)
     {
 		var properties = {};
-		var caption = descriptions[details[1].localName];
-
 		for (var i = 1; i < details.length; i++)
 		{
 			var key = details[i].localName;
@@ -253,6 +228,7 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 			properties[key] = value;
 		}
 
+		var caption = descriptions[details[1].localName];
 		if (!caption && caption != "")
 			var caption = descriptions[properties['country_code']];
 		if (!caption && caption != "")
@@ -389,8 +365,6 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 	this.bounds = {};
 	this.extent = {};
 	this.panned = false;
-	this.limit = 10;
-	this.oldlimit = this.limit;
 
 	var self = this;
 	this.searchButton.onclick = function()
@@ -415,7 +389,7 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 				var keyCode = event.which;
 			else if (event.keyCode)
 				var keyCode = event.keyCode;
-			if(event && keyCode == 13)
+			if (event && keyCode == 13)
 				self.send();
 		};
 
@@ -457,7 +431,6 @@ function Search(map, box, bar, searchButton, clearButton, searchOption)
 		styleMap: styleMap
 	});
 	// adding control features
-	var self = this;
 	searchResultHandler = new OpenLayers.Control.SelectFeature(this.layer,
 	{
 		onSelect: self.resultClick

@@ -705,13 +705,13 @@ noscript p
 	font-size: 12px;
 }
 
-#searchOption
+#searchCheckbox
 {
 	position: relative;
 	top: -13px;
 }
 
-#searchOptionCaption
+#searchCheckboxCaption
 {
 	position: relative;
 	top: -15px;

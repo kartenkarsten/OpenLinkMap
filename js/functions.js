@@ -340,7 +340,7 @@ function createMap()
 	startposition = new Startposition(map, "locateButton");
 
 	// creating search
-	search = new Search(map, "searchBox", "searchBar", "searchButton", "clearButton", "searchOption");
+	search = new Search(map, "searchBox", "searchBar", "searchButton", "clearButton", "searchCheckbox");
 
 	// adding fullscreen feature
 	fullscreen = new Fullscreen("fullscreen", "moreImage");
