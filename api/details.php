@@ -138,10 +138,14 @@
 			if ($name[0] == "")
 			{
 				$tags = getTags($db, $id, $type);
-				$tag = $key."=".$value;
 				foreach ($tags as $key => $value)
+				{
+					$tag = $key."=".$value;
 					if (dgettext("tags", $tag) != "")
 						$name[0] = dgettext("tags", $tag);
+					if ($name[0] != $tag)
+						break;
+				}
 			}
 
 			$phone = getPhoneFaxDetail(array($response['phone1'], $response['phone2'], $response['phone3']));

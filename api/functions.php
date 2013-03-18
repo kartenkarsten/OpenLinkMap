@@ -576,7 +576,10 @@
 	{
 		$tag = $key."=".$value;
 		$keyvalue = dgettext("tags", $tag);
-		return $keyvalue;
+		if ($name[0] == $keyvalue)
+			return "";
+		else
+			return $keyvalue;
 	}
 
 

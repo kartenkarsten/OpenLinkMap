@@ -109,10 +109,15 @@
 			// if no name is set, use the poi type as name instead
 			if ($name[0] == "")
 			{
-				$tag = $key."=".$value;
-				foreach ($response as $key => $value)
+				$tags = getTags($db, $id, $type);
+				foreach ($tags as $key => $value)
+				{
+					$tag = $key."=".$value;
 					if (dgettext("tags", $tag) != "")
 						$name[0] = dgettext("tags", $tag);
+					if ($name[0] != $tag)
+						break;
+				}
 			}
 
 			$website = getWebsiteDetail(array($response['website'], $response['url'], $response['url:official'], $response['contact:website']));
