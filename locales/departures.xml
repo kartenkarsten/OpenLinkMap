@@ -42,7 +42,7 @@
 		<match mode="and">
 			<match mode="or">
 				<tag k="highway" v="bus_stop"/>
-				<tag k="railway" v="tram_stop"/>
+				<tag k="highway" v="platform"/>
 				<tag k="public_transport" v="platform"/>
 				<tag k="public_transport" v="stop_position"/>
 			</match>
