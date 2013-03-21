@@ -154,8 +154,9 @@
 							"en" => "English",
 							"fr" => "Français",
 							"it" => "Italiano",
-							"ru" => "Русский",
-							"ja" => "日本語"
+							"ja" => "日本語",
+							"nl" => "Nederlands",
+							"ru" => "Русский"
 						);
 						foreach ($languages as $short => $name)
 						{
