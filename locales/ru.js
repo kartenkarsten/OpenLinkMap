@@ -7,8 +7,13 @@ See olm.openstreetmap.de/info for details.
 Russian translation by NothisIm, see https://github.com/NothisIm
 */
 
+/* Translators (2009 onwards):
+ *  - Ferrer
+ *  - Komzpa
+ *  - Lockal
+ *  - Александр Сигачёв
+ */
 
-// translations of OpenLayers
 OpenLayers.Lang.ru =
 {
 	'unhandledRequest': "Непредвиденный результат запроса ${statusText}",

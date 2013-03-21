@@ -5,8 +5,12 @@ This is free software, and you are welcome to redistribute it under certain cond
 See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
 */
 
+/* Translators (2009 onwards):
+ *  - Grille chompa
+ *  - Nikiwaibel
+ *  - Umherirrender
+ */
 
-// translations of OpenLayers
 OpenLayers.Lang.de =
 {
 	'unhandledRequest': "Unbehandelte Anfragerückmeldung ${statusText}",

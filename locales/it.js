@@ -8,7 +8,6 @@ Italian translation by Daniele Forsi <dforsi@gmail.com>
 */
 
 
-// translations of OpenLayers
 OpenLayers.Lang.it =
 {
 	'unhandledRequest': "Richiesta non gestita, ritornato ${statusText}",

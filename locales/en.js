@@ -6,7 +6,6 @@ See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
 */
 
 
-// translations of OpenLayers
 OpenLayers.Lang.en =
 {
 	'unhandledRequest': "Unhandled request return ${statusText}",

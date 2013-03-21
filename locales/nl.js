@@ -10,7 +10,8 @@ See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
  *  - Siebrand
  */
 
-OpenLayers.Lang.nl = {
+OpenLayers.Lang.nl =
+{
     'unhandledRequest': "Het verzoek is niet afgehandeld met de volgende melding: ${statusText}",
     'Permalink': "Permanente verwijzing",
     'Overlays': "Overlays",

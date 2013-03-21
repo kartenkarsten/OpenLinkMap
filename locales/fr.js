@@ -5,9 +5,13 @@ This is free software, and you are welcome to redistribute it under certain cond
 See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
 */
 
+/* Translators (2009 onwards):
+ *  - Damouns
+ *  - IAlex
+ */
 
-// translations of OpenLayers
-OpenLayers.Lang["fr"] = OpenLayers.Util.applyDefaults({
+OpenLayers.Lang.fr =
+{
 	'unhandledRequest': "Requête non gérée, retournant ${statusText}",
 	'Permalink': "Permalien",
 	'Overlays': "Calques",
