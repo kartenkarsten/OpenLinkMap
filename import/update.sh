@@ -34,7 +34,7 @@ echo "Filtering planet file"
 echo ""
 osmfilter temp.o5m --keep="wikipedia= wikipedia:*= contact:phone= website= url= phone= fax= email= addr:email= image= url:official= contact:website= addr:phone= phone:mobile= contact:mobile= addr:fax= contact:email= contact:fax= image:panorama= opening_hours=" --out-o5m >temp-olm.o5m
 
-osmfilter temp.o5m --keep="amenity=bus_station highway=bus_stop railway=station railway=halt railway=tram_stop amenity=parking" --out-o5m >temp-nextobjects.o5m
+osmfilter temp.o5m --keep="amenity=bus_station highway=bus_stop railway=station railway=halt railway=tram_stop amenity=parking highway=platform railway=platform" --out-o5m >temp-nextobjects.o5m
 rm temp.o5m
 echo ""
 
@@ -55,7 +55,7 @@ rm olm.pbf
 
 osmconvert temp-nextobjects.o5m --all-to-nodes --max-objects=90000000 --out-o5m >temp.o5m
 rm temp-nextobjects.o5m
-osmfilter temp.o5m --drop-relations --drop-ways --keep-nodes="amenity=bus_station highway=bus_stop railway=station railway=halt railway=tram_stop amenity=parking" --out-o5m >temp-nextobjects.o5m
+osmfilter temp.o5m --drop-relations --drop-ways --keep-nodes="amenity=bus_station highway=bus_stop railway=station railway=halt railway=tram_stop amenity=parking highway=platform railway=platform" --out-o5m >temp-nextobjects.o5m
 rm temp.o5m
 osmconvert temp-nextobjects.o5m --fake-lonlat --fake-author --out-pbf >temp.pbf
 rm temp-nextobjects.o5m
