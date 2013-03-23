@@ -47,10 +47,8 @@
 				<tag k="public_transport" v="stop_position"/>
 			</match>
 			<tag k="operator" v="(.*;|^)ATAC(;.*|$)"/>
-		</match>
-		<find>
 			<tag k="ref" v="([0-9]*)" match_id="stop_ref"/>
-		</find>
+		</match>
 		<output>
 			<copy-all/>
 			<tag from_match="stop_ref" k="departures" v="http://muovi.roma.it/paline/palina/{0}"/>
