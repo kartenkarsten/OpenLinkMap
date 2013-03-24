@@ -629,7 +629,7 @@
 		{
 			$text = substr($response[0]['tags'], 1, -1);
 			$temp = explode("\", \"", $text);
-			for ($i=1; $i<count($temp); $i++)
+			for ($i=0; $i<count($temp); $i++)
 			{
 				$tag = explode("\"=>\"", $temp[$i]);
 				$tags[$tag[0]] = $tag[1];
