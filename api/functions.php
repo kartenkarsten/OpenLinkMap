@@ -445,7 +445,7 @@
 		{
 			$response = requestDetails("SELECT ST_X(geom), ST_Y(geom), id
 											FROM ".$type."s
-											WHERE geom && ST_SetSRID(ST_MakeBox2D(ST_Point(".$bbox[0].",".$bbox[1]."), ST_Point(".$bbox[2].",".$bbox[3].")), 4326) AND (tags->'highway'='bus_stop' OR tags->'amenity'='bus_station' OR tags->'railway'='station' OR tags->'railway'='halt' OR tags->'railway'='tram_stop') AND (tags ? 'name');", $connection);
+											WHERE geom && ST_SetSRID(ST_MakeBox2D(ST_Point(".$bbox[0].",".$bbox[1]."), ST_Point(".$bbox[2].",".$bbox[3].")), 4326) AND (tags->'highway'='bus_stop' OR tags->'amenity'='bus_station' OR tags->'railway'='station' OR tags->'railway'='halt' OR tags->'railway'='tram_stop' OR tags->'railway'='platform' OR tags->'highway'='platform' OR tags->'public_transport'='platform') AND (tags ? 'name');", $connection);
 			// putting out the results
 			if ($response)
 			{
