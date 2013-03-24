@@ -258,7 +258,7 @@
 
 			// timetable departures
 			if ($response['departures'])
-				$output .= "<departures>".$response['departures']."</departures>\n";
+				$output .= "<departures>".htmlentities($response['departures'])."</departures>\n";
 
 			// stop details
 			if ($response['shelter'])
