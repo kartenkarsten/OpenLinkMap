@@ -2,23 +2,25 @@
 # This program comes with ABSOLUTELY NO WARRANTY.
 # This is free software, and you are welcome to redistribute it under certain conditions.
 # See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
-# Alexander Matheisen <AlexanderMatheisen@ish.de>, 2010.
 #
+# Translators:
+# Alexander Matheisen <AlexanderMatheisen@ish.de>, 2013.
+# David <davide.pri@gmail.com>, 2013.
 msgid ""
 msgstr ""
-"Project-Id-Version: 1\n"
+"Project-Id-Version: OpenLinkMap\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-08 12:29+0100\n"
-"PO-Revision-Date: 2013-03-08 17:07+0100\n"
+"PO-Revision-Date: 2013-04-04 12:17+0100\n"
 "Last-Translator: Alexander Matheisen <AlexanderMatheisen@ish.de>\n"
-"Language-Team: \n"
-"Language: \n"
+"Language-Team: Italian (http://www.transifex.com/projects/p/openlinkmap/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Poedit-Language: Italian\n"
-"X-Poedit-Country: ITALY\n"
+"Language: it\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: UNITED KINGDOM\n"
+"X-Poedit-Language: English\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 msgid "Fullscreen"
@@ -37,31 +39,31 @@ msgid "Operator"
 msgstr "Operatore"
 
 msgid "With shelter"
-msgstr ""
+msgstr "Con pensilina"
 
 msgid "Without shelter"
-msgstr ""
+msgstr "Senza pensilina"
 
 msgid "With bench"
-msgstr ""
+msgstr "Con panchina"
 
 msgid "Without bench"
-msgstr ""
+msgstr "Senza panchina"
 
 msgid "With wastebasket"
-msgstr ""
+msgstr "Con cestino"
 
 msgid "Without wastebasket"
-msgstr ""
+msgstr "Senza cestino"
 
 msgid "Tactile paving"
-msgstr ""
+msgstr "Con pavimentazione tattile"
 
 msgid "No tactile paving"
-msgstr ""
+msgstr "Senza pavimentazione tattile"
 
 msgid "Incorrect tactile paving"
-msgstr ""
+msgstr "Pavimentazione tattile non corretta"
 
 msgid "Accessible for wheelchairs"
 msgstr "Accessibile per sedie a rotelle"
@@ -70,7 +72,7 @@ msgid "Not accessible for wheelchairs"
 msgstr "Non accessibile per sedie a rotelle"
 
 msgid "Limited accessible for wheelchairs"
-msgstr "Limited accessibile per sedie a rotelle"
+msgstr "Accesso limitato per sedie a rotelle"
 
 msgid "Phone"
 msgstr "Telefono"
@@ -106,13 +108,13 @@ msgid "Without name"
 msgstr "senza nome"
 
 msgid "Busstops"
-msgstr "Fermata autobus"
+msgstr "Fermata degli autobus"
 
 msgid "Stations"
 msgstr "Stazioni"
 
 msgid "Tramhalts"
-msgstr "Fermate tram"
+msgstr "Fermate del tram"
 
 msgid "Parkings"
 msgstr "Parcheggi"

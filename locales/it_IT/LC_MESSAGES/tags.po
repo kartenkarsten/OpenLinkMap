@@ -2,23 +2,25 @@
 # This program comes with ABSOLUTELY NO WARRANTY.
 # This is free software, and you are welcome to redistribute it under certain conditions.
 # See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
-# Alexander Matheisen <AlexanderMatheisen@ish.de>, 2013.
 #
+# Translators:
+# Alexander Matheisen <AlexanderMatheisen@ish.de>, 2013.
+# David <davide.pri@gmail.com>, 2013.
 msgid ""
 msgstr ""
-"Project-Id-Version: 1\n"
+"Project-Id-Version: OpenLinkMap\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-08 12:29+0100\n"
-"PO-Revision-Date: 2013-03-09 22:04+0100\n"
+"PO-Revision-Date: 2013-04-04 12:17+0100\n"
 "Last-Translator: Alexander Matheisen <AlexanderMatheisen@ish.de>\n"
-"Language-Team: \n"
-"Language: \n"
+"Language-Team: Italian (http://www.transifex.com/projects/p/openlinkmap/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Poedit-Language: Italian\n"
-"X-Poedit-Country: ITALY\n"
+"Language: it\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: UNITED KINGDOM\n"
+"X-Poedit-Language: English\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 msgid "aerialway=cable_car"
@@ -544,7 +546,7 @@ msgid "cuisine=bavarian"
 msgstr "Bavarese"
 
 msgid "cuisine=beef_bowl"
-msgstr ""
+msgstr "Gyūdon"
 
 msgid "cuisine=burger"
 msgstr "Burger"
@@ -562,7 +564,7 @@ msgid "cuisine=crepe"
 msgstr "Crêpe"
 
 msgid "cuisine=curry"
-msgstr ""
+msgstr "Curry"
 
 msgid "cuisine=donut"
 msgstr "Ciambelle"
@@ -607,7 +609,7 @@ msgid "cuisine=pizza"
 msgstr "Pizza"
 
 msgid "cuisine=ramen"
-msgstr ""
+msgstr "Ramen"
 
 msgid "cuisine=regional"
 msgstr "Regionale"
@@ -619,7 +621,7 @@ msgid "cuisine=seafood"
 msgstr "Pescheria"
 
 msgid "cuisine=soba"
-msgstr ""
+msgstr "Soba"
 
 msgid "cuisine=spanish"
 msgstr "Spagnola"
@@ -679,7 +681,7 @@ msgid "highway=ford"
 msgstr "Guado"
 
 msgid "highway=living_street"
-msgstr ""
+msgstr "Living street"
 
 msgid "highway=motorway"
 msgstr "Autostrada"
@@ -697,7 +699,7 @@ msgid "highway=pedestrian"
 msgstr "Strada pedonale"
 
 msgid "highway=platform"
-msgstr ""
+msgstr "Marciapiede"
 
 msgid "highway=primary"
 msgstr "Strada primary"
@@ -715,7 +717,7 @@ msgid "highway=residential"
 msgstr "Strada residenziale"
 
 msgid "highway=road"
-msgstr ""
+msgstr "Strada"
 
 msgid "highway=secondary"
 msgstr "Strada secondary"
@@ -907,13 +909,13 @@ msgid "leisure=beach_resort"
 msgstr "Stabilimento balneare"
 
 msgid "leisure=bird_hide"
-msgstr ""
+msgstr " Nascondiglio per osservare gli uccelli"
 
 msgid "leisure=common"
-msgstr ""
+msgstr "Area comune"
 
 msgid "leisure=dog_park"
-msgstr ""
+msgstr "Area cani"
 
 msgid "leisure=fishing"
 msgstr "Riserva di pesca"
@@ -952,7 +954,7 @@ msgid "leisure=pitch"
 msgstr "Campo sportivo"
 
 msgid "leisure=recreation_ground"
-msgstr ""
+msgstr "Area giochi"
 
 msgid "leisure=sauna"
 msgstr "Sauna"
@@ -973,7 +975,7 @@ msgid "leisure=track"
 msgstr "Pista"
 
 msgid "leisure=video_arcade"
-msgstr ""
+msgstr "Videogioco arcade"
 
 msgid "leisure=water_park"
 msgstr "Parco aquatico"
@@ -1384,7 +1386,7 @@ msgid "shop=alcohol"
 msgstr "Liquori"
 
 msgid "shop=anime"
-msgstr ""
+msgstr "Anime"
 
 msgid "shop=art"
 msgstr "Galleria d'arte privata"
@@ -1645,7 +1647,7 @@ msgid "tourism=chalet"
 msgstr "Chalet"
 
 msgid "tourism=guest_house"
-msgstr ""
+msgstr "Casa per ospiti"
 
 msgid "tourism=hostel"
 msgstr "Ostello"
