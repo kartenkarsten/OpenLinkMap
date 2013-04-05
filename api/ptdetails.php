@@ -150,25 +150,6 @@
 				$output .= "</div>\n";
 			}
 
-			// website and wikipedia links
-			if ($website[0] || $wikipedia[0] || $response['departures'])
-			{
-				$output .= "<div class=\"web\">\n";
-				if ($website[0])
-				{
-					if (($caption = strlen($website[1]) > 37) && (strlen($website[1]) > 40))
-						$caption = substr($website[1], 0, 37)."...";
-					else
-						$caption = $website[1];
-					$output .= "<div>"._("Homepage").": <a class=\"url\" target=\"_blank\" href=\"".$website[0]."\">".$caption."</a></div>\n";
-				}
-				if ($wikipedia[1])
-					$output .= "<div class=\"wikipedia\">"._("Wikipedia").": <a target=\"_blank\" href=\"".$wikipedia[1]."\">".urldecode($wikipedia[2])."</a></div>\n";
-				if ($response['departures'])
-					$output .= "<div class=\"departures\">"._("Realtime departures").": <a target=\"_blank\" href=\"".$response['departures']."\">".$departures['host']."</a></div>\n";
-				$output .= "</div>\n";
-			}
-
 			// operator
 			if ($response['operator'])
 				$output .= "<div class=\"operator\">"._("Operator").": ".$response['operator']."</div>\n";
@@ -206,6 +187,25 @@
 					$output .= "<div class=\"wheelchair\"><small>"._("Not accessible for wheelchairs")."</small></div>\n";
 				else if ($response['wheelchair'] == "limited")
 					$output .= "<div class=\"wheelchair\"><small>"._("Limited accessible for wheelchairs")."</small></div>\n";
+			}
+
+			// website and wikipedia links
+			if ($website[0] || $wikipedia[0] || $response['departures'])
+			{
+				$output .= "<div class=\"web\">\n";
+				if ($website[0])
+				{
+					if (($caption = strlen($website[1]) > 37) && (strlen($website[1]) > 40))
+						$caption = substr($website[1], 0, 37)."...";
+					else
+						$caption = $website[1];
+					$output .= "<div>"._("Homepage").": <a class=\"url\" target=\"_blank\" href=\"".$website[0]."\">".$caption."</a></div>\n";
+				}
+				if ($wikipedia[1])
+					$output .= "<div class=\"wikipedia\">"._("Wikipedia").": <a target=\"_blank\" href=\"".$wikipedia[1]."\">".urldecode($wikipedia[2])."</a></div>\n";
+				if ($response['departures'])
+					$output .= "<div class=\"departures\">"._("Realtime departures").": <a target=\"_blank\" href=\"".$response['departures']."\">".$departures['host']."</a></div>\n";
+				$output .= "</div>\n";
 			}
 
 			$output .= "</div>\n";
