@@ -3,6 +3,62 @@ OpenLinkMap Changelog
 
 (all changes without author notice are by [@rurseekatze](https://github.com/rurseekatze)
 
+## 7.5 (05.04.2013)
+
+### Improvements
+
+#### Backend improvements
+
+ * Updated osmupdated, osmfilter, osmconvert
+ * Updated osmosis to v0.42
+ * Some improvements of installer script
+ * Do not show disused next objects
+ * Converted translations to gettext format
+ * Copy platforms into the database
+
+#### Frontend improvements
+
+ * Added public transport layer
+ * Added support for Osmosis TagTransform files
+ * Added weblinks to realtime departures support with TagTransform rulefile
+ * Added realtime departures support for various public transport operators/networks:
+ ** AT: ÖBB
+ ** BE: De Lijn
+ ** DE: Deutsche Bahn, Verkehrsverbund Stuttgart, Stadtwerke Neuss, Stadtbus Eschwege, Nordhessischer Verkehrsverbund
+ ** ES: Titsa
+ ** IT: ATAC - by [@Madeco](https://github.com/Madeco) [#17](https://github.com/rurseekatze/OpenLinkMap/pull/17)
+ * Added nederlands/dutch translation
+ * Updated french translation with Transifex
+ * Updated italian translation with Transifex and support by [@Madeco](https://github.com/Madeco) [#18](https://github.com/rurseekatze/OpenLinkMap/pull/18)
+ * Optimized POI circle radius size & clustering behaviour to prevent map icons from being hidden by POI circle
+ * Better CSS position of langselector
+ * Hide non-loading tiles with CSS workaround
+ * Show platforms on public-transport-layer
+ * Added public transport layer in small-map-mode
+ * Added public transport details
+
+### Bugfixes
+
+#### Backend bugfixes
+
+ * Fixed wikipedia image parsing code
+ * Wikipedia-own image was selected as related image
+ * Fixed wikipedia description parsing code
+ * Added OpenLayers-translators to langfiles
+ * Bugfix: Array begins with element 0, not 1
+ * Fixed wrong variable name in details - mobile phone was not shown
+ * Bugfix: "&" converted to "&amp;" to avoid XML errors
+ * Casting simplexml-object=>string was missing
+
+#### Frontend bugfixes
+
+ * Repaired embed mode for public transport POIs
+ * Bugfix: Popups of clustered markers were not loading
+ * Repaired nominatim search: removed workaround for bounded searches (https://trac.openstreetmap.org/ticket/4674)
+ * Fixed some bugs in nominatim search
+ * Repaired selection of japanese translation
+
+
 ## 7.4.1 (20.01.2013)
 
 ### Improvements
