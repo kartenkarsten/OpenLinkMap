@@ -52,7 +52,7 @@
 		</match>
 		<output>
 			<copy-all/>
-			<tag from_match="stop_ref" k="departures" v="http://www.amt.genova.it/mobile/passaggi2.asp?zona=&CodiceFermata={0}&func=fermata&submit=Conferma"/>
+			<tag from_match="ref" k="departures" v="http://www.amt.genova.it/mobile/passaggi2.asp?zona=&amp;CodiceFermata={0}&amp;func=fermata&amp;submit=Conferma"/>
 		</output>
 	</translation>
 	<translation>
