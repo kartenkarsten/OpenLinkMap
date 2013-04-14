@@ -22,11 +22,11 @@ OpenLinkMap Changelog
  * Added support for Osmosis TagTransform files
  * Added weblinks to realtime departures support with TagTransform rulefile
  * Added realtime departures support for various public transport operators/networks:
- ** AT: ÖBB
- ** BE: De Lijn
- ** DE: Deutsche Bahn, Verkehrsverbund Stuttgart, Stadtwerke Neuss, Stadtbus Eschwege, Nordhessischer Verkehrsverbund
- ** ES: Titsa
- ** IT: ATAC - by [@Madeco](https://github.com/Madeco) [#17](https://github.com/rurseekatze/OpenLinkMap/pull/17)
+    * AT: ÖBB
+    * BE: De Lijn
+    * DE: Deutsche Bahn, Verkehrsverbund Stuttgart, Stadtwerke Neuss, Stadtbus Eschwege, Nordhessischer Verkehrsverbund
+    * ES: Titsa
+    * IT: ATAC - by [@Madeco](https://github.com/Madeco) [#17](https://github.com/rurseekatze/OpenLinkMap/pull/17)
  * Added nederlands/dutch translation
  * Updated french translation with Transifex
  * Updated italian translation with Transifex and support by [@Madeco](https://github.com/Madeco) [#18](https://github.com/rurseekatze/OpenLinkMap/pull/18)
