@@ -108,7 +108,7 @@ msgid "Without name"
 msgstr "senza nome"
 
 msgid "Busstops"
-msgstr "Fermata degli autobus"
+msgstr "Fermate degli autobus"
 
 msgid "Stations"
 msgstr "Stazioni"
@@ -290,7 +290,7 @@ msgid "Show in OpenLinkMap..."
 msgstr "Visualizza in OpenLinkMap..."
 
 msgid "HTML-Code"
-msgstr "HTML-Code"
+msgstr "Codice HTML"
 
 msgid "Copy this HTML code snippet into your website to show a small map with a marker."
 msgstr "Copia questo codice HTML sul tuo sito web per mostrare una piccola mappa con un pennarello."
@@ -521,7 +521,7 @@ msgid "License, author, original page..."
 msgstr "Licenza, autore, pagina originale..."
 
 msgid "Improve the data! Correct wrong website links with the new website checker from Keepright!"
-msgstr "Migliorare i dati! Correggere i collegamenti obsoleti e rotto con il nuovo sito web check da Keep Right!"
+msgstr "Migliora i dati! Correggi i collegamenti sbagliati ad i siti web con il nuovo controllo di Keepright!"
 
 msgid "Report bug in map"
 msgstr "Segnala errori"
@@ -533,5 +533,5 @@ msgid "Javascript is not activated"
 msgstr "JavaScript non è abilitato"
 
 msgid "Javascript is needed to show the map and run this website. Please turn on Javascript in your browser settings."
-msgstr "JavaScript è richiesto per la presentazione della pagina. si prega di abilitare javascript nel browser."
+msgstr "JavaScript è richiesto per mostrare la mappa ed eseguire questo sito web. Si prega di abilitare Javascript nelle impostazioni del browser."
 
