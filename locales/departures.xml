@@ -13,7 +13,7 @@
 	* BE: De Lijn
 	* DE: Deutsche Bahn, Verkehrsverbund Stuttgart, Stadtwerke Neuss, Stadtbus Eschwege, Nordhessischer Verkehrsverbund
 	* ES: Titsa
-	* IT: ATAC
+	* IT: ATAC, AMT Genova
 -->
 
 <translations>
@@ -34,6 +34,25 @@
 		<output>
 			<copy-all/>
 			<tag from_match="stop_ref" k="departures" v="http://mijnlijn.be/{0}"/>
+		</output>
+	</translation>
+	<translation>
+		<name>AMT Genova</name>
+		<description>Timetables for public transport stops operated by "Amt" in Genoa, Italy.</description>
+		<match mode="and">
+			<match mode="or">
+				<tag k="highway" v="bus_stop"/>
+				<tag k="highway" v="platform"/>
+				<tag k="public_transport" v="platform"/>
+				<tag k="public_transport" v="stop_position"/>
+				<tag k="amenity" v="bus_station"/>
+			</match>
+			<tag k="operator" v="(.*;|^)AMT(;.*|$)"/>
+			<tag k="ref" v="([0-9]*)" match_id="ref"/>
+		</match>
+		<output>
+			<copy-all/>
+			<tag from_match="stop_ref" k="departures" v="http://www.amt.genova.it/mobile/passaggi2.asp?zona=&CodiceFermata={0}&func=fermata&submit=Conferma"/>
 		</output>
 	</translation>
 	<translation>
