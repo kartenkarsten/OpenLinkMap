@@ -254,6 +254,29 @@
 		</output>
 	</translation>
 	<translation>
+		<name>Braunschweiger Verkehrs AG</name>
+		<description>Timetables for public transport stops operated by "Braunschweiger Verkehrs AG" in Braunschweig, Germany.</description>
+		<match mode="and">
+			<match mode="or">
+				<tag k="highway" v="bus_stop"/>
+				<tag k="public_transport" v="platform"/>
+				<tag k="public_transport" v="stop_area"/>
+				<tag k="public_transport" v="stop_position"/>
+				<tag k="railway" v="halt"/>
+				<tag k="railway" v="station"/>
+			</match>
+			<match mode="or">
+				<tag k="operator" v="(?i)(.*;|^)Braunschweiger Verkehrs AG(;.*|$)"/>
+			</match>
+			<tag k="network" v="VRB"/>
+			<tag k="name" v="(.*)" match_id="name"/>
+		</match>
+		<output>
+			<copy-all/>
+      <tag from_match="name" k="departures" v="http://www.efa.de/gvh/XSLT_TRIP_REQUEST2?type_origin=stop&type_destination=stop&place_origin=braunschweig&name_origin={0}"/>
+		</output>
+	</translation>
+	<translation>
 		<name>Stadtbus Eschwege 1</name>
 		<description>Timetables for public transport stops operated by "Stadtbus Eschwege" in Eschwege, Germany.</description>
 		<match mode="and">
