@@ -11,7 +11,7 @@
 	Supported operators:
 	* AT: ÖBB
 	* BE: De Lijn
-	* DE: Deutsche Bahn, Verkehrsverbund Stuttgart, Stadtwerke Neuss, Stadtbus Eschwege, Nordhessischer Verkehrsverbund
+	* DE: Deutsche Bahn, Verkehrsverbund Stuttgart, Stadtwerke Neuss, Stadtbus Eschwege, Nordhessischer Verkehrsverbund, Braunschweiger Verkehrs AG
 	* ES: Titsa
 	* IT: ATAC, AMT Genova
 -->
@@ -273,7 +273,7 @@
 		</match>
 		<output>
 			<copy-all/>
-      <tag from_match="name" k="departures" v="http://www.efa.de/gvh/XSLT_TRIP_REQUEST2?type_origin=stop&type_destination=stop&place_origin=braunschweig&name_origin={0}"/>
+			<tag from_match="name" k="departures" v="http://www.efa.de/gvh/XSLT_TRIP_REQUEST2?type_origin=stop&amp;type_destination=stop&amp;place_origin=braunschweig&amp;name_origin={0}"/>
 		</output>
 	</translation>
 	<translation>
