@@ -113,7 +113,7 @@
 		<script type="text/javascript" src="js/addressformats.js"></script>
 		<!-- Piwik -->
 		<script type="text/javascript">
-			var pkBaseURL = (("https:" == document.location.protocol) ? "https://www.openlinkmap.org/piwik/" : "http://www.openlinkmap.org/piwik/");
+			var pkBaseURL = (("https:" == document.location.protocol) ? "https://piwik.openlinkmap.org/" : "http://piwik.openlinkmap.org/");
 			document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
 		</script>
 		<script type="text/javascript">
@@ -127,7 +127,7 @@
 			{}
 		</script>
 		<noscript>
-			<p><img src="http://www.openlinkmap.org/piwik/piwik.php?idsite=1" style="border:0" alt="" /></p>
+			<p><img src="http://piwik.openlinkmap.org/piwik.php?idsite=1" style="border:0" alt="" /></p>
 		</noscript>
 		<!-- End Piwik Tracking Code -->
 		<script type="text/javascript">
