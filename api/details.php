@@ -8,7 +8,6 @@
 
 
 	require_once("functions.php");
-	require_once("addressformats.php");
 	// include translation file
 	includeLocale($_GET['lang']);
 
@@ -51,6 +50,7 @@
 				tags->'addr:postcode' AS \"postcode\",
 				tags->'addr:city' AS \"city\",
 				tags->'addr:suburb' AS \"suburb\",
+				tags->'addr:province' AS \"province\",
 				tags->'phone' AS \"phone1\",
 				tags->'contact:phone' AS \"phone2\",
 				tags->'addr:phone' AS \"phone3\",
@@ -122,7 +122,7 @@
 	// output of details data in plain text format
 	function textDetailsOut($response, $nameresponse, $wikipediaresponse, $langs = "en", $offset = 0)
 	{
- 		global $db, $id, $type, $addressformats;
+ 		global $db, $id, $type;
 
 		if ($response)
 		{
@@ -197,27 +197,8 @@
 			if ($response['street'] || $response['housenumber'] || $response['country'] || $response['city'] || $response['postcode'])
 			{
 				$output .= "<div class=\"adr\">\n";
-
-				// select template
-				if ($response['country'])
-					$template = $addressformats[strtolower($response['country'])];
-				if (!$response['country'] || $response['country'] == null || $template == null)
-					$template = $addressformats['default'];
-
-				// replace placeholders
-				$template = str_replace("#street#", $response['street'], $template);
-				$template = str_replace("#housenumber#", $response['housenumber'], $template);
-				$template = str_replace("#country#", strtoupper($response['country']), $template);
-				$template = str_replace("#city#", $response['city'], $template);
-				$template = str_replace("#postcode#", $response['postcode'], $template);
-				$template = str_replace("#housename#", $response['housename'], $template);
-				$template = str_replace("#suburb#", $response['suburb'], $template);
-				// remove some format mistakes
-				$template = str_replace("</span>,", "</span>", $template);
-				$template = str_replace("-</span>", "</span>", $template);
-				// remove whitespaces
-				$output .= trim($template);
-
+				// country-dependend format of address
+				$output .= formatAddress($response, $response['country']);
 				$output .= "</div>\n";
 			}
 

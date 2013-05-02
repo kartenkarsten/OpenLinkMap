@@ -17,6 +17,8 @@
 	// name of application
 	$appname = "OpenLinkMap";
 
+	require_once("addressformats.php");
+
 
 	// connects do database
 	function connectToDatabase($dbname)
@@ -835,6 +837,35 @@
 			$article[0] = rawurlencode($article[0]);
 
 		return $article;
+	}
+
+
+	// creates an address in the format of country $country from the tags given with $tagset
+	function formatAddress($tagset, $country)
+	{
+		global $addressformats;
+
+		// select template
+		if ($country)
+			$template = $addressformats[strtolower($country)];
+		if (!$country || $country == null || $template == null)
+			$template = $addressformats['default'];
+
+		// replace placeholders
+		$template = str_replace("#street#", $tagset['street'], $template);
+		$template = str_replace("#housenumber#", $tagset['housenumber'], $template);
+		$template = str_replace("#country#", strtoupper($tagset['country']), $template);
+		$template = str_replace("#city#", $tagset['city'], $template);
+		$template = str_replace("#postcode#", $tagset['postcode'], $template);
+		$template = str_replace("#housename#", $tagset['housename'], $template);
+		$template = str_replace("#suburb#", $tagset['suburb'], $template);
+		$template = str_replace("#province#", $tagset['province'], $template);
+		// remove some format mistakes because of missing tags
+		$template = str_replace("</span>,", "</span>", $template);
+		$template = str_replace("-</span>", "</span>", $template);
+		$template = str_replace("()", "", $template);
+		// remove whitespaces
+		return trim($template);
 	}
 
 

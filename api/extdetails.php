@@ -8,7 +8,6 @@
 
 
 	require_once("functions.php");
-	require_once("addressformats.php");
 	// include translation file
 	includeLocale($_GET['lang']);
 
@@ -52,6 +51,7 @@
 				tags->'addr:city' AS \"city\",
 				tags->'addr:housename' AS \"housename\",
 				tags->'addr:suburb' AS \"suburb\",
+				tags->'addr:province' AS \"province\",
 				tags->'wikipedia' AS \"wikipedia\",
 				tags->'phone' AS \"phone1\",
 				tags->'contact:phone' AS \"phone2\",
@@ -177,7 +177,7 @@
 	// text/html output of extdetails
 	function textMoredetailsOut($response, $nameresponse, $wikipediaresponse, $langs, $offset = 0)
 	{
-		global $db, $id, $type, $addressformats;
+		global $db, $id, $type;
 
 		if ($response)
 		{
@@ -243,27 +243,8 @@
 				$output .= "<div class=\"moreInfoBox\">\n";
 				$output .= "<strong>"._("Address")."</strong>\n";
 				$output .= "<table><tr><td>\n";
-
-				// select template
-				if ($response['country'])
-					$template = $addressformats[strtolower($response['country'])];
-				if (!$response['country'] || $response['country'] == null || $template == null)
-					$template = $addressformats['default'];
-
-				// replace placeholders
-				$template = str_replace("#street#", $response['street'], $template);
-				$template = str_replace("#housenumber#", $response['housenumber'], $template);
-				$template = str_replace("#country#", strtoupper($response['country']), $template);
-				$template = str_replace("#city#", $response['city'], $template);
-				$template = str_replace("#postcode#", $response['postcode'], $template);
-				$template = str_replace("#housename#", $response['housename'], $template);
-				$template = str_replace("#suburb#", $response['suburb'], $template);
-				// remove some format mistakes
-				$template = str_replace("</span>,", "</span>", $template);
-				$template = str_replace("-</span>", "</span>", $template);
-				// remove whitespaces
-				$output .= trim($template);
-
+				// country-dependend format of address
+				$output .= formatAddress($response, $response['country']);
 				$output .= "</td></tr></table>\n";
 				$output .= "</div>\n";
 			}
