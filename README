@@ -5,6 +5,7 @@ OpenLinkMap Copyright (C) 2010 Alexander Matheisen (Rurseekatze) <alexandermathe
 This program comes with ABSOLUTELY NO WARRANTY.
 This is free software, and you are welcome to redistribute it under certain conditions.
 See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
+Website: http://www.openlinkmap.org/
 
 
 Requirements:
@@ -44,13 +45,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-Repository contains also data from other sources:
+This project contains also code/data from other projects:
 
 * The icon is taken from the Oxygen-Iconset, available under LGPLv3: http://www.oxygen-icons.org/
 * osmfilter, osmconvert, osmupdate from Markus Weber, available under GPLv3: http://wiki.openstreetmap.org/wiki/Osmfilter
 * OpenLayers, available under 2-clause BSD License (FreeBSD): http://openlayers.org/
 * Osmosis: http://wiki.openstreetmap.org/wiki/Osmosis
-* This product includes GeoLite data created by MaxMind, available from
-http://maxmind.com/
 
 ATTENTION: The included binaries can only be used on i386 Linux systems. If you use other systems, you have to compile the programs for your environment.
