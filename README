@@ -25,7 +25,7 @@ Wikipage:
 Installation:
 * Copy all files and folders into a webserver directory
 * Run manually the install script import/install.sh - it might not run correctly on every distribution/platform and has no error exceptions
-* After successful installation, run import/import.sh
+* After successful installation, modify paths and parameters in every file and run import/import.sh
 * Add a cronjob to run import/update.sh (daily seems to be a good frequency)
 
 
