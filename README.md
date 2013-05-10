@@ -47,9 +47,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 This project contains also code/data from other projects:
 
-* The icon is taken from the Oxygen-Iconset, available under LGPLv3: http://www.oxygen-icons.org/
-* osmfilter, osmconvert, osmupdate from Markus Weber, available under GPLv3: http://wiki.openstreetmap.org/wiki/Osmfilter
-* OpenLayers, available under 2-clause BSD License (FreeBSD): http://openlayers.org/
-* Osmosis: http://wiki.openstreetmap.org/wiki/Osmosis
+* The icon is taken from the Oxygen-Iconset, available under GNU LGPLv3: http://www.oxygen-icons.org/
+* osmfilter
+    * http://wiki.openstreetmap.org/wiki/Osmfilter
+    * Author: Markus Weber
+    * available under GNU GPLv3
+* osmconvert
+    * http://wiki.openstreetmap.org/wiki/Osmconvert
+    * Author: Markus Weber
+    * available under GNU GPLv3
+* osmupdate
+    * http://wiki.openstreetmap.org/wiki/Osmupdate
+    * Author: Markus Weber
+    * available under GNU GPLv3
+* OpenLayers
+    * http://openlayers.org/
+    * available under 2-clause BSD License (FreeBSD)
+* Osmosis
+    * https://github.com/openstreetmap/osmosis
+    * available under 2-clause BSD License (FreeBSD)
 
 ATTENTION: The included binaries can only be used on i386 Linux systems. If you use other systems, you have to compile the programs for your environment.
