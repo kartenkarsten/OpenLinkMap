@@ -8,7 +8,7 @@
 
 # working directory, please change
 cd /home/www/sites/194.245.35.149/site/olm/import
-PATH="$PATH:/home/www/sites/194.245.35.149/site/import/olm/bin"
+PATH="$PATH:/home/www/sites/194.245.35.149/site/olm/import/bin"
 export JAVACMD_OPTIONS=-Xmx2800M
 
 
