@@ -605,8 +605,7 @@
 
 		if (!$result)
 		{
-			reportError($request);
-			reportError("No return for database request.");
+			reportError("No return for database request: ".pg_last_error());
 			return false;
 		}
 
