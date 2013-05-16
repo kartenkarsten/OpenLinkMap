@@ -653,42 +653,59 @@
 	// returns the tag which has a e-mail address and correct errors in format
 	function getMailDetail($emails)
 	{
-		// select value which is set
+		$results = array();
 		foreach ($emails as $email)
+		{
 			if ($email)
-				return $email;
-
-		return false;
+			{
+				$values = explode(";", $email);
+				foreach ($values as $value)
+					array_push($results, $value);
+			}
+		}
+		if (count($results) > 0)
+			return $results;
+		else
+			return false;
 	}
 
 
 	// return the tag which has a phone or fax number and correct errors in format
 	function getPhoneFaxDetail($numbers)
 	{
-		// select value which is set
+		$results = array();
 		foreach ($numbers as $number)
+		{
 			if ($number)
-				$rawnumber = $number;
+			{
+				$values = explode(";", $number);
+				foreach ($values as $value)
+				{
+					$rawnumber = $value;
+					// correct some mistakes
+					$rawnumber = str_replace(" - ", "-", $rawnumber);
+					$rawnumber = str_replace(" ", "-", $rawnumber);
+					$rawnumber = str_replace("(", "", $rawnumber);
+					$rawnumber = str_replace(")", "", $rawnumber);
 
-		// correct some mistakes
-		$rawnumber = str_replace(" - ", "-", $rawnumber);
-		$rawnumber = str_replace(" ", "-", $rawnumber);
-		$rawnumber = str_replace("(", "", $rawnumber);
-		$rawnumber = str_replace(")", "", $rawnumber);
+					if (substr($rawnumber, 0, 2) == "00")
+						$rawnumber = "+".substr($rawnumber, 2);
 
-		if (substr($rawnumber, 0, 2) == "00")
-			$rawnumber = "+".substr($rawnumber, 2);
+					// create number to be used in e.g. callto: links
+					$linkNumber = str_replace("-", "", $rawnumber);
+					$linkNumber = str_replace("(", "", $linkNumber);
+					$linkNumber = str_replace(")", "", $linkNumber);
 
-		// create number to be used in e.g. callto: links
-		$linkNumber = str_replace("-", "", $rawnumber);
-		$linkNumber = str_replace("(", "", $linkNumber);
-		$linkNumber = str_replace(")", "", $linkNumber);
-
-		// return values as array
-		if ($linkNumber && $rawnumber)
-			return array($linkNumber, $rawnumber);
-
-		return false;
+					// return values as array
+					if ($linkNumber && $rawnumber)
+						array_push($results, array($linkNumber, $rawnumber));
+				}
+			}
+		}
+		if (count($results) > 0)
+			return $results;
+		else
+			return false;
 	}
 
 
@@ -704,26 +721,35 @@
 	// returns the tag which has a link to a website and correct errors in format
 	function getWebsiteDetail($websites)
 	{
-		// select value which is set
+		$results = array();
 		foreach ($websites as $website)
+		{
 			if ($website)
-				$rawurl = $website;
+			{
+				$values = explode(";", $website);
+				foreach ($values as $rawurl)
+				{
+					// do some corrections because of different value
+					if (substr($rawurl, 0, 7) != "http://" && substr($rawurl, 0, 8) != "https://" && strlen($rawurl) != 0)
+						$rawurl = "http://".$rawurl;
 
-		// do some corrections because of different value
-		if (substr($rawurl, 0, 7) != "http://" && substr($rawurl, 0, 8) != "https://" && strlen($rawurl) != 0)
-			$rawurl = "http://".$rawurl;
+					// cut http://www. or http:// or similar strings
+					$caption = str_replace("http://", "", $rawurl);
+					$caption = str_replace("https://", "", $caption);
+					$caption = str_replace("www.", "", $caption);
 
-		// cut http://www. or http:// or similar strings
-		$caption = str_replace("http://", "", $rawurl);
-		$caption = str_replace("https://", "", $caption);
-		$caption = str_replace("www.", "", $caption);
+					// remove last slash
+					if (substr($caption, -1, 1) == "/")
+						$caption = substr($caption, 0, -1);
 
-		// remove last slash
-		if (substr($caption, -1, 1) == "/")
-			$caption = substr($caption, 0, -1);
-
-		// return values as array
-		return array($rawurl, $caption);
+					array_push($results, array($rawurl, $caption));
+				}
+			}
+		}
+		if (count($results) > 0)
+			return $results;
+		else
+			return false;
 	}
 
 

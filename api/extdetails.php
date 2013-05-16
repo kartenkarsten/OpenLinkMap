@@ -204,18 +204,9 @@
 			}
 
 			$phone = getPhoneFaxDetail(array($response['phone1'], $response['phone2'], $response['phone3']));
-			$phonenumber = $phone[0];
-			$phone = $phone[1];
-
 			$mobilephone = getPhoneFaxDetail(array($response['mobilephone1'], $response['mobilephone2']));
-			$mobilephonenumber = $mobilephone[0];
-			$mobilephone = $mobilephone[1];
-
 			$fax = getPhoneFaxDetail(array($response['fax1'], $response['fax2'], $response['fax3']));
-			$fax = $fax[1];
-
 			$website = getWebsiteDetail(array($response['website1'], $response['website2'], $response['website3'], $response['website4']));
-
 			$email = getMailDetail(array($response['email1'], $response['email2'], $response['email3']));
 
 			// get wikipedia link and make translation
@@ -256,20 +247,45 @@
 				$output .= "<strong>"._("Contact")."</strong>\n";
 				$output .= "<table>\n";
 					if ($phone)
-						$output .= "<tr><td><u>"._("Phone").":</u> </td><td><a href=\"callto:".$phonenumber."\">".$phone."</a></td></tr>\n";
-					if ($mobilephone)
-						$output .= "<tr><td><u>"._("Mobile phone").":</u> </td><td><a href=\"callto:".$mobilephonenumber."\">".$mobilephone."</a></td></tr>\n";
-					if ($fax)
-						$output .= "<tr><td><u>"._("Fax").":</u> </td><td>".$fax."</td></tr>\n";
-					if ($email)
-						$output .= "<tr><td><u>"._("Email").":</u> </td><td><a href=\"mailto:".$email."\">".$email."</a></td></tr>\n";
-					if ($website[0])
 					{
-						if (($caption = strlen($website[1]) > 31) && (strlen($website[1]) > 34))
-							$caption = substr($website[1], 0, 31)."...";
-						else
-							$caption = $website[1];
-						$output .= "<tr><td><u>"._("Homepage").":</u> </td><td><a target=\"_blank\" href=\"".$website[0]."\">".$caption."</a></td></tr>\n";
+						$output .= "<tr><td><u>"._("Phone").":</u></td><td>";
+						foreach ($phone as $phonenumber)
+							$output .= " <a href=\"callto:".$phonenumber[0]."\">".$phonenumber[1]."</a>\n";
+						$output .= "</td></tr>\n";
+					}
+					if ($mobilephone)
+					{
+						$output .= "<tr><td><u>"._("Mobile phone").":</u></td><td>";
+						foreach ($mobilephone as $mobilephonenumber)
+							$output .= " <a href=\"callto:".$mobilephonenumber[0]."\">".$mobilephonenumber[1]."</a>\n";
+						$output .= "</td></tr>\n";
+					}
+					if ($fax)
+					{
+						$output .= "<tr><td><u>"._("Fax").":</u></td><td>";
+						foreach ($fax as $faxnumber)
+							$output .= " ".$faxnumber[1]."\n";
+						$output .= "</td></tr>\n";
+					}
+					if ($email)
+					{
+						$output .= "<tr><td><u>"._("Email").":</u> </td><td>";
+						foreach ($email as $emailaddress)
+							$output .= " <a href=\"mailto:".$emailaddress."\">".$emailaddress."</a>\n";
+						$output .= "</td></tr>\n";
+					}
+					if ($website)
+					{
+						$output .= "<tr><td><u>"._("Homepage").":</u></td><td>";
+						foreach ($website as $webaddress)
+						{
+							if (($caption = strlen($webaddress[1]) > 31) && (strlen($webaddress[1]) > 34))
+								$caption = substr($webaddress[1], 0, 31)."...";
+							else
+								$caption = $webaddress[1];
+							$output .= "<a target=\"_blank\" href=\"".$webaddress[0]."\">".$caption."</a>\n";
+						}
+						$output .= "</td></tr>\n";
 					}
 				$output .= "</table>\n";
 				$output .= "</div>\n";
@@ -613,16 +629,9 @@
 			$name = getNameDetail($langs, $nameresponse);
 
 			$phone = getPhoneFaxDetail(array($response['phone1'], $response['phone2'], $response['phone3']));
-			$phone = $phone[1];
-
 			$fax = getPhoneFaxDetail(array($response['fax1'], $response['fax2'], $response['fax3']));
-			$fax = $fax[1];
-
 			$mobilephone = getPhoneFaxDetail(array($response['mobilephone1'], $response['mobilephone2']));
-			$mobilephone = $mobilephone[1];
-
 			$website = getWebsiteDetail(array($response['website1'], $response['website2'], $response['website3'], $response['website4']));
-
 			$email = getMailDetail(array($response['email1'], $response['email2'], $response['email3']));
 
 			// get wikipedia link and make translation
@@ -668,22 +677,27 @@
 			{
 				$output .= "<contact>\n";
 				if ($phone)
-					$output .= "<phone>".$phone."</phone>\n";
+					foreach ($phone as $phonenumber)
+						$output .= " <phone>".$phonenumber[1]."</phone>";
 				if ($fax)
-					$output .= "<fax>".$fax."</fax>\n";
+					foreach ($fax as $faxnumber)
+						$output .= " <fax>".$faxnumber[1]."</fax>";
 				if ($mobilephone)
-					$output .= "<mobilephone>".$mobilephone."</mobilephone>\n";
+					foreach ($mobilephone as $mobilephonenumber)
+						$output .= " <mobilephone>".$mobilephonenumber[1]."</mobilephone>";
 				if ($email)
-					$output .= "<email>".$email."</email>\n";
+					foreach ($email as $emailaddress)
+						$output .= "<email>".$emailaddress."</email>\n";
 				$output .= "</contact>\n";
 			}
 
 			// website and wikipedia links
-			if ($website[0])
+			if ($website)
 			{
 				$output .= "<web>\n";
-				if ($website[0])
-					$output .= "<website>".$website[0]."</website>\n";
+				foreach ($website as $webaddress)
+					if ($webaddress[0])
+						$output .= "<website>".$webaddress[0]."</website>\n";
 				$output .= "</web>\n";
 			}
 
@@ -910,16 +924,9 @@
 			$name = getNameDetail($langs, $nameresponse);
 
 			$phone = getPhoneFaxDetail(array($response['phone1'], $response['phone2'], $response['phone3']));
-			$phone = $phone[1];
-
 			$fax = getPhoneFaxDetail(array($response['fax1'], $response['fax2'], $response['fax3']));
-			$fax = $fax[1];
-
 			$mobilephone = getPhoneFaxDetail(array($response['mobilephone1'], $response['mobilephone2']));
-			$mobilephone = $mobilephone[1];
-
 			$website = getWebsiteDetail(array($response['website1'], $response['website2'], $response['website3'], $response['website4']));
-
 			$email = getMailDetail(array($response['email1'], $response['email2'], $response['email3']));
 
 			// get wikipedia link and make translation
@@ -962,17 +969,37 @@
 
 			// contact information
 			if ($phone)
-				$data['phone'] = $phone;
+			{
+				$tmp = array();
+				foreach($phone as $phonenumber)
+					array_push($tmp, $phonenumber[1]);
+				$data['phone'] = $tmp;
+			}
 			if ($fax)
-				$data['fax'] = $fax;
+			{
+				$tmp = array();
+				foreach($fax as $faxnumber)
+					array_push($tmp, $faxnumber[1]);
+				$data['fax'] = $tmp;
+			}
 			if ($mobilephone)
-				$data['mobilephone'] = $mobilephone;
+			{
+				$tmp = array();
+				foreach($mobilephone as $mobilephonenumber)
+					array_push($tmp, $mobilephonenumber[1]);
+				$data['mobilephone'] = $tmp;
+			}
 			if ($email)
 				$data['email'] = $email;
 
 			// website link
-			if ($website[0])
-				$data['website'] = $website[0];
+			if ($website)
+			{
+				$tmp = array();
+				foreach($website as $webaddress)
+					array_push($tmp, $webaddress[0]);
+				$data['website'] = $tmp;
+			}
 
 			// operator
 			if ($response['operator'])
@@ -1069,7 +1096,7 @@
 			{
 				// cuisine
 				if ($response['cuisine'])
-					$data['cuisine'] = str_replace(";", ",", $response['cuisine']);
+					$data['cuisine'] = explode(";", $response['cuisine']);
 				// stars
 				if ($response['stars'])
 					$data['stars'] = $response['stars'];

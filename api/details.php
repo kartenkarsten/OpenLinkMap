@@ -149,18 +149,9 @@
 			}
 
 			$phone = getPhoneFaxDetail(array($response['phone1'], $response['phone2'], $response['phone3']));
-			$phonenumber = $phone[0];
-			$phone = $phone[1];
-
 			$fax = getPhoneFaxDetail(array($response['fax1'], $response['fax2'], $response['fax3']));
-			$fax = $fax[1];
-
 			$mobilephone = getPhoneFaxDetail(array($response['mobilephone1'], $response['mobilephone2']));
-			$mobilephonenumber = $mobilephone[0];
-			$mobilephone = $mobilephone[1];
-
 			$website = getWebsiteDetail(array($response['website1'], $response['website2'], $response['website3'], $response['website4']));
-
 			$email = getMailDetail(array($response['email1'], $response['email2'], $response['email3']));
 
 			// get wikipedia link and make translation
@@ -207,27 +198,52 @@
 			{
 				$output .= "<div class=\"contact\">\n";
 				if ($phone)
-					$output .= "<div class=\"tel\"><span class=\"type\">"._("Phone")."</span>: <a class=\"value\" href=\"callto:".$phonenumber."\">".$phone."</a></div>\n";
+				{
+					$output .= "<div class=\"tel\"><span class=\"type\">"._("Phone")."</span>:";
+					foreach ($phone as $phonenumber)
+						$output .= " <a class=\"value\" href=\"callto:".$phonenumber[0]."\">".$phonenumber[1]."</a>";
+					$output .= "</div>\n";
+				}
 				if ($fax)
-					$output .= "<div class=\"tel\"><span class=\"type\">"._("Fax")."</span>: <span class=\"value\">".$fax."</span></div>\n";
+				{
+					$output .= "<div class=\"tel\"><span class=\"type\">"._("Fax")."</span>:";
+					foreach ($fax as $faxnumber)
+						$output .= " <span class=\"value\">".$faxnumber[1]."</span>";
+					$output .= "</div>\n";
+				}
 				if ($mobilephone)
-					$output .= "<div class=\"tel\"><span class=\"type\">"._("Mobile phone")."</span>: <span class=\"value\" href=\"callto:".$mobilephonenumber."\">".$mobilephone."</span></div>\n";
+				{
+					$output .= "<div class=\"tel\"><span class=\"type\">"._("Mobile phone")."</span>:";
+					foreach ($mobilephone as $mobilephonenumber)
+						$output .= " <span class=\"value\" href=\"callto:".$mobilephonenumber[0]."\">".$mobilephonenumber[1]."</span>";
+					$output .= "</div>\n";
+				}
 				if ($email)
-					$output .= "<div>"._("Email").": <a class=\"email\" href=\"mailto:".$email."\">".$email."</a></div>\n";
+				{
+					$output .= "<div>"._("Email").":";
+					foreach ($email as $emailaddress)
+						$output .= " <a class=\"email\" href=\"mailto:".$emailaddress."\">".$emailaddress."</a>";
+					$output .= "</div>\n";
+				}
 				$output .= "</div>\n";
 			}
 
 			// website and wikipedia links
-			if ($website[0] || $wikipedia[0])
+			if ($website || $wikipedia[0])
 			{
 				$output .= "<div class=\"web\">\n";
-				if ($website[0])
+				if ($website)
 				{
-					if (($caption = strlen($website[1]) > 37) && (strlen($website[1]) > 40))
-						$caption = substr($website[1], 0, 37)."...";
-					else
-						$caption = $website[1];
-					$output .= "<div>"._("Homepage").": <a class=\"url\" target=\"_blank\" href=\"".$website[0]."\">".$caption."</a></div>\n";
+					$output .= "<div>"._("Homepage").":";
+					foreach ($website as $webaddress)
+					{
+						if (($caption = strlen($webaddress[1]) > 37) && (strlen($webaddress[1]) > 40))
+							$caption = substr($webaddress[1], 0, 37)."...";
+						else
+							$caption = $webaddress[1];
+						$output .= " <a class=\"url\" target=\"_blank\" href=\"".$webaddress[0]."\">".$caption."</a>\n";
+					}
+					$output .= "</div>\n";
 				}
 				if ($wikipedia[1])
 					$output .= "<div class=\"wikipedia\">"._("Wikipedia").": <a target=\"_blank\" href=\"".$wikipedia[1]."\">".urldecode($wikipedia[2])."</a></div>\n";
@@ -286,16 +302,9 @@
 			$name = getNameDetail($langs, $nameresponse);
 
 			$phone = getPhoneFaxDetail(array($response['phone1'], $response['phone2'], $response['phone3']));
-			$phone = $phone[1];
-
 			$fax = getPhoneFaxDetail(array($response['fax1'], $response['fax2'], $response['fax3']));
-			$fax = $fax[1];
-
 			$mobilephone = getPhoneFaxDetail(array($element['mobilephone1'], $element['mobilephone2']));
-			$mobilephone = $mobilephone[1];
-
 			$website = getWebsiteDetail(array($response['website1'], $response['website2'], $response['website3'], $response['website4']));
-
 			$email = getMailDetail(array($response['email1'], $response['email2'], $response['email3']));
 
 			// get wikipedia link and make translation
@@ -338,22 +347,27 @@
 			{
 				$output .= "<contact>\n";
 				if ($phone)
-					$output .= "<phone>".$phone."</phone>\n";
+					foreach ($phone as $phonenumber)
+						$output .= " <phone>".$phonenumber[1]."</phone>";
 				if ($fax)
-					$output .= "<fax>".$fax."</fax>\n";
+					foreach ($fax as $faxnumber)
+						$output .= " <fax>".$faxnumber[1]."</fax>";
 				if ($mobilephone)
-					$output .= "<mobilephone>".$mobilephone."</mobilephone>\n";
+					foreach ($mobilephone as $mobilephonenumber)
+						$output .= " <mobilephone>".$mobilephonenumber[1]."</mobilephone>";
 				if ($email)
-					$output .= "<email>".$email."</email>\n";
+					foreach ($email as $emailaddress)
+						$output .= " <email>".$emailaddress."</email>";
 				$output .= "</contact>\n";
 			}
 
 			// website and wikipedia links
-			if ($website[0] || $wikipedia[0])
+			if ($website || $wikipedia[0])
 			{
 				$output .= "<web>\n";
-				if ($website[0])
-					$output .= "<website>".$website[0]."</website>\n";
+				foreach ($website as $webaddress)
+					if ($webaddress[0])
+						$output .= "<website>".$webaddress[0]."</website>\n";
 				if ($wikipedia[1])
 					$output .= "<wikipedia>".$wikipedia[1]."</wikipedia>\n";
 				$output .= "</web>\n";
@@ -427,16 +441,9 @@
 			$name = getNameDetail($langs, $nameresponse);
 
 			$phone = getPhoneFaxDetail(array($response['phone1'], $response['phone2'], $response['phone3']));
-			$phone = $phone[1];
-
 			$fax = getPhoneFaxDetail(array($response['fax1'], $response['fax2'], $response['fax3']));
-			$fax = $fax[1];
-
 			$mobilephone = getPhoneFaxDetail(array($element['mobilephone1'], $element['mobilephone2']));
-			$mobilephone = $mobilephone[1];
-
 			$website = getWebsiteDetail(array($response['website1'], $response['website2'], $response['website3'], $response['website4']));
-
 			$email = getMailDetail(array($response['email1'], $response['email2'], $response['email3']));
 
 			// get wikipedia link and make translation
@@ -476,17 +483,37 @@
 
 			// contact information
 			if ($phone)
-				$data['phone'] = $phone;
+			{
+				$tmp = array();
+				foreach($phone as $phonenumber)
+					array_push($tmp, $phonenumber[1]);
+				$data['phone'] = $tmp;
+			}
 			if ($fax)
-				$data['fax'] = $fax;
+			{
+				$tmp = array();
+				foreach($fax as $faxnumber)
+					array_push($tmp, $faxnumber[1]);
+				$data['fax'] = $tmp;
+			}
 			if ($mobilephone)
-				$data['mobilephone'] = $mobilephone;
+			{
+				$tmp = array();
+				foreach($mobilephone as $mobilephonenumber)
+					array_push($tmp, $mobilephonenumber[1]);
+				$data['mobilephone'] = $tmp;
+			}
 			if ($email)
 				$data['email'] = $email;
 
 			// website and wikipedia links
-			if ($website[0])
-				$data['website'] = $website[0];
+			if ($website)
+			{
+				$tmp = array();
+				foreach($website as $webaddress)
+					array_push($tmp, $webaddress[0]);
+				$data['website'] = $tmp;
+			}
 			if ($wikipedia[1])
 				$data['wikipedia'] = $wikipedia[1];
 
