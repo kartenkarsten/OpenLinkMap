@@ -453,6 +453,7 @@ function editPopupContent(content, lat, lon, type, id)
 	// add some links to the bottom of a popup
 	content = '<table><tr><td>'+content+'</td></tr><tr><td>';
 	content += '<br /><small id="popupLinks">';
+	content += '<a href="http://www.openstreetmap.org/edit?editor=id&'+type+'='+id+'">iD</a>&nbsp;&nbsp;';
 	content +=
 		'<a href="http://www.openstreetmap.org/edit?'+queryLatLonZoom(lat, lon, map.getZoom())+'&'+type+'='+id+'&editor=potlatch2" target="_blank">Potlatch</a>'+
 		'&nbsp;&nbsp;<a href="http://localhost:8111/load_and_zoom?left='+l+'&right='+r+'&top='+t+'&bottom='+b+'&select='+type+id+'" target="josm" onclick="return josm(this.href)">JOSM</a>'+

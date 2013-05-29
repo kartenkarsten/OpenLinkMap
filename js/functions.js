@@ -722,7 +722,8 @@ function editPopupContent(content, lat, lon, type, id, moreInfo)
 	// save language in permalink
 	if (params['lang'] != "")
 		content += '&lang='+params['lang'];
-	content += '">'+translations['permalink']+'</a>'+
+	content += '">'+translations['permalink']+'</a>';
+	content += '&nbsp;&nbsp;<a href="http://www.openstreetmap.org/edit?editor=id&'+type+'='+id+'">iD</a>'+
 		'&nbsp;&nbsp;<a href="http://www.openstreetmap.org/edit?'+queryLatLonZoom(lat, lon, map.getZoom())+'&'+type+'='+id+'&editor=potlatch2" target="_blank">Potlatch</a>'+
 		'&nbsp;&nbsp;<a href="http://localhost:8111/load_and_zoom?left='+l+'&right='+r+'&top='+t+'&bottom='+b+'&select='+type+id+'" target="josm" onclick="return josm(this.href)">JOSM</a>'+
 		'&nbsp;&nbsp;<a href="http://www.openstreetmap.org/browse/'+type+'/'+id+'" target="_blank">'+translations['details']+'</a>'+
