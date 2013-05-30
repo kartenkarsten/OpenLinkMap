@@ -1,0 +1,6 @@
+# Whitelist of allowed domains for embedded images. Images from other domains are blocked.
+# Individual attributions can be set in the language files, format: "attribution-<domain>"
+# Individual attributions urls can be set in the language files, format: "attribution-url-<domain>"
+
+wikimedia.org
+open-landshut.de

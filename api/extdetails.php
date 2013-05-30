@@ -557,32 +557,50 @@
 				$output .= "</div>\n";
 			}
 
-			// image box, only images from wikimedia are supported
-			if (substr($response['image'], 0, 29) == "http://commons.wikimedia.org/" || substr($response['image'], 0, 28) == "http://upload.wikimedia.org/")
+			// image box, only images from domains listed on a whitelist are displayed
+			if (imageDomainAllowed($response['image']))
 			{
 				$url = getImageUrl($response['image']);
-
-				// creating url to Wikimedia Commons page of this image
-				$attribution = explode("/", $url);
-				if (substr($url, 34, 16) == "special:filepath")
-					$attribution = $attribution[5];
+				$tmp = parse_url($url);
+				if (substr_count($tmp['host'], ".") > 1)
+					$domain = substr($tmp['host'], strpos($tmp['host'], ".")+1);
 				else
-					$attribution = $attribution[7];
-
-				if ($wikipedia)
-					$search = urldecode($wikipedia[2]);
-				else
-					$search = $name[0];
+					$domain = $tmp['host'];
 
 				$output .= "<div class=\"moreInfoBox\">\n";
 				$output .= "<table>\n";
+
+				// image from wikimedia commons
+				if ($domain == "wikimedia.org")
+				{
+					// creating url to Wikimedia Commons page of this image
+					$attribution = explode("/", $url);
+					if (substr($url, 34, 16) == "special:filepath")
+						$attribution = $attribution[5];
+					else
+						$attribution = $attribution[7];
+
+					if ($wikipedia)
+						$search = urldecode($wikipedia[2]);
+					else
+						$search = $name[0];
+
 					$output .= "<tr><td><strong>"._("Image")."</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i id=\"moreWikipediaFull\"><a target=\"_blank\" href=\"http://commons.wikimedia.org/w/index.php?title=Special%3ASearch&search=".$search."\">"._("More images")."</a></i></td></tr>\n";
-					$output .= "<tr><td id=\"loadingImage\"><img id=\"moreImage\" title=\""._("Fullscreen")."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></a></td></tr>\n";
-					$output .= "<tr><td><a target=\"_blank\" href=\"http://commons.wikimedia.org/wiki/File:".$attribution."\">"._("License, author, original page...")."</a></td></tr>\n";
+					$output .= "<tr><td id=\"loadingImage\"><img id=\"moreImage\" title=\""._("Fullscreen")."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></td></tr>\n";
+					$output .= "<tr><td><a target=\"_blank\" href=\"http://commons.wikimedia.org/wiki/File:".$attribution."\">"._("attribution-wikimedia.org")."</a></td></tr>\n";
+				}
+				// image from other source
+				else
+				{
+					$output .= "<tr><td><strong>"._("Image")."</strong></td></tr>\n";
+					$output .= "<tr><td id=\"loadingImage\"><img id=\"moreImage\" title=\""._("Fullscreen")."\" src=\"".$url."\" /></td></tr>\n";
+					$output .= "<tr><td><a target=\"_blank\" href=\""._("attribution-url-".$domain)."\">"._("attribution-".$domain)."</a></td></tr>\n";
+				}
+
 				$output .= "</table>\n";
 				$output .= "</div>\n";
 			}
-			elseif (getWikipediaImage($wikipedia[1]))
+			else if (getWikipediaImage($wikipedia[1]))
 			{
 				$image = getWikipediaImage($wikipedia[1]);
 
@@ -596,8 +614,8 @@
 			}
 
 			/*
-			// panorama
-			if (substr($response['panorama'], 0, 28) == "http://upload.wikimedia.org/")
+			// panorama, only images from domains listed on a whitelist are supported
+			if (imageDomainAllowed($response['panorama']))
 			{
 				$attribution = explode("/", $response['panorama']);
 				$output .= "<div class=\"moreInfoBox\">\n";
@@ -889,8 +907,8 @@
 				$output .= "</wikipedia>\n";
 			}
 
-			// image, only images from wikimedia are supported
-			if (substr($response['image'], 14, 14) == "wikimedia.org/")
+			// image, only images from domains listed on a whitelist are supported
+			if (imageDomainAllowed($response['image']))
 			{
 				$url = getImageUrl($response['image']);
 				$output .= "<image>";
@@ -1170,8 +1188,8 @@
 			if ($wikipedia)
 				$data['wikipedia'] = array('url' => $wikipedia[1], 'text' => getWikipediaBeginning($wikipedia[1]));
 
-			// image, only images from wikimedia are supported
-			if (substr($response['image'], 14, 14) == "wikimedia.org/")
+			// image, only images from domains listed on a whitelist are supported
+			if (imageDomainAllowed($response['image']))
 				$data['image'] = getImageUrl($response['image']);
 			else if (getWikipediaImage($wikipedia[1]))
 				$data['image'] = getWikipediaImage($wikipedia[1]);

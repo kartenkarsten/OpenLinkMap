@@ -130,17 +130,43 @@
 
 			// printing popup details
 
-			// image, only images from wikimedia are supported
-			if (substr($response['image'], 0, 29) == "http://commons.wikimedia.org/" || substr($response['image'], 0, 28) == "http://upload.wikimedia.org/")
+			// image, only images from domains listed on a whitelist are displayed
+			if (imageDomainAllowed($response['image']))
 			{
 				$url = getImageUrl($response['image']);
-				$attribution = explode("/", $url);
-				$output .= "<div id=\"loadingImage\"><img id=\"image\" title=\""._("Fullscreen")."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></div></a>\n";
+				$tmp = parse_url($url);
+				if (substr_count($tmp['host'], ".") > 1)
+					$domain = substr($tmp['host'], strpos($tmp['host'], ".")+1);
+				else
+					$domain = $tmp['host'];
+
+				// image from wikimedia commons
+				if ($domain == "wikimedia.org")
+				{
+					// creating url to Wikimedia Commons page of this image
+					$attribution = explode("/", $url);
+					if (substr($url, 34, 16) == "special:filepath")
+						$attribution = $attribution[5];
+					else
+						$attribution = $attribution[7];
+
+					$output .= "<div id=\"loadingImage\"><img id=\"image\" title=\""._("Fullscreen")."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></div><div class=\"attribution\"><a target=\"_blank\" href=\"http://commons.wikimedia.org/wiki/File:".$attribution."\">"._("attribution-wikimedia.org")."</a></div>\n";
+				}
+				// image from other source
+				else
+					$output .= "<div id=\"loadingImage\"><img id=\"image\" title=\""._("Fullscreen")."\" src=\"".$url."\" /></div><div class=\"attribution\"><a target=\"_blank\" href=\""._("attribution-url-".$domain)."\">"._("attribution-".$domain)."</a></div>\n";
 			}
-			elseif (getWikipediaImage($wikipedia[1]))
+			else if (getWikipediaImage($wikipedia[1]))
 			{
+				// creating url to Wikimedia Commons page of this image
+				$attribution = explode("/", $url);
+				if (substr($url, 34, 16) == "special:filepath")
+					$attribution = $attribution[5];
+				else
+					$attribution = $attribution[7];
+
 				$image = getWikipediaImage($wikipedia[1]);
-				$output .= "<div id=\"loadingImage\"><img id=\"image\" title=\""._("Fullscreen")."\" src=\"".getWikipediaThumbnailUrl($image)."\" /></div></a>\n";
+				$output .= "<div id=\"loadingImage\"><img id=\"image\" title=\""._("Fullscreen")."\" src=\"".getWikipediaThumbnailUrl($image)."\" /></div><div class=\"attribution\"><a target=\"_blank\" href=\"http://commons.wikimedia.org/wiki/File:".$attribution."\">"._("attribution-wikimedia.org")."</a></div>\n";
 			}
 
 			if ($name)
@@ -276,8 +302,8 @@
 			if ($response['wheelchair'])
 				$output .= "<wheelchair>".$response['wheelchair']."</wheelchair>\n";
 
-			// image, only images from wikimedia are supported
-			if (substr($response['image'], 14, 14) == "wikimedia.org/")
+			// image, only images from domains listed on a whitelist are supported
+			if (imageDomainAllowed($response['image']))
 			{
 				$url = getImageUrl($response['image']);
 				$output .= "<image>";
@@ -359,8 +385,8 @@
 			if ($response['wheelchair'])
 				$data['wheelchair'] = $response['wheelchair'];
 
-			// image, only images from wikimedia are supported
-			if (substr($response['image'], 14, 14) == "wikimedia.org/")
+			// image, only images from domains listed on a whitelist are supported
+			if (imageDomainAllowed($response['image']))
 				$data['image'] = getImageUrl($response['image']);
 			else if (getWikipediaImage($wikipedia[1]))
 				$data['image'] = getWikipediaImage($wikipedia[1]);

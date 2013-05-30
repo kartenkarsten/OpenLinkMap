@@ -16,6 +16,8 @@
 	$ptdb = "nextobjects";
 	// name of application
 	$appname = "OpenLinkMap";
+	// path to whitelist of allowed image domains
+	$imageWhitelist = "../locales/whitelist-imagesources";
 
 	require_once("addressformats.php");
 
@@ -1357,6 +1359,45 @@
 			if (preg_match('/'.$key.'/', $k, $keyMatch) && preg_match('/'.$value.'/', $v, $valueMatch))
 				return array($keyMatch, $valueMatch);
 		}
+		return false;
+	}
+
+
+	// returns an array of all domains which are on a whitelist of allowed image sources
+	function getAllowedImageDomains($filename)
+	{
+		if (!$filename)
+			return false;
+
+		$domains = array();
+		$file = fopen($filename, "r");
+
+		if (!$file)
+			return false;
+
+		while (!feof($file))
+		{
+			$line = fgets($file);
+			// ignore comments
+			if (substr($line, 0, 1) != "#")
+				array_push($domains, str_replace("\n", "", $line));
+		}
+		fclose($file);
+
+		return $domains;
+	}
+
+
+	// check if an image url refers to an allowed domain or not
+	function imageDomainAllowed($url)
+	{
+		global $imageWhitelist;
+		$allowedDomains = getAllowedImageDomains($imageWhitelist);
+
+		foreach ($allowedDomains as $domain)
+			if (strpos($url, $domain) !== false)
+				return true;
+
 		return false;
 	}
 ?>

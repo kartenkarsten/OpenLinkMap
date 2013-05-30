@@ -814,11 +814,13 @@ function getWikipediaImageUrl(url)
 		return url.substr(0, url.lastIndexOf("?"));
 	else if ((url.substr(0, 38) == "http://upload.wikimedia.org/wikipedia/") && (url.substr(38, 7) != "commons"))
 		return url;
-	else
+	else if (url.indexOf("wikimedia.org") !== -1)
 	{
 		var url = url.replace("wikipedia/commons/thumb", "wikipedia/commons");
 		return url.substr(0, url.lastIndexOf("/"));
 	}
+	else
+		return url;
 }
 
 

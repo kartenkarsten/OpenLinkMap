@@ -118,6 +118,7 @@ noscript p
 .container
 {
 	min-height: 80px;
+	line-height: 18px;
 }
 
 .header
@@ -1136,4 +1137,20 @@ noscript p
 .olImageLoadError
 {
 	display: none;
+}
+
+.attribution
+{
+	min-width: 32px;
+	max-width: 80px;
+	float: right;
+	margin-right: -90px;
+	margin-top: 60px;
+}
+
+.attribution a
+{
+	text-decoration: none;
+	font-size: 10px;
+	line-height: 50%;
 }
