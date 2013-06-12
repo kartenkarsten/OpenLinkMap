@@ -48,32 +48,41 @@
 	$response = requestDetails($request, $connection, $type);
 	pg_close($connection);
 
-	if ($response)
-	{
-		$name = getNameDetail($langs, $response);
+	$name = getNameDetail($langs, $response);
 
-		if ($format == "xml")
-			echo xmlNameOut($name[0], $name[1], $id, $type);
-		else if ($format == "json")
-			echo jsonNameOut($name[0], $name[1], $id, $type, $callback);
-		else
-			echo textNameOut($name[0]);
-	}
+	if ($format == "xml")
+		echo xmlNameOut($name[0], $name[1], $id, $type);
+	else if ($format == "json")
+		echo jsonNameOut($name[0], $name[1], $id, $type, $callback);
 	else
-		echo "NULL";
+		echo textNameOut($name[0], $id, $type);
 
 
 	// output of name data in plain text format
-	function textNameOut($name)
+	function textNameOut($name, $id, $type)
 	{
+		global $db;
+
 		// setting header
 		header("Content-Type: text/html; charset=UTF-8");
 		$output = "<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n";
 
-		if ($name)
+		if ($name != "")
 			return $output."<strong class=\"clusterName\">".$name."</strong><br />\n";
+		// if no name is set, use the poi type as name instead
 		else
-			return $output."<strong class=\"clusterName\">- "._("Without name")." -</strong><br />\n";
+		{
+			$tags = getTags($db, $id, $type);
+			foreach ($tags as $key => $value)
+			{
+				$tag = $key."=".$value;
+				if (dgettext("tags", $tag) != "")
+					$name[0] = dgettext("tags", $tag);
+				if ($name[0] != $tag)
+					break;
+			}
+			return $output."<strong class=\"clusterName\">".$name[0]."</strong><br />\n";
+		}
 	}
 
 
