@@ -888,7 +888,13 @@
 		$template = str_replace("#housename#", $tagset['housename'], $template);
 		$template = str_replace("#suburb#", $tagset['suburb'], $template);
 		$template = str_replace("#province#", $tagset['province'], $template);
+		$template = str_replace("#unit#", $tagset['unit'], $template);
+		$template = str_replace("#floor#", $tagset['floor'], $template);
+		$template = str_replace("#door#", $tagset['door'], $template);
 		// remove some format mistakes because of missing tags
+		$template = str_replace("°, ", "", $template);
+		$template = str_replace("Esc ,", "", $template);
+		$template = str_replace(", </div>", "</div>", $template);
 		$template = str_replace("</span>,", "</span>", $template);
 		$template = str_replace("-</span>", "</span>", $template);
 		$template = str_replace("()", "", $template);
