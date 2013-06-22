@@ -97,7 +97,7 @@
 		</output>
 	</translation>
 	<translation>
-		<name>Deutsche Bahn</name>
+		<name>Deutsche Bahn 1</name>
 		<description>Timetables for train stations operated by the German Railway "Deutsche Bahn (DB)".</description>
 		<match mode="and">
 			<match mode="or">
@@ -122,6 +122,34 @@
 		<output>
 			<copy-all/>
 			<tag from_match="uic_ref" k="departures" v="http://reiseauskunft.bahn.de/bin/bhftafel.exe/dn?country=DEU&amp;rt=1&amp;use_realtime_filter=1&amp;productsFilter=1111111111000000&amp;boardType=Abfahrt&amp;start=Suchen&amp;input={0}"/>
+		</output>
+	</translation>
+	<translation>
+		<name>Deutsche Bahn 2</name>
+		<description>Timetables for train stations operated by the German Railway "Deutsche Bahn (DB)".</description>
+		<match mode="and">
+			<match mode="or">
+				<tag k="railway" v="station"/>
+		 		<tag k="railway" v="halt"/>
+				<tag k="public_transport" v="stop_position"/>
+				<tag k="railway" v="stop"/>
+			</match>
+			<match mode="or">
+				<tag k="operator" v="(.*;|^)DB(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)DB AG(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)DB Netz AG(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)DB Station &amp; Service AG(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)DB Regio AG(;.*|$)"/>
+				<tag k="operator" v="(.*;|^)DB Regio(;.*|$)"/>
+				<tag k="uic_ref" v="80[0-9]*"/>
+			</match>
+		</match>
+		<find>
+			<tag k="ref_name" v="([0-9]*)" match_id="ref_name"/>
+		</find>
+		<output>
+			<copy-all/>
+			<tag from_match="ref_name" k="departures" v="http://reiseauskunft.bahn.de/bin/bhftafel.exe/dn?country=DEU&amp;rt=1&amp;use_realtime_filter=1&amp;productsFilter=1111111111000000&amp;boardType=Abfahrt&amp;start=Suchen&amp;input={0}"/>
 		</output>
 	</translation>
 	<translation>
