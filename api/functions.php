@@ -1180,13 +1180,13 @@
 	}
 
 
-	// checks if given id-parameter is valid
+	// checks if given osm id is valid
 	function isValidId($id)
 	{
 		if (!$id)
 			return false;
 
-		if (!ctype_digit(substr($id, 1)))
+		if (!ctype_digit($id))
 		{
 			reportError("Given id contains not-numeric characters: ".$id);
 			return false;
