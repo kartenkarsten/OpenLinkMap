@@ -812,11 +812,18 @@ function getWikipediaImageUrl(url)
 
 	if (url.substr(0, 29) == "http://commons.wikimedia.org/")
 		return url.substr(0, url.lastIndexOf("?"));
+	else if (url.substr(0, 30) == "http://wiki.openstreetmap.org/")
+		return url.substr(0, url.lastIndexOf("?"));
 	else if ((url.substr(0, 38) == "http://upload.wikimedia.org/wikipedia/") && (url.substr(38, 7) != "commons"))
 		return url;
 	else if (url.indexOf("wikimedia.org") !== -1)
 	{
 		var url = url.replace("wikipedia/commons/thumb", "wikipedia/commons");
+		return url.substr(0, url.lastIndexOf("/"));
+	}
+	else if (url.indexOf("wiki.openstreetmap.org") !== -1)
+	{
+		var url = url.replace("w/images/thumb", "w/images");
 		return url.substr(0, url.lastIndexOf("/"));
 	}
 	else

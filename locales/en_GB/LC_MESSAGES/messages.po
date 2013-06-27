@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-08 12:29+0100\n"
-"PO-Revision-Date: 2013-05-30 23:18+0100\n"
+"PO-Revision-Date: 2013-06-27 19:19+0100\n"
 "Last-Translator: Alexander Matheisen <AlexanderMatheisen@ish.de>\n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -526,6 +526,9 @@ msgstr "More images"
 
 msgid "attribution-wikimedia.org"
 msgstr "License & author on Wikimedia Commons..."
+
+msgid "attribution-openstreetmap.org"
+msgstr "License & author at OpenStreetMap Wiki..."
 
 msgid "attribution-open-landshut.de"
 msgstr "Image: open-landshut.de"

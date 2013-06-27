@@ -386,6 +386,41 @@
 	}
 
 
+	// gets the url of an image's thumbnail
+	function getOsmWikiThumbnailUrl($url)
+	{
+		// size of thumbnails
+		$thumbsize = 280;
+
+		if (!$url)
+			return false;
+
+		// check if thumbnail size is bigger than original size
+		if (strpos($url, "special:filepath") === false)
+			$imagesize = getimagesize($url);
+		if ($response && ($imagesize[0] > $thumbsize) || substr($url, -3, 3))
+		{
+			// don't use archive images
+			$url = str_replace("archive/", "", $url);
+			$url = preg_replace("/20.+%21/", "", $url);
+			// get thumbnail
+			if (substr($url, 0, 30) == "http://wiki.openstreetmap.org/")
+				return $url."?width=".$thumbsize."px";
+			else
+			{
+				$url = str_replace("w/images", "w/images/thumb", $url);
+				$filename = explode("/", $url);
+				$url = $url."/".$thumbsize."px-".$filename[count($filename)-1];
+
+				// svg thumbs need a .png at the end
+				if (substr($filename[count($filename)-1], -3, 3 ) == "svg")
+					$url = $url.".png";
+			}
+		}
+		return $url;
+	}
+
+
 	// request all objects with given tags for a given bbox and echo them
 	function getObjectsForBbox($connection, $bbox)
 	{
@@ -1230,6 +1265,10 @@
 			return "http://commons.wikimedia.org/wiki/special:filepath/".substr($url, 39);
 		else if (substr($url, 0, 40) == "http://commons.wikimedia.org/wiki/Image:")
 			return "http://commons.wikimedia.org/wiki/special:filepath/".substr($url, 40);
+		else if (substr($url, 0, 40) == "http://wiki.openstreetmap.org/wiki/File:")
+			return "http://wiki.openstreetmap.org/wiki/special:filepath/".substr($url, 40);
+		else if (substr($url, 0, 41) == "http://wiki.openstreetmap.org/wiki/Image:")
+			return "http://wiki.openstreetmap.org/wiki/special:filepath/".substr($url, 41);
 		else
 			return $url;
 	}

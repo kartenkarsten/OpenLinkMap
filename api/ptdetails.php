@@ -152,6 +152,18 @@
 
 					$output .= "<div id=\"loadingImage\"><img id=\"image\" title=\""._("Fullscreen")."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></div><div class=\"attribution\"><a target=\"_blank\" href=\"http://commons.wikimedia.org/wiki/File:".$attribution."\">"._("attribution-wikimedia.org")."</a></div>\n";
 				}
+				// image from OpenStreetMap Wiki
+				else if ($domain == "openstreetmap.org")
+				{
+					// creating url to OpenStreetMap Wiki page of this image
+					$attribution = explode("/", $url);
+					if (substr($url, 35, 16) == "special:filepath")
+						$attribution = $attribution[5];
+					else
+						$attribution = $attribution[7];
+
+					$output .= "<div id=\"loadingImage\"><img id=\"image\" title=\""._("Fullscreen")."\" src=\"".getOsmWikiThumbnailUrl($url)."\" /></div><div class=\"attribution\"><a target=\"_blank\" href=\"http://wiki.openstreetmap.org/wiki/File:".$attribution."\">"._("attribution-openstreetmap.org")."</a></div>\n";
+				}
 				// image from other source
 				else
 					$output .= "<div id=\"loadingImage\"><img id=\"image\" title=\""._("Fullscreen")."\" src=\"".$url."\" /></div><div class=\"attribution\"><a target=\"_blank\" href=\""._("attribution-url-".$domain)."\">"._("attribution-".$domain)."</a></div>\n";

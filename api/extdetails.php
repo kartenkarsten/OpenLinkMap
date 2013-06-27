@@ -592,6 +592,25 @@
 					$output .= "<tr><td id=\"loadingImage\"><img id=\"moreImage\" title=\""._("Fullscreen")."\" src=\"".getWikipediaThumbnailUrl($url)."\" /></td></tr>\n";
 					$output .= "<tr><td><a target=\"_blank\" href=\"http://commons.wikimedia.org/wiki/File:".$attribution."\">"._("attribution-wikimedia.org")."</a></td></tr>\n";
 				}
+				// image from OpenStreetMap Wiki
+				else if ($domain == "openstreetmap.org")
+				{
+					// creating url to Wikimedia Commons page of this image
+					$attribution = explode("/", $url);
+					if (substr($url, 35, 16) == "special:filepath")
+						$attribution = $attribution[5];
+					else
+						$attribution = $attribution[7];
+
+					if ($wikipedia)
+						$search = urldecode($wikipedia[2]);
+					else
+						$search = $name[0];
+
+					$output .= "<tr><td><strong>"._("Image")."</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i id=\"moreWikipediaFull\"><a target=\"_blank\" href=\"http://commons.wikimedia.org/w/index.php?title=Special%3ASearch&search=".$search."\">"._("More images")."</a></i></td></tr>\n";
+					$output .= "<tr><td id=\"loadingImage\"><img id=\"moreImage\" title=\""._("Fullscreen")."\" src=\"".getOsmWikiThumbnailUrl($url)."\" /></td></tr>\n";
+					$output .= "<tr><td><a target=\"_blank\" href=\"http://commons.wikimedia.org/wiki/File:".$attribution."\">"._("attribution-openstreetmap.org")."</a></td></tr>\n";
+				}
 				// image from other source
 				else
 				{

@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: OpenLinkMap\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-03-08 12:29+0100\n"
-"PO-Revision-Date: 2013-05-30 23:19+0100\n"
+"PO-Revision-Date: 2013-06-27 19:20+0100\n"
 "Last-Translator: Alexander Matheisen <AlexanderMatheisen@ish.de>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/openlinkmap/"
 "language/nl/)\n"
@@ -528,6 +528,9 @@ msgstr "Meer afbeeldingen"
 
 msgid "attribution-wikimedia.org"
 msgstr "Licentie & auteur op Wikimedia Commons..."
+
+msgid "attribution-openstreetmap.org"
+msgstr "Licentie & auteur op OpenStreetMap Wiki..."
 
 msgid "attribution-open-landshut.de"
 msgstr "Afbeelding: open-landshut.de"
