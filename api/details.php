@@ -241,7 +241,7 @@
 				{
 					$output .= "<div class=\"tel\"><span class=\"type\">"._("Phone")."</span>:";
 					foreach ($phone as $phonenumber)
-						$output .= " <a class=\"value\" href=\"callto:".$phonenumber[0]."\">".$phonenumber[1]."</a>";
+						$output .= " <a class=\"value\" href=\"tel:".$phonenumber[0]."\">".$phonenumber[1]."</a>";
 					$output .= "</div>\n";
 				}
 				if ($fax)
@@ -255,7 +255,7 @@
 				{
 					$output .= "<div class=\"tel\"><span class=\"type\">"._("Mobile phone")."</span>:";
 					foreach ($mobilephone as $mobilephonenumber)
-						$output .= " <span class=\"value\" href=\"callto:".$mobilephonenumber[0]."\">".$mobilephonenumber[1]."</span>";
+						$output .= " <span class=\"value\" href=\"tel:".$mobilephonenumber[0]."\">".$mobilephonenumber[1]."</span>";
 					$output .= "</div>\n";
 				}
 				if ($email)

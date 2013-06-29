@@ -253,14 +253,14 @@
 					{
 						$output .= "<tr><td><u>"._("Phone").":</u></td><td>";
 						foreach ($phone as $phonenumber)
-							$output .= " <a href=\"callto:".$phonenumber[0]."\">".$phonenumber[1]."</a>\n";
+							$output .= " <a href=\"tel:".$phonenumber[0]."\">".$phonenumber[1]."</a>\n";
 						$output .= "</td></tr>\n";
 					}
 					if ($mobilephone)
 					{
 						$output .= "<tr><td><u>"._("Mobile phone").":</u></td><td>";
 						foreach ($mobilephone as $mobilephonenumber)
-							$output .= " <a href=\"callto:".$mobilephonenumber[0]."\">".$mobilephonenumber[1]."</a>\n";
+							$output .= " <a href=\"tel:".$mobilephonenumber[0]."\">".$mobilephonenumber[1]."</a>\n";
 						$output .= "</td></tr>\n";
 					}
 					if ($fax)

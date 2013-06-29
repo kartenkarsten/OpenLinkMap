@@ -728,7 +728,7 @@
 					if (substr($rawnumber, 0, 2) == "00")
 						$rawnumber = "+".substr($rawnumber, 2);
 
-					// create number to be used in e.g. callto: links
+					// create number to be used in e.g. tel: links
 					$linkNumber = str_replace("-", "", $rawnumber);
 					$linkNumber = str_replace("(", "", $linkNumber);
 					$linkNumber = str_replace(")", "", $linkNumber);
