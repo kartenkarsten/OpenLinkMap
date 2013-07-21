@@ -6,7 +6,10 @@
 # See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
 
 
-# run this script not automatically! you have to change paths and modify it to your own environment!
+# do not run this script automatically! you have to change paths and modify it to your own environment!
+
+PROJECTPATH=/home/www/sites/194.245.35.149/site/olm
+
 
 # install necessary software
 yum install gzip zlib zlib-devel postgresql-server postgresql-libs postgresql postgresql-common postgis geoip GeoIP geoip-devel GeoIP-devel php-pecl-geoip php-php-gettext
