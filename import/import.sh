@@ -16,6 +16,7 @@ export JAVACMD_OPTIONS=-Xmx2800M
 
 cd $DATAPATH
 
+echo "Started processing at $(date)"
 
 # download planet file if not existing
 echo "Getting planet file if necessary"
@@ -99,3 +100,5 @@ rm old-olm.osm
 osmconvert old-nextobjects.osm --drop-author --out-o5m >old-nextobjects.o5m
 rm old-nextobjects.osm
 echo ""
+
+echo "Finished processing at $(date)."

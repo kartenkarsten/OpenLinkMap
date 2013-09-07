@@ -16,6 +16,7 @@ export JAVACMD_OPTIONS=-Xmx2800M
 
 cd $DATAPATH
 
+echo "Started processing at $(date)"
 
 # update planet file
 echo "Updating planet file"
@@ -96,3 +97,5 @@ rm nextobjects.o5c
 rm timestamp
 mv timestamp_tmp timestamp
 echo ""
+
+echo "Finished processing at $(date)."
