@@ -118,7 +118,7 @@
 	// returns human-readable timestamp of given timestamp
 	function timestampString($timestamp)
 	{
-		return date("d.m.Y H:i", $timestamp);
+		return date("d.m.Y H:i", ($timestamp+($offset*3600)));
 	}
 
 
