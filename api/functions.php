@@ -367,9 +367,9 @@
 			$url = str_replace("archive/", "", $url);
 			$url = preg_replace("/20.+%21/", "", $url);
 			// get thumbnail
-			if (substr($url, 0, 29) == "http://commons.wikimedia.org/")
+			if (substr($url, 0, 29) == "http://commons.wikimedia.org/" || substr($url, 0, 30) == "https://commons.wikimedia.org/")
 				return $url."?width=".$thumbsize."px";
-			else if ((substr($url, 0, 38) == "http://upload.wikimedia.org/wikipedia/") && (substr($url, 38, 7) != "commons"))
+			else if (((substr($url, 0, 38) == "http://upload.wikimedia.org/wikipedia/") || (substr($url, 0, 39) == "https://upload.wikimedia.org/wikipedia/")) && (substr($url, 38, 7) != "commons"))
 				return $url;
 			else
 			{
@@ -1263,12 +1263,20 @@
 	{
 		if (substr($url, 0, 39) == "http://commons.wikimedia.org/wiki/File:")
 			return "http://commons.wikimedia.org/wiki/special:filepath/".substr($url, 39);
+		if (substr($url, 0, 40) == "https://commons.wikimedia.org/wiki/File:")
+			return "https://commons.wikimedia.org/wiki/special:filepath/".substr($url, 40);
 		else if (substr($url, 0, 40) == "http://commons.wikimedia.org/wiki/Image:")
 			return "http://commons.wikimedia.org/wiki/special:filepath/".substr($url, 40);
+		else if (substr($url, 0, 41) == "https://commons.wikimedia.org/wiki/Image:")
+			return "https://commons.wikimedia.org/wiki/special:filepath/".substr($url, 41);
 		else if (substr($url, 0, 40) == "http://wiki.openstreetmap.org/wiki/File:")
 			return "http://wiki.openstreetmap.org/wiki/special:filepath/".substr($url, 40);
+		else if (substr($url, 0, 41) == "https://wiki.openstreetmap.org/wiki/File:")
+			return "https://wiki.openstreetmap.org/wiki/special:filepath/".substr($url, 41);
 		else if (substr($url, 0, 41) == "http://wiki.openstreetmap.org/wiki/Image:")
 			return "http://wiki.openstreetmap.org/wiki/special:filepath/".substr($url, 41);
+		else if (substr($url, 0, 42) == "https://wiki.openstreetmap.org/wiki/Image:")
+			return "https://wiki.openstreetmap.org/wiki/special:filepath/".substr($url, 42);
 		else
 			return $url;
 	}

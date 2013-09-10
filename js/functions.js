@@ -810,11 +810,11 @@ function getWikipediaImageUrl(url)
 	if (!url)
 		return false;
 
-	if (url.substr(0, 29) == "http://commons.wikimedia.org/")
+	if (url.substr(0, 29) == "http://commons.wikimedia.org/" || url.substr(0, 30) == "https://commons.wikimedia.org/")
 		return url.substr(0, url.lastIndexOf("?"));
-	else if (url.substr(0, 30) == "http://wiki.openstreetmap.org/")
+	else if (url.substr(0, 30) == "http://wiki.openstreetmap.org/" || url.substr(0, 31) == "https://wiki.openstreetmap.org/")
 		return url.substr(0, url.lastIndexOf("?"));
-	else if ((url.substr(0, 38) == "http://upload.wikimedia.org/wikipedia/") && (url.substr(38, 7) != "commons"))
+	else if (((url.substr(0, 38) == "http://upload.wikimedia.org/wikipedia/") || (url.substr(0, 39) == "https://upload.wikimedia.org/wikipedia/")) && (url.substr(38, 7) != "commons"))
 		return url;
 	else if (url.indexOf("wikimedia.org") !== -1)
 	{
