@@ -1043,6 +1043,9 @@
 		$actday = (int)gmdate("w", $timestamp)-1;
 		if ($actday == -1)
 			$actday = 6;
+		$previousday = $actday-1;
+		if ($previousday == -1)
+			$previousday = 6;
 		$actmonth = (int)"7".gmdate("n", $timestamp);
 		$acttime = (int)gmdate("Hi", $timestamp);
 
@@ -1081,7 +1084,12 @@
 				// check if any day bound matches today
 				if (inDays($actday, $parts[0]))
 					// then check if any time bound matches now
-					if (inTimes($acttime, $parts[1]))
+					if (inTimes($acttime, $parts[1], false))
+						return true;
+
+				if (inDays($previousday, $parts[0]))
+					// then check if any time bound matches now
+					if (inTimes($acttime, $parts[1], true))
 						return true;
 			}
 		}
@@ -1090,7 +1098,7 @@
 
 
 	// returns true when timeinterval matches now
-	function inTimes($now, $timepart)
+	function inTimes($now, $timepart, $previousday = false)
 	{
 		// split at commas for single time intervals: 10:00-12:00  16:00-18:00
 		$timeintervals = explode(",", $timepart);
@@ -1103,7 +1111,14 @@
 			if ($time[0] == "off")
 				return false;
 
-			if ((($now >= (int)str_replace(":", "", $time[0])) && ($now <= (int)str_replace(":", "", $time[1]))) || (($now >= (int)str_replace(":", "", $time[0])) && ((int)str_replace(":", "", $time[1]) <= (int)str_replace(":", "", $time[0]))))
+			// standard format such as 06:00-08:00
+			if (!$previousday && ($now >= (int)str_replace(":", "", $time[0])) && ($now <= (int)str_replace(":", "", $time[1])) && ((int)str_replace(":", "", $time[0]) < (int)str_replace(":", "", $time[1])))
+				return true;
+			// continuation of previous days service and current time before 00:00 such as 20:00-02:00
+			if (!$previousday && ($now >= (int)str_replace(":", "", $time[0])) && ($now <= 2359) && ((int)str_replace(":", "", $time[1]) < (int)str_replace(":", "", $time[0])))
+				return true;
+			// continuation of previous days service and current time after 00:00 such as 20:00-02:00
+			if ($previousday && ($now <= (int)str_replace(":", "", $time[1])) && ($now >= 0) && ((int)str_replace(":", "", $time[1]) < (int)str_replace(":", "", $time[0])))
 				return true;
 		}
 
