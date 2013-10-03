@@ -1087,6 +1087,7 @@
 					if (inTimes($acttime, $parts[1], false))
 						return true;
 
+				// check previous day for "continuation of the previous days service"
 				if (inDays($previousday, $parts[0]))
 					// then check if any time bound matches now
 					if (inTimes($acttime, $parts[1], true))
@@ -1097,7 +1098,7 @@
 	}
 
 
-	// returns true when timeinterval matches now
+	// returns true when timepart matches now; set previousday true to check "continuation of the previous days service"
 	function inTimes($now, $timepart, $previousday = false)
 	{
 		// split at commas for single time intervals: 10:00-12:00  16:00-18:00
