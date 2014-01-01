@@ -173,7 +173,7 @@
 		// generating message
 		$message = "An error happened in ".$appname.":";
 		$message .= "\n\nTime..... ".date("d.m.Y-H:i", time());
-		$message .= "\nIP....... http://www.utrace.de/?query=".$_SERVER['REMOTE_ADDR'];
+		$message .= "\nIP....... http://www.utrace.de/?query=".getUserIP();
 		$message .= "\nHeader... ".$_SERVER['HTTP_USER_AGENT'];
 		$message .= "\nError.... ".$error;
 
@@ -209,6 +209,13 @@
 		$data = explode("</gml:coo", $data[1]);
 
 		return $data[0];
+	}
+
+
+	// returns the IP address of the current user; returns x-forwarded-for behind proxies
+	function getUserIP()
+	{
+		return ($_SERVER['REMOTE_ADDR'] != "127.0.0.1") ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_X_FORWARDED_FOR'];
 	}
 
 
