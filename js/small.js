@@ -356,7 +356,7 @@ function showPopup(feature)
 	{
 		cluster++;
 
-		item.popup.contentHTML = "<div id='clusterList"+cluster+"'>"+getNames("name", feature.cluster)+"</div>";	
+		item.popup.contentHTML = "<div id='clusterList"+cluster+"'>"+getNames(feature.cluster)+"</div>";	
 
 		// update popup
 		map.removePopup(item.popup);

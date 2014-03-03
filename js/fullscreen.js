@@ -38,7 +38,7 @@ function Fullscreen(frame, image)
 	// inits the events
 	this.init = function(url)
 	{
-		if (this.image)
+		if (this.image && gEBI(this.image) != null)
 		{
 			if (!url)
 				this.url = getWikipediaImageUrl(gEBI(this.image).src);
