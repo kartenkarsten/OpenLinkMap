@@ -34,7 +34,7 @@
 			echo "<script type=\"text/javascript\">\n";
 				echo "var params={\n";
 				echo "id : ".(isValidId($_GET['id']) ? ($_GET['id']) : ("null")).",\n";
-				echo "type : ".(isValidType($_GET['id']) ? ("'".$_GET['type']."'") : ("null")).",\n";
+				echo "type : ".(isValidType($_GET['type']) ? ("'".$_GET['type']."'") : ("null")).",\n";
 				echo "lat : ";
 					if (isValidCoordinate($_GET['lat']))
 						echo $_GET['lat'].",\n";
