@@ -58,7 +58,7 @@
 							echo "null,\n";
 					}
 				echo "zoom : ".(isValidZoom($_GET['zoom']) ? ($_GET['zoom']) : ("null")).",\n";
-				echo "offset : ".(isValidOffset($_GET['offset']) ? ($_GET['offset']) : ("0")).",\n";
+				echo "offset : ".(isValidOffset($_GET['offset']) ? ($_GET['offset']) : ("null")).",\n";
 				echo "lang : \"".$lang."\"\n";
 				echo "};\n";
 			echo "</script>\n";
