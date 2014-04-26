@@ -31,6 +31,7 @@
 		<script type="text/javascript" src="js/OpenLayers.js"></script>
 		<?php
 			// params
+			$latlon = getLatLon($_GET['id'], $_GET['type']);
 			echo "<script type=\"text/javascript\">\n";
 				echo "var params={\n";
 				echo "id : ".(isValidId($_GET['id']) ? ($_GET['id']) : ("null")).",\n";
@@ -39,25 +40,17 @@
 				echo "lat : ";
 					if (isValidCoordinate($_GET['lat']))
 						echo $_GET['lat'].",\n";
+					else if ($latlon)
+						echo $latlon[1].",\n";
 					else
-					{
-						$latlon = getLatLon($_GET['id'], $type);
-						if ($latlon)
-							echo $latlon[1].",\n";
-						else
-							echo "null,\n";
-					}
+						echo "null,\n";
 				echo "lon : ";
 					if (isValidCoordinate($_GET['lon']))
 						echo $_GET['lon'].",\n";
+					else if ($latlon)
+						echo $latlon[0].",\n";
 					else
-					{
-						$latlon = getLatLon($_GET['id'], $type);
-						if ($latlon)
-							echo $latlon[0].",\n";
-						else
-							echo "null,\n";
-					}
+						echo "null,\n";
 				echo "zoom : ".(isValidZoom($_GET['zoom']) ? ($_GET['zoom']) : ("null")).",\n";
 				echo "bounded : ".(((isset($_GET['bounded'])) && ($_GET['bounded'] == 1)) ? 1 : 0).",\n";
 				echo "offset : ".(isValidOffset($_GET['offset']) ? ($_GET['offset']) : ("null")).",\n";
