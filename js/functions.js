@@ -365,7 +365,7 @@ function reportSpam()
 	var position = map.getCenter().transform(map.getProjectionObject(), wgs84);
 
 	// open osb and jump to current position
-	var bugWindow = window.open("http://openstreetbugs.schokokeks.org/?zoom="+map.getZoom()+"&lat="+position.lat+"&lon="+position.lon).focus();
+	var bugWindow = window.open("http://www.openstreetmap.org/note/new#map="+map.getZoom()+"/"+position.lat+"/"+position.lon).focus();
 }
 
 
