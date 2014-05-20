@@ -25,15 +25,6 @@ if [ ! -f old.pbf ]; then
 	echo "Planet file not existing, now downloading it"
 	wget http://planet.openstreetmap.org/pbf/planet-latest.osm.pbf
 	mv planet-latest.osm.pbf old.pbf
-	# update planet file
-	echo "Updating planet file"
-	echo ""
-	osmdate=`osmconvert old.pbf --out-timestamp | tr '[TZ]' ' ' | sed 's/ *$//g'`
-	date -u -d "$osmdate" +%s > timestamp
-	osmupdate old.pbf new.pbf --max-merge=2 --hourly --drop-author -v
-	rm old.pbf
-	mv new.pbf old.pbf
-	echo ""
 fi
 echo ""
 
@@ -41,7 +32,8 @@ echo ""
 # update planet file
 echo "Updating planet file"
 echo ""
-date -u +%s > timestamp
+osmdate=`osmconvert old.pbf --out-timestamp | tr '[TZ]' ' ' | sed 's/ *$//g'`
+date -u -d "$osmdate" +%s > timestamp
 osmupdate old.pbf new.pbf --max-merge=2 --hourly --drop-author -v
 rm old.pbf
 mv new.pbf old.pbf
@@ -68,7 +60,7 @@ echo ""
 # create centroids, remove not-node elements
 echo "Creating centroids, removing elements"
 echo ""
-osmconvert temp-olm.o5m --all-to-nodes --max-objects=90000000 --out-o5m >temp.o5m
+osmconvert temp-olm.o5m --all-to-nodes --object-type-offset=200000000000000000 --max-objects=90000000 --out-o5m >temp.o5m
 rm temp-olm.o5m
 osmfilter temp.o5m --drop-relations --drop-ways --keep-nodes="wikipedia= wikipedia:*= contact:phone= website= url= phone= fax= email= addr:email= image= url:official= contact:website= addr:phone= phone:mobile= contact:mobile= addr:fax= contact:email= contact:fax= image:panorama= opening_hours=" --out-o5m >temp-olm.o5m
 rm temp.o5m
@@ -79,7 +71,7 @@ rm temp.pbf
 osmconvert old-olm.pbf --drop-author --out-osm >old-olm.osm
 rm old-olm.pbf
 
-osmconvert temp-nextobjects.o5m --all-to-nodes --max-objects=90000000 --out-o5m >temp.o5m
+osmconvert temp-nextobjects.o5m --all-to-nodes --object-type-offset=200000000000000000 --max-objects=90000000 --out-o5m >temp.o5m
 rm temp-nextobjects.o5m
 osmfilter temp.o5m --drop-relations --drop-ways --keep-nodes="amenity=bus_station highway=bus_stop railway=station railway=halt railway=tram_stop amenity=parking highway=platform railway=platform public_transport=platform" --out-o5m >temp-nextobjects.o5m
 rm temp.o5m
