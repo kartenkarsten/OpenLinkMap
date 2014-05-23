@@ -12,8 +12,8 @@
 	// name of application
 	$appname = "OpenLinkMap";
 	// id offset between nodes and centroids
-	$offset = 1000000000000000;
-	$offsetfactorrels = 2000000000000000;
+	$offset = 2000000000000000;
+	$offsetfactorrels = $offset*2;
 	$action = 0;
 	$tags = "";
 	$id = 0;
