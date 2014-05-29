@@ -21,11 +21,11 @@ echo "Started processing at $(date)"
 # update planet file
 echo "Updating planet file"
 echo ""
-osmdate=`osmconvert old.pbf --out-timestamp | tr '[TZ]' ' ' | sed 's/ *$//g'`
-date -u -d "$osmdate" +%s > timestamp_tmp
 osmupdate old.pbf new.pbf --max-merge=5 --hourly --drop-author -v
 rm old.pbf
 mv new.pbf old.pbf
+osmdate=`osmconvert old.pbf --out-timestamp | tr '[TZ]' ' ' | sed 's/ *$//g'`
+date -u -d "$osmdate" +%s > timestamp_tmp
 echo ""
 
 
