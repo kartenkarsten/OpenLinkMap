@@ -6,13 +6,14 @@
 # See http://wiki.openstreetmap.org/wiki/OpenLinkMap for details.
 
 
-# do not run this script automatically! you have to change paths and modify it to your own environment!
+# ATTENTION: DO NOT RUN THIS SCRIPT! You have to change paths and modify parameters to your own environment!
+# This install script is written for CentOS. It may be necessary to change it for using on other linux distributions.
 
 PROJECTPATH=/home/www/sites/194.245.35.149/site/olm
 
 
 # install necessary software
-yum install gzip zlib zlib-devel postgresql-server postgresql-libs postgresql postgresql-common postgis geoip GeoIP geoip-devel GeoIP-devel php-pecl-geoip php-php-gettext
+yum install gzip zlib zlib-devel postgresql-server postgresql-libs postgresql postgresql-common postgis geoip GeoIP geoip-devel GeoIP-devel php-pecl-geoip php-php-gettext wget
 
 pecl install geoip
 
