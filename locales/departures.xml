@@ -25,11 +25,8 @@
 				<tag k="highway" v="bus_stop"/>
 		 		<tag k="public_transport" v="platform"/>
 			</match>
-			<tag k="operator" v="(.*;|^)De Lijn(;.*|$)"/>
-		</match>
-		<find>
 			<tag k="ref:De_Lijn" v="([0-9]*)" match_id="stop_ref"/>
-		</find>
+		</match>
 		<output>
 			<copy-all/>
 			<tag from_match="stop_ref" k="departures" v="http://mijnlijn.be/{0}"/>
