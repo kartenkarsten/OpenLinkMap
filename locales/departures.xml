@@ -297,8 +297,8 @@
 		</output>
 	</translation>
 	<translation>
-		<name>Braunschweiger Verkehrs AG</name>
-		<description>Timetables for public transport stops operated by "Braunschweiger Verkehrs AG" in Braunschweig, Germany.</description>
+		<name>Braunschweiger Verkehrs-GmbH</name>
+		<description>Timetables for public transport stops operated by "Braunschweiger Verkehrs-GmbH" in Braunschweig, Germany.</description>
 		<match mode="and">
 			<match mode="or">
 				<tag k="highway" v="bus_stop"/>
@@ -309,7 +309,7 @@
 				<tag k="railway" v="station"/>
 			</match>
 			<match mode="or">
-				<tag k="operator" v="(?i)(.*;|^)Braunschweiger Verkehrs AG(;.*|$)"/>
+				<tag k="operator" v="(?i)(.*;|^)Braunschweiger Verkehrs-GmbH(;.*|$)"/>
 			</match>
 			<tag k="network" v="VRB"/>
 			<tag k="name" v="(.*)" match_id="name"/>
